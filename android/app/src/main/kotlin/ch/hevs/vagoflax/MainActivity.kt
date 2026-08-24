@@ -1,4 +1,4 @@
-package com.example.vagoflax
+package ch.hevs.vagoflax
 
 import io.flutter.embedding.android.FlutterActivity
 
