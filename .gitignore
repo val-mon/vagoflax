@@ -54,3 +54,4 @@ key.properties
 # Google Play Store credentials
 fastlane-*.json
 play-store-credentials.json
+/.vscode
