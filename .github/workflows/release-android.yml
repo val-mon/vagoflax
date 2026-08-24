@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release-android-${{ github.ref }}
+  cancel-in-progress: false
+  
 jobs:
   build-android:
     runs-on: ubuntu-latest
