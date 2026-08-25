@@ -1,17 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-
-import 'providers/app_state.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(ChangeNotifierProvider(
-    create: (context) => ApplicationState(),
-    builder: ((context, child) => const MyApp()),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
