@@ -44,17 +44,19 @@ jobs:
       - name: Run tests
         run: flutter test
 
-      - name: Build Android debug APK
-        run: flutter build apk --debug
-
-
-  windows:
-    name: Build Windows
-    runs-on: windows-latest
-
+  android:
+    name: Build Android Test
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -65,12 +67,32 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Build Android debug APK
+        run: flutter build apk --debug
+
+  windows:
+    name: Build Windows Test
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: false
+
+      - name: Install dependencies
+        run: flutter pub get
+
       - name: Build Windows
         run: flutter build windows --debug
 
 
   macos:
-    name: Build macOS
+    name: Build macOS Test
     runs-on: macos-latest
 
     steps:
@@ -81,7 +103,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          cache: true
+          cache: false
 
       - name: Install dependencies
         run: flutter pub get
