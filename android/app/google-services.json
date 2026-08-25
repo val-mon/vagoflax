@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "133342804424",
+    "project_id": "vagoflax-190f6",
+    "storage_bucket": "vagoflax-190f6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133342804424:android:b7c877b1e83adc542b68fd",
+        "android_client_info": {
+          "package_name": "ch.hevs.vagoflax"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAClMipwnJ5W9iwmOK_9ltuJ_OWOVRfNOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

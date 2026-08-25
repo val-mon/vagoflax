@@ -14,10 +14,7 @@ class HomeScreen extends StatelessWidget {
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vagoflax'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Vagoflax'), centerTitle: true),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : jobs.isEmpty
