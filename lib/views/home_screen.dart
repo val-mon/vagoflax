@@ -14,14 +14,10 @@ class HomeScreen extends StatelessWidget {
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(
-<<<<<<< HEAD
       appBar: AppBar(
         title: const Text('Vagoflax'),
-        centerTitle: true,   // ← centre le titre horizontalement
+        centerTitle: true,
       ),
-=======
-      appBar: AppBar(title: const Text('Jobs')),
->>>>>>> e915134 (fix: firebase config for macos and ios)
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : jobs.isEmpty
