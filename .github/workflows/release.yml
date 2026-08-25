@@ -99,7 +99,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: ch.hevs.vagoflax
           releaseFiles: vagoflax-${{ github.ref_name }}-android.aab
-          track: internal
+          tracks: internal
           status: completed
 
 
