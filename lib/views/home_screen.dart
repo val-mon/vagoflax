@@ -14,7 +14,8 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jobs'),
+        title: const Text('Vagoflax'),
+        centerTitle: true,   // ← centre le titre horizontalement
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
