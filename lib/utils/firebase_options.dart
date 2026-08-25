@@ -50,7 +50,6 @@ class DefaultFirebaseOptions {
     projectId: 'vagoflax-190f6',
     storageBucket: 'vagoflax-190f6.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAYZfj20Aw01cB_lSVssFzQT1GuVwfJZII',
     appId: '1:133342804424:ios:14ee26a45f139db82b68fd',
@@ -59,7 +58,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'vagoflax-190f6.firebasestorage.app',
     iosBundleId: 'com.example.vagoflax',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAYZfj20Aw01cB_lSVssFzQT1GuVwfJZII',
     appId: '1:133342804424:ios:14ee26a45f139db82b68fd',

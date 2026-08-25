@@ -11,7 +11,6 @@ class FirestoreJobRepository implements JobRepository {
   @override
   Stream<List<Job>> getJobs() {
     return _jobsRef()
-    .orderBy('createdAt', descending: true)
     .snapshots()
     .map((snapshot) =>
       snapshot.docs.map((doc) => 
