@@ -22,7 +22,7 @@ class WelcomeScreen extends StatelessWidget {
             const Spacer(),
             
             const Text(
-              'Welcome to vagoflax.\nYour job search starts here.',
+              'Your job search starts here',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 28,
