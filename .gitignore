@@ -55,3 +55,6 @@ key.properties
 fastlane-*.json
 play-store-credentials.json
 /.vscode
+
+# Environment files
+.env
