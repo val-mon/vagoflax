@@ -40,8 +40,11 @@ jobs:
       - name: Set release version
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
+          BUILD_NUMBER=$((GITHUB_RUN_NUMBER + 1))
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          echo "BUILD_NUMBER=${(GITHUB_RUN_NUMBER+1)}" >> "$GITHUB_ENV"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+          echo "Release version: $VERSION"
+          echo "Android version code: $BUILD_NUMBER"
 
       - name: Show release version
         run: |
