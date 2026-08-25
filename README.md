@@ -19,6 +19,8 @@ flutter run
 Flutter 3.47.1 (stable)
 Firebase CLI 15.28.1
 Fireflutter 1.4.1
+Java 25.0.2
+Gradle 9.3.1
 
 ## Project structure
 ```
@@ -63,6 +65,19 @@ feat (HomePage): Add login button
 - `docs:` - documentation
 - `refactor:` - refactoring the code
 
-## Add Google Play Services configuration
+## Firebase configuration
 
-[tbd]
+- Install [Firebase CLI](https://firebase.google.com/docs/cli) on your computer
+- Log in to your Google account via the terminal:
+```bash
+firebase login
+```
+- Install the Flutterfire CLI
+```
+bash
+dart pub global activate flutterfire_cli
+```
+- Generate the needed files for **android, ios, windows and macos** :
+```bash
+flutterfire configure
+```
