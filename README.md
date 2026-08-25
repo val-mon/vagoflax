@@ -19,6 +19,8 @@ flutter run
 Flutter 3.47.1 (stable)
 Firebase CLI 15.28.1
 Fireflutter 1.4.1
+Java 25.0.2
+Gradle 9.3.1
 
 ## Project structure
 ```
