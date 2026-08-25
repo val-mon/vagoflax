@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vagoflax/views/login_screen.dart';
-import 'package:vagoflax/views/signup_screen.dart';
+import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
+import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'views/job_list_screen.dart';
@@ -53,7 +54,25 @@ final _router = GoRouter(
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,
-          child: const SignUpScreen(), // L'écran de destination
+          child: const SignUpEmailPwScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/signup/2',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const SignUpTypeScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: Tween<Offset>(

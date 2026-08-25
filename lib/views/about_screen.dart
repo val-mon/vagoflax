@@ -19,7 +19,7 @@ class AboutScreen extends StatelessWidget {
             const Spacer(),
 
             const Text(
-              'Salut c\'est moi Gonçalo le goat wala.',
+              'Developer information to be added later', // TODO add devs
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
