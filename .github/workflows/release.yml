@@ -41,7 +41,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          echo "BUILD_NUMBER=${GITHUB_RUN_NUMBER}" >> "$GITHUB_ENV"
+          echo "BUILD_NUMBER=${(GITHUB_RUN_NUMBER+1)}" >> "$GITHUB_ENV"
 
       - name: Show release version
         run: |
