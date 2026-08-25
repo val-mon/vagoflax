@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../providers/job_provider.dart';
 import '../widgets/job_item.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class JobScreen extends StatelessWidget {
+  const JobScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +14,7 @@ class HomeScreen extends StatelessWidget {
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(
-<<<<<<< HEAD
-      appBar: AppBar(
-        title: const Text('Vagoflax'),
-        centerTitle: true,   // ← centre le titre horizontalement
-      ),
-=======
       appBar: AppBar(title: const Text('Jobs')),
->>>>>>> e915134 (fix: firebase config for macos and ios)
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : jobs.isEmpty
