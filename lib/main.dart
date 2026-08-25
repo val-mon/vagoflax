@@ -1,11 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vagoflax/views/login_screen.dart';
 import 'utils/theme.dart';
 import 'package:provider/provider.dart';
-import 'views/home_screen.dart';
+import 'views/job_list_screen.dart';
 import 'providers/job_provider.dart';
 import 'repositories/firestore_job_repository.dart';
 import 'utils/firebase_options.dart';
+import 'views/welcome_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'views/about_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +22,38 @@ void main() async{
   runApp(const MyApp());
 }
 
+final _router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const WelcomeScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const LoginScreen(), // L'écran de destination
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/about',
+      builder: (context, state) => const AboutScreen(),
+    ),
+  ],
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -27,10 +63,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => JobProvider(FirestoreJobRepository())),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Vagoflax',
         theme: buildThemeData(),
-        home: const HomeScreen(),
+        routerConfig: _router,
       ),
     );
   }
