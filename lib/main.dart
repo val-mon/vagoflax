@@ -10,6 +10,9 @@ import 'providers/job_provider.dart';
 import 'repositories/firestore_job_repository.dart';
 import 'utils/firebase_options.dart';
 
+// TO DELETE :
+import 'views/job_provider_offer_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await dotenv.load(fileName: '.env');
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Vagoflax',
         theme: buildThemeData(),
-        home: const HomeScreen(),
+        home: const JobProviderOfferScreen(),
       ),
     );
   }

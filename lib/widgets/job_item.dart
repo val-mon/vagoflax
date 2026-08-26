@@ -14,7 +14,6 @@ class JobItem extends StatelessWidget {
       child: ListTile(
         title: Text(job.title),
         subtitle: Text(job.description),
-        trailing: Text('${job.company} - ${job.location}'),
       ),
     );
   }
