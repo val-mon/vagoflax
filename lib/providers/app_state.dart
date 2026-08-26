@@ -1,4 +1,4 @@
-import 'dart:async';                                     // new
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,7 +28,7 @@ class ApplicationState extends ChangeNotifier {
   String? tempDescription;
 
   // company specific fields
-  Int32? tempCompanySize;
+  int? tempCompanySize;
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -78,9 +78,12 @@ class ApplicationState extends ChangeNotifier {
     tempCanton = canton;
     tempCity = city;
   }
-  void saveSignUpStep3Company(String description, Int32 companySize) {
+  void saveSignUpStep3Employer(String name, String description, String canton, String city, int companySize) {
     // TODO: add profile picture
+    tempName = name;
     tempDescription = description;
+    tempCanton = canton;
+    tempCity = city;
     tempCompanySize = companySize;
   }
   Future<void> finalizeSignUp() async {
@@ -113,6 +116,8 @@ class ApplicationState extends ChangeNotifier {
         'role': tempRole,
         'name': tempName,
         'description': tempDescription,
+        'canton': tempCanton,
+        'city': tempCity,
         'profilePictureUrl': tempProfilePictureUrl,
         'companySize': tempCompanySize,
       });

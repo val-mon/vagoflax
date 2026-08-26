@@ -4,6 +4,7 @@ import 'package:vagoflax/providers/app_state.dart';
 import 'package:vagoflax/views/login_screen.dart';
 import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
 import 'package:vagoflax/views/signup_2_type_screen.dart';
+import 'package:vagoflax/views/signup_3_employer_screen.dart';
 import 'package:vagoflax/views/signup_3_student_screen.dart';
 import 'package:vagoflax/views/signup_end_screen.dart';
 import 'utils/theme.dart';
@@ -26,6 +27,7 @@ void main() async{
 
   runApp(const MyApp());
 }
+
 final _router = GoRouter(
   initialLocation: '/',
   routes: [
@@ -95,6 +97,24 @@ final _router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const SignUpStudentScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/signup/employer',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const SignUpEmployerScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: Tween<Offset>(
