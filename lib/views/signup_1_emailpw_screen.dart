@@ -18,31 +18,6 @@ class SignUpEmailPwScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                label: Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Name',
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 label: Text.rich(
