@@ -17,6 +17,10 @@ class ApplicationState extends ChangeNotifier {
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
+  String userId = '';
+  String userRole = '';
+  String userProfilePicture = '';
+
   String? tempEmail;
   String? tempPassword;
   String? tempRole;
@@ -36,15 +40,36 @@ class ApplicationState extends ChangeNotifier {
 
     FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         _loggedIn = true;
+        userId = user.uid;
+
+        try {
+          final docSnapshot = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .get();
+
+          if (docSnapshot.exists) {
+            final data = docSnapshot.data()!;
+            userRole = data['role'];
+            userProfilePicture = data['profilePictureUrl'];
+          }
+        } catch (e) {
+          // TODO: Handle error
+          // print('Error fetching user data: $e');
+        }
 
         notifyListeners();
       } else {
         _loggedIn = false;
+        userId = "";
+        userRole = "";
+        userProfilePicture = "";
+
+        notifyListeners();
       }
-      notifyListeners();
     });
   }
 

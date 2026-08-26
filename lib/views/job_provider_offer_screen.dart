@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/widgets/logout_button.dart';
 
 import '../providers/job_provider.dart';
 import '../widgets/job_item.dart';
@@ -15,7 +16,9 @@ class JobProviderOfferScreen extends StatelessWidget {
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My offers')),
+      appBar: AppBar(title: const Text('My offers'), actions: [
+        const LogoutButton(),
+      ]),
       body: Column(
         children: [
           Padding(

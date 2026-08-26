@@ -11,13 +11,12 @@ class AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // watch the loggedIn state from ApplicationState provider
-    final isLoggedIn = context.watch<ApplicationState>().loggedIn;
-    final role = "employer";
+    final appState = context.watch<ApplicationState>();
 
-    if (isLoggedIn) {
-      if (role == "student") {
+    if (appState.loggedIn) {
+      if (appState.userRole == "student") {
         return const JobListScreen();
-      } else if (role == "employer") {
+      } else if (appState.userRole == "employer") {
         return const JobProviderOfferScreen();
       } else {
         return const WelcomeScreen();
