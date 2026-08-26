@@ -127,4 +127,9 @@ class ApplicationState extends ChangeNotifier {
       print('Sign up error: $e');
     }
   }
+
+  // log out function
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
