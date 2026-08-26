@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:vagoflax/providers/app_state.dart';
 
 class SignUpTypeScreen extends StatelessWidget {
   const SignUpTypeScreen({super.key});
@@ -41,7 +44,9 @@ class SignUpTypeScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                // TODO: student registration form
+                // save role as student
+                Provider.of<ApplicationState>(context, listen: false).saveSignUpStep2Data('student');
+                context.go('/signup/student');
               },
               icon: const Icon(Icons.school, size: 28), // Graduation cap icon
               label: const Text(
@@ -64,7 +69,9 @@ class SignUpTypeScreen extends StatelessWidget {
                 elevation: 0,
               ),
               onPressed: () {
-                // TODO: employer registration form
+                // save role as employer
+                Provider.of<ApplicationState>(context, listen: false).saveSignUpStep2Data('employer');
+                context.go('/signup/employer');
               },
               icon: const Icon(Icons.business, size: 28), // Building icon
               label: const Text(

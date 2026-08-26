@@ -3,22 +3,24 @@ import 'package:go_router/go_router.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
-class SignUpEmailPwScreen extends StatefulWidget {
-  const SignUpEmailPwScreen({super.key});
+class SignUpStudentScreen extends StatefulWidget {
+  const SignUpStudentScreen({super.key});
 
   @override
-  State<SignUpEmailPwScreen> createState() => _SignUpEmailPwScreenState();
+  State<SignUpStudentScreen> createState() => _SignUpStudentScreenState();
 }
 
-final _emailController = TextEditingController();
-final _passwordController = TextEditingController();
+final _nameController = TextEditingController();
+final _descriptionController = TextEditingController();
+final _cantonController = TextEditingController();
+final _cityController = TextEditingController();
 
-class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
+class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: const Text('Student Sign Up'),
         centerTitle: true, 
       ),
       body: Padding(
@@ -27,41 +29,16 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // name
             TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
+              controller: _nameController,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 label: Text.rich(
                   TextSpan(
                     children: [
                       const TextSpan(
-                        text: 'Email',
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-            
-            const SizedBox(height: 16),
-            
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                label: Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Password',
+                        text: 'Full name',
                         style: TextStyle(color: Colors.black54),
                       ),
                       const TextSpan(
@@ -78,15 +55,69 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
             ),
 
             const SizedBox(height: 16),
-            
+
+            //description
             TextField(
-              obscureText: true,
+              controller: _descriptionController,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 label: Text.rich(
                   TextSpan(
                     children: [
                       const TextSpan(
-                        text: 'Confirm Password',
+                        text: 'Description',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                      const TextSpan(
+                        text: ' *',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            TextField(
+              controller: _cantonController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                label: Text.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Canton (e.g., ZH, GE, VD)',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                      const TextSpan(
+                        text: ' *',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            TextField(
+              controller: _cityController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                label: Text.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'City',
                         style: TextStyle(color: Colors.black54),
                       ),
                       const TextSpan(
@@ -103,7 +134,7 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
             ),
             
             const SizedBox(height: 32),
-            
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
@@ -114,23 +145,25 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                 ),
               ),
               onPressed: () {
-                final email = _emailController.text.trim();
-                final password = _passwordController.text;
+                final name = _nameController.text.trim();
+                final desc = _descriptionController.text.trim();
+                final canton = _cantonController.text.trim();
+                final city = _cityController.text.trim();
 
-                if (email.isEmpty || password.isEmpty) {
+                if (name.isEmpty || desc.isEmpty || canton.isEmpty || city.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please fill in both email and password fields.')),
+                    const SnackBar(content: Text('Please fill in all fields.')),
                   );
                   return;
                 }
 
                 // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
-                context.read<ApplicationState>().saveSignUpStep1Data(email, password);
+                context.read<ApplicationState>().saveSignUpStep3Student(name, desc, canton, city);
 
-                context.push('/signup/2');
+                context.go('/signup/finish');
               },
               child: const Text(
-                'Sign Up',
+                'Finish signing up',
                 style: TextStyle(fontSize: 16),
               ),
             ),

@@ -1,9 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vagoflax/providers/app_state.dart';
+import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:vagoflax/views/job_list_screen.dart'; // Décommente si besoin pour la navigation
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+final _emailController = TextEditingController();
+final _passwordController = TextEditingController();
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +33,7 @@ class LoginScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email',
@@ -44,6 +57,7 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 16),
             
             TextField(
+              controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Password',
@@ -64,8 +78,28 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: () {
-                // TODO: Implement login logic here
+              onPressed: () async {
+                final email = _emailController.text.trim();
+                final password = _passwordController.text;
+
+                if (email.isEmpty || password.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please fill in both email and password fields.')),
+                  );
+                  return;
+                }
+
+                try {
+                  await context.read<ApplicationState>().logIn(email, password);
+                  if (context.mounted) context.go('/'); 
+                } on FirebaseAuthException catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(e.message ?? 'Erreur de connexion'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               child: const Text(
                 'Log In',

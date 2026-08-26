@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/widgets/about_icon.dart';
 import '../providers/job_provider.dart';
 import '../widgets/job_item.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-  
+class JobListScreen extends StatelessWidget {
+  const JobListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final jobProvider = Provider.of<JobProvider>(context, listen: true);
@@ -14,8 +15,9 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const AboutIcon(),
         title: const Text('Vagoflax'),
-        centerTitle: true,   // ← centre le titre horizontalement
+        centerTitle: true,
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
