@@ -34,6 +34,14 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Create .env
+        run: |
+          cat > .env <<EOF
+          CLOUDINARY_CLOUDNAME=${{ secrets.CLOUDINARY_CLOUDNAME }}
+          CLOUDINARY_APIKEY=${{ secrets.CLOUDINARY_APIKEY }}
+          CLOUDINARY_APISECRET=${{ secrets.CLOUDINARY_APISECRET }}
+          EOF
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -120,6 +128,14 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Create .env
+        run: |
+          cat > .env <<EOF
+          CLOUDINARY_CLOUDNAME=${{ secrets.CLOUDINARY_CLOUDNAME }}
+          CLOUDINARY_APIKEY=${{ secrets.CLOUDINARY_APIKEY }}
+          CLOUDINARY_APISECRET=${{ secrets.CLOUDINARY_APISECRET }}
+          EOF
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -164,6 +180,14 @@ jobs:
         with:
           channel: stable
           cache: true
+
+      - name: Create .env
+        run: |
+          cat > .env <<EOF
+          CLOUDINARY_CLOUDNAME=${{ secrets.CLOUDINARY_CLOUDNAME }}
+          CLOUDINARY_APIKEY=${{ secrets.CLOUDINARY_APIKEY }}
+          CLOUDINARY_APISECRET=${{ secrets.CLOUDINARY_APISECRET }}
+          EOF
 
       - name: Install dependencies
         run: flutter pub get
