@@ -58,3 +58,5 @@ play-store-credentials.json
 
 # Environment files
 .env
+/lib/build/ios/SourcePackages
+/lib/build/macos/SourcePackages
