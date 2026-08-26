@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -43,6 +40,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAVn4pJjkh7_mVEOliku0_m_Ow1_DPbFGQ',
+    appId: '1:133342804424:web:fa9a03b6978d65eb2b68fd',
+    messagingSenderId: '133342804424',
+    projectId: 'vagoflax-190f6',
+    authDomain: 'vagoflax-190f6.firebaseapp.com',
+    storageBucket: 'vagoflax-190f6.firebasestorage.app',
+    measurementId: 'G-TPXZYVJPPY',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAClMipwnJ5W9iwmOK_9ltuJ_OWOVRfNOY',
     appId: '1:133342804424:android:b7c877b1e83adc542b68fd',
@@ -50,21 +57,23 @@ class DefaultFirebaseOptions {
     projectId: 'vagoflax-190f6',
     storageBucket: 'vagoflax-190f6.firebasestorage.app',
   );
+
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAYZfj20Aw01cB_lSVssFzQT1GuVwfJZII',
-    appId: '1:133342804424:ios:14ee26a45f139db82b68fd',
+    appId: '1:133342804424:ios:5327a292dfb7baeb2b68fd',
     messagingSenderId: '133342804424',
     projectId: 'vagoflax-190f6',
     storageBucket: 'vagoflax-190f6.firebasestorage.app',
-    iosBundleId: 'com.example.vagoflax',
+    iosBundleId: 'ch.hevs.vagoflax',
   );
+
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAYZfj20Aw01cB_lSVssFzQT1GuVwfJZII',
-    appId: '1:133342804424:ios:14ee26a45f139db82b68fd',
+    appId: '1:133342804424:ios:5327a292dfb7baeb2b68fd',
     messagingSenderId: '133342804424',
     projectId: 'vagoflax-190f6',
     storageBucket: 'vagoflax-190f6.firebasestorage.app',
-    iosBundleId: 'com.example.vagoflax',
+    iosBundleId: 'ch.hevs.vagoflax',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

@@ -5,6 +5,3 @@
 # Xcode-related
 **/dgph
 **/xcuserdata/
-
-# Firestore configuration file
-Runner/GoogleService-Info.plist
