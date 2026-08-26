@@ -12,7 +12,7 @@ import 'package:vagoflax/views/signup_end_screen.dart';
 import 'utils/theme.dart';
 
 import 'package:provider/provider.dart';
-import 'views/home_screen.dart';
+
 import 'providers/job_provider.dart';
 import 'repositories/firestore_job_repository.dart';
 import 'utils/firebase_options.dart';
