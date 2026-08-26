@@ -8,6 +8,7 @@ import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'package:vagoflax/views/signup_3_employer_screen.dart';
 import 'package:vagoflax/views/signup_3_student_screen.dart';
 import 'package:vagoflax/views/signup_end_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'utils/theme.dart';
 
@@ -23,7 +24,8 @@ import 'views/about_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await dotenv.load(fileName: '.env');
+
+  await dotenv.load(fileName: '.env');
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
