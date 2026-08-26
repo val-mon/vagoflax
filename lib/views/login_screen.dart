@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 setState(() {
                   _isLoading = true;
                 });
-                
+
                 final email = _emailController.text.trim();
                 final password = _passwordController.text;
 
@@ -116,15 +116,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               },
               child: _isLoading
-                    ? const SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text('Log In', style: TextStyle(fontSize: 16)),
+                  ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text('Log In', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
