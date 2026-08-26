@@ -17,10 +17,7 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        centerTitle: true, 
-      ),
+      appBar: AppBar(title: const Text('Sign Up'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -50,9 +47,9 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             TextField(
               controller: _passwordController,
               obscureText: true,
@@ -78,7 +75,7 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
             ),
 
             const SizedBox(height: 16),
-            
+
             TextField(
               obscureText: true,
               decoration: InputDecoration(
@@ -101,9 +98,9 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
@@ -119,20 +116,24 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
 
                 if (email.isEmpty || password.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please fill in both email and password fields.')),
+                    const SnackBar(
+                      content: Text(
+                        'Please fill in both email and password fields.',
+                      ),
+                    ),
                   );
                   return;
                 }
 
                 // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
-                context.read<ApplicationState>().saveSignUpStep1Data(email, password);
+                context.read<ApplicationState>().saveSignUpStep1Data(
+                  email,
+                  password,
+                );
 
                 context.push('/signup/2');
               },
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(fontSize: 16),
-              ),
+              child: const Text('Sign Up', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

@@ -20,10 +20,7 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Employer Sign Up'),
-        centerTitle: true, 
-      ),
+      appBar: AppBar(title: const Text('Employer Sign Up'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -159,7 +156,7 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 32),
 
             ElevatedButton(
@@ -176,9 +173,14 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                 final desc = _descriptionController.text.trim();
                 final canton = _cantonController.text.trim();
                 final city = _cityController.text.trim();
-                final companySize = int.tryParse(_companySizeController.text.trim()) ?? 0;
+                final companySize =
+                    int.tryParse(_companySizeController.text.trim()) ?? 0;
 
-                if (name.isEmpty || desc.isEmpty || canton.isEmpty || city.isEmpty || companySize == 0) {
+                if (name.isEmpty ||
+                    desc.isEmpty ||
+                    canton.isEmpty ||
+                    city.isEmpty ||
+                    companySize == 0) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Please fill in all fields.')),
                   );
@@ -186,7 +188,13 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                 }
 
                 // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
-                context.read<ApplicationState>().saveSignUpStep3Employer(name, desc, canton, city, companySize);
+                context.read<ApplicationState>().saveSignUpStep3Employer(
+                  name,
+                  desc,
+                  canton,
+                  city,
+                  companySize,
+                );
 
                 context.go('/signup/finish');
               },

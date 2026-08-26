@@ -9,10 +9,7 @@ class SignUpTypeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Sign Up'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -20,19 +17,16 @@ class SignUpTypeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(),
-            
+
             // Title text
             const Text(
               'What are you ?',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w400,
-              ),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400),
             ),
-            
+
             const SizedBox(height: 48),
-            
+
             // Student button with icon
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
@@ -45,7 +39,10 @@ class SignUpTypeScreen extends StatelessWidget {
               ),
               onPressed: () {
                 // save role as student
-                Provider.of<ApplicationState>(context, listen: false).saveSignUpStep2Data('student');
+                Provider.of<ApplicationState>(
+                  context,
+                  listen: false,
+                ).saveSignUpStep2Data('student');
                 context.go('/signup/student');
               },
               icon: const Icon(Icons.school, size: 28), // Graduation cap icon
@@ -54,13 +51,12 @@ class SignUpTypeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            
+
             const SizedBox(height: 16), // Spacing between the two buttons
-            
             // Employer button with icon
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black87, 
+                backgroundColor: Colors.black87,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 shape: RoundedRectangleBorder(
@@ -70,7 +66,10 @@ class SignUpTypeScreen extends StatelessWidget {
               ),
               onPressed: () {
                 // save role as employer
-                Provider.of<ApplicationState>(context, listen: false).saveSignUpStep2Data('employer');
+                Provider.of<ApplicationState>(
+                  context,
+                  listen: false,
+                ).saveSignUpStep2Data('employer');
                 context.go('/signup/employer');
               },
               icon: const Icon(Icons.business, size: 28), // Building icon
@@ -79,7 +78,7 @@ class SignUpTypeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            
+
             const SizedBox(height: 24),
             const Spacer(),
           ],

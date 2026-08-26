@@ -10,21 +10,21 @@ class FakeJobRepository implements JobRepository {
         title: 'Dev',
         description: 'Dev Flutter',
         company: 'Vagoflax',
-        location: 'Lausanne'
+        location: 'Lausanne',
       ),
       Job(
         id: '2',
         title: 'Data Analyst',
         description: 'Data Analyst',
         company: 'Vagoflax',
-        location: 'Sion'
+        location: 'Sion',
       ),
       Job(
         id: '3',
         title: 'Project Manager',
         description: 'Project Manager',
         company: 'Vagoflax',
-        location: 'Sierre'
+        location: 'Sierre',
       ),
     ];
 

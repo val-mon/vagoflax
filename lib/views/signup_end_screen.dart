@@ -21,7 +21,7 @@ class _SignUpEndScreenState extends State<SignUpEndScreen> {
     try {
       // On lance la création finale définie dans ApplicationState
       await context.read<ApplicationState>().finalizeSignUp();
-      
+
       // Si succès, on redirige vers l'accueil
       if (mounted) {
         context.go('/');
@@ -33,10 +33,7 @@ class _SignUpEndScreenState extends State<SignUpEndScreen> {
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: Colors.red,
-          ),
+          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
         );
       }
     }
@@ -50,7 +47,7 @@ class _SignUpEndScreenState extends State<SignUpEndScreen> {
         appBar: AppBar(
           title: const Text('Almost there!'),
           centerTitle: true,
-          automaticallyImplyLeading: false, 
+          automaticallyImplyLeading: false,
         ),
         body: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -59,37 +56,31 @@ class _SignUpEndScreenState extends State<SignUpEndScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Spacer(),
-              
+
               const Icon(
                 Icons.check_circle_outline,
                 size: 80,
                 color: Colors.black87,
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               const Text(
                 'Ready to dive in?',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               const Text(
                 'Your profile is set. Click below to finalize your account and start exploring Vagoflax.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
-              
+
               const Spacer(),
-              
+
               // Bouton de validation final
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -113,15 +104,18 @@ class _SignUpEndScreenState extends State<SignUpEndScreen> {
                       )
                     : const Text(
                         'Create Account',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
               ),
-              
+
               const SizedBox(height: 32),
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

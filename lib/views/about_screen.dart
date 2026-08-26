@@ -6,10 +6,7 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About us'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('About us'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -21,12 +18,9 @@ class AboutScreen extends StatelessWidget {
             const Text(
               'Developer information to be added later', // TODO add devs
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
-            
+
             const Spacer(),
           ],
         ),

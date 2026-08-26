@@ -23,26 +23,20 @@ class WelcomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Spacer(),
-                  
+
                   const Text(
                     'Vagoflax',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: TextStyle(fontSize: 48, fontWeight: FontWeight.w400),
                   ),
                   const Text(
                     'Your job search starts here',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w300,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
                   ),
-                  
+
                   const Spacer(),
-                  
+
                   // Row for the buttons
                   Row(
                     children: [
@@ -50,8 +44,10 @@ class WelcomeScreen extends StatelessWidget {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey.shade200, // Couleur claire
-                            foregroundColor: Colors.black87,       // Texte foncé pour contraster
+                            backgroundColor:
+                                Colors.grey.shade200, // Couleur claire
+                            foregroundColor:
+                                Colors.black87, // Texte foncé pour contraster
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -67,9 +63,9 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(width: 16),
-                      
+
                       // Sign up button
                       Expanded(
                         child: ElevatedButton(
@@ -92,19 +88,15 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 32),
                 ],
               ),
             ),
-            Positioned(
-              top: 16,
-              left: 16,
-              child: AboutIcon(),
-            ),
-          ]
-        )
-      )
+            Positioned(top: 16, left: 16, child: AboutIcon()),
+          ],
+        ),
+      ),
     );
   }
 }

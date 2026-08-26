@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+
 // import 'package:vagoflax/views/job_list_screen.dart'; // Décommente si besoin pour la navigation
 
 class LoginScreen extends StatefulWidget {
@@ -19,10 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Log In'),
-        centerTitle: true, 
-      ),
+      appBar: AppBar(title: const Text('Log In'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -53,9 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             TextField(
               controller: _passwordController,
               obscureText: true,
@@ -66,9 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
@@ -84,27 +82,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 if (email.isEmpty || password.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please fill in both email and password fields.')),
+                    const SnackBar(
+                      content: Text(
+                        'Please fill in both email and password fields.',
+                      ),
+                    ),
                   );
                   return;
                 }
 
                 try {
                   await context.read<ApplicationState>().logIn(email, password);
-                  if (context.mounted) context.go('/'); 
+                  if (context.mounted) context.go('/');
                 } on FirebaseAuthException catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(e.message ?? 'Erreur de connexion'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  // TODO: CHANGE THIS ERROR HANDLING !!
+                  SnackBar(content: Text('Login failed: ${e.message}'));
                 }
               },
-              child: const Text(
-                'Log In',
-                style: TextStyle(fontSize: 16),
-              ),
+              child: const Text('Log In', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

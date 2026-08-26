@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
@@ -32,17 +31,16 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> init() async {
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-    FirebaseUIAuth.configureProviders([
-      EmailAuthProvider(),
-    ]);
+    FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loggedIn = true;
 
-          notifyListeners();
+        notifyListeners();
       } else {
         _loggedIn = false;
       }
@@ -59,7 +57,7 @@ class ApplicationState extends ChangeNotifier {
       );
     } catch (e) {
       // Handle login error
-      print('Login error: $e');
+      // print('Login error: $e');
     }
   }
 
@@ -68,17 +66,31 @@ class ApplicationState extends ChangeNotifier {
     tempEmail = email;
     tempPassword = password;
   }
+
   void saveSignUpStep2Data(String role) {
     tempRole = role;
   }
-  void saveSignUpStep3Student(String name, String description, String canton, String city/*, List<String> skills, List<String> history*/) {
+
+  void saveSignUpStep3Student(
+    String name,
+    String description,
+    String canton,
+    String city /*, List<String> skills, List<String> history*/,
+  ) {
     // TODO: add profile picture, skills and history
     tempName = name;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
   }
-  void saveSignUpStep3Employer(String name, String description, String canton, String city, int companySize) {
+
+  void saveSignUpStep3Employer(
+    String name,
+    String description,
+    String canton,
+    String city,
+    int companySize,
+  ) {
     // TODO: add profile picture
     tempName = name;
     tempDescription = description;
@@ -86,6 +98,7 @@ class ApplicationState extends ChangeNotifier {
     tempCity = city;
     tempCompanySize = companySize;
   }
+
   Future<void> finalizeSignUp() async {
     try {
       if (tempEmail == null || tempPassword == null) {
@@ -94,37 +107,43 @@ class ApplicationState extends ChangeNotifier {
       }
 
       // add user to Firebase Auth
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: tempEmail!,
-        password: tempPassword!,
-      );
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: tempEmail!,
+            password: tempPassword!,
+          );
 
       // then add his account to Firestore collection "users"
       final String uid = userCredential.user!.uid;
 
-      await FirebaseFirestore.instance.collection('users').doc(uid).set(tempRole == 'student'
-          ? {
-        'email': tempEmail,
-        'role': tempRole,
-        'name': tempName,
-        'description': tempDescription,
-        'canton': tempCanton,
-        'city': tempCity,
-        'profilePictureUrl': tempProfilePictureUrl
-      } : {
-        'email': tempEmail,
-        'role': tempRole,
-        'name': tempName,
-        'description': tempDescription,
-        'canton': tempCanton,
-        'city': tempCity,
-        'profilePictureUrl': tempProfilePictureUrl,
-        'companySize': tempCompanySize,
-      });
-
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .set(
+            tempRole == 'student'
+                ? {
+                    'email': tempEmail,
+                    'role': tempRole,
+                    'name': tempName,
+                    'description': tempDescription,
+                    'canton': tempCanton,
+                    'city': tempCity,
+                    'profilePictureUrl': tempProfilePictureUrl,
+                  }
+                : {
+                    'email': tempEmail,
+                    'role': tempRole,
+                    'name': tempName,
+                    'description': tempDescription,
+                    'canton': tempCanton,
+                    'city': tempCity,
+                    'profilePictureUrl': tempProfilePictureUrl,
+                    'companySize': tempCompanySize,
+                  },
+          );
     } catch (e) {
       // Handle sign up error
-      print('Sign up error: $e');
+      // print('Sign up error: $e');
     }
   }
 

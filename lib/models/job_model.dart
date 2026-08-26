@@ -20,7 +20,7 @@ class Job {
       title: data['title'] ?? '',
       description: data['description'] ?? '',
       company: data['company'] ?? '',
-      location: data  ['location'] ?? '',
+      location: data['location'] ?? '',
     );
   }
 }

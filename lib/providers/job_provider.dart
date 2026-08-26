@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import '../models/job_model.dart';
 import '../repositories/job_repository.dart';
 
@@ -23,14 +25,17 @@ class JobProvider with ChangeNotifier {
     notifyListeners();
 
     // Subscribe to the job stream from the repository and update the job list when new data is received.
-    _jobsSubscription = _jobRepository.getJobs().listen((jobs) {
-      _jobs = jobs;
-      _isLoading = false;
-      notifyListeners();
-    }, onError: (error) {
-      _isLoading = false;
-      notifyListeners();
-    });
+    _jobsSubscription = _jobRepository.getJobs().listen(
+      (jobs) {
+        _jobs = jobs;
+        _isLoading = false;
+        notifyListeners();
+      },
+      onError: (error) {
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
   }
 
   @override
