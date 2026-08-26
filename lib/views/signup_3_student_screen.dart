@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
@@ -10,12 +13,35 @@ class SignUpStudentScreen extends StatefulWidget {
   State<SignUpStudentScreen> createState() => _SignUpStudentScreenState();
 }
 
-final _nameController = TextEditingController();
-final _descriptionController = TextEditingController();
-final _cantonController = TextEditingController();
-final _cityController = TextEditingController();
-
 class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _cantonController = TextEditingController();
+  final _cityController = TextEditingController();
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  // disposes of answers when the widget is closed
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _cantonController.dispose();
+    _cityController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +52,53 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // profile picture
+            Center(
+              child: GestureDetector(
+                onTap: _pickImage,
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey.shade200,
+                      backgroundImage: _selectedImage != null
+                          ? FileImage(_selectedImage!)
+                          : null,
+                      child: _selectedImage == null
+                          ? const Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.grey,
+                            )
+                          : null,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              'Add a profile picture',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black54, fontSize: 14),
+            ),
+
+            const SizedBox(height: 32),
             // name
             TextField(
               controller: _nameController,
@@ -163,6 +236,7 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
                   desc,
                   canton,
                   city,
+                  _selectedImage,
                 );
 
                 context.go('/signup/finish');
