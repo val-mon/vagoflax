@@ -1,6 +1,1 @@
-enum Diplomas {
-  apprenticeship,
-  bachelor,
-  master,
-  phd,
-}
+enum Diplomas { apprenticeship, bachelor, master, phd }

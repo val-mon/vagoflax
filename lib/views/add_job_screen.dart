@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/job_form.dart';
 
 class AddJobScreen extends StatelessWidget {
@@ -11,5 +12,4 @@ class AddJobScreen extends StatelessWidget {
       body: JobForm(),
     );
   }
-
 }

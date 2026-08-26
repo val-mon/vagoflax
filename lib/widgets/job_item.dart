@@ -11,10 +11,7 @@ class JobItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: ListTile(
-        title: Text(job.title),
-        subtitle: Text(job.description),
-      ),
+      child: ListTile(title: Text(job.title), subtitle: Text(job.description)),
     );
   }
 }

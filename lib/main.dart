@@ -8,6 +8,7 @@ import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'package:vagoflax/views/signup_3_employer_screen.dart';
 import 'package:vagoflax/views/signup_3_student_screen.dart';
 import 'package:vagoflax/views/signup_end_screen.dart';
+import 'package:vagoflax/views/add_job_screen.dart';
 
 import 'utils/theme.dart';
 
@@ -166,6 +167,27 @@ final _router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const AboutScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position:
+                  Tween<Offset>(
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                  ),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/add-job',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const AddJobScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position:

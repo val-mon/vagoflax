@@ -1,6 +1,1 @@
-enum Languages {
-  english,
-  french,
-  german,
-  italian,
-}
+enum Languages { english, french, german, italian }

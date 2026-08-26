@@ -1,7 +1,1 @@
-enum Perks {
-  ag,
-  car,
-  housingSupport,
-  mealVouchers,
-  stockOptions,
-}
+enum Perks { ag, car, housingSupport, mealVouchers, stockOptions }

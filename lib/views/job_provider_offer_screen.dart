@@ -47,9 +47,9 @@ class JobProviderOfferScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const AddJobScreen()),
-          );
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => const AddJobScreen()));
         },
         child: const Icon(Icons.add),
       ),
