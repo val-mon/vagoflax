@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/app_state.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
+import 'package:vagoflax/widgets/logout_button.dart';
 
 import '../providers/job_provider.dart';
 import '../widgets/job_item.dart';
@@ -21,13 +21,7 @@ class JobListScreen extends StatelessWidget {
         title: const Text('Vagoflax'),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Log out',
-            onPressed: () {
-              context.read<ApplicationState>().signOut();
-            },
-          ),
+          const LogoutButton(),
         ],
       ),
       body: isLoading

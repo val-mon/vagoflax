@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 
 ThemeData buildThemeData() {
-  final base = ThemeData.light();
-  return base.copyWith(
-    primaryColor: Colors.blue,
-    colorScheme: base.colorScheme.copyWith(
-      primary: Colors.blue,
-      secondary: Colors.orange,
-      error: Colors.red,
-    ),
+  final base = ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
     scaffoldBackgroundColor: Colors.grey[100],
+    fontFamily: 'Roboto',
+  );
+
+  return base.copyWith(
     textTheme: buildTextTheme(base.textTheme),
-    inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-    ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black87,
         foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.blue,
+
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+    ),
+
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Colors.black87,
+      foregroundColor: Colors.white,
     ),
   );
 }
 
 TextTheme buildTextTheme(TextTheme base) {
-  return base
-      .copyWith(
-        displayLarge: base.displayLarge?.copyWith(fontWeight: FontWeight.bold),
-        titleLarge: base.titleLarge?.copyWith(fontSize: 18.0),
-        bodyMedium: base.bodyMedium?.copyWith(fontSize: 14.0),
-      )
-      .apply(fontFamily: 'Roboto');
+  return base.copyWith(
+    displayLarge: base.displayLarge?.copyWith(fontWeight: FontWeight.bold),
+    titleLarge: base.titleLarge?.copyWith(fontSize: 18.0),
+    bodyMedium: base.bodyMedium?.copyWith(fontSize: 14.0),
+  );
 }

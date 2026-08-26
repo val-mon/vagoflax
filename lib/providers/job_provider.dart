@@ -38,6 +38,10 @@ class JobProvider with ChangeNotifier {
     );
   }
 
+  Future<void> addJob(Job job, String userUuid) async {
+    await _jobRepository.addJob(job, userUuid);
+  }
+
   @override
   void dispose() {
     _jobsSubscription?.cancel();
