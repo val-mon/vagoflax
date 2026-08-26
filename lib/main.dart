@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/views/auth_gate.dart';
 import 'package:vagoflax/views/login_screen.dart';
 import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
 import 'package:vagoflax/views/signup_2_type_screen.dart';
@@ -9,11 +10,9 @@ import 'package:vagoflax/views/signup_3_student_screen.dart';
 import 'package:vagoflax/views/signup_end_screen.dart';
 import 'utils/theme.dart';
 import 'package:provider/provider.dart';
-import 'views/job_list_screen.dart';
 import 'providers/job_provider.dart';
 import 'repositories/firestore_job_repository.dart';
 import 'utils/firebase_options.dart';
-import 'views/welcome_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'views/about_screen.dart';
 
@@ -33,9 +32,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => context.read<ApplicationState>().loggedIn
-          ? const JobListScreen()
-          : const WelcomeScreen(),
+      builder: (context, state) => const AuthGate(),
     ),
     GoRoute(
       path: '/login',
