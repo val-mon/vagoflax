@@ -25,20 +25,32 @@ Gradle 9.3.1
 ## Project structure
 ```
 lib/
-├── main.dart
-├── core/           # Constants, themes, routes, utilities
-├── models/         # Data models (e.g., Job, User)
-├── views/          # Screens (e.g., HomePage, LoginView)
-├── widgets/        # Reusable UI components
-├── controllers/    # Business logic and state management
-└── services/       # Firebase calls, API, authentication
+├── main.dart                   # App entry point
+├── models/                     # Data models (e.g., Job, User)
+│   └── job_model.dart
+├── providers/                  # Flutter interfaces / states
+│   └── job_provider.dart
+├── repositories/               # DB Interfaces
+│   ├── fake_job_repository.dart
+│   ├── firestore_job_repository.dart
+│   └── job_repository.dart
+├── services/                   # Firebase calls, API, authentication
+├── utils/                      # Constants, themes, routes, utilities
+│   ├── theme.dart
+│   └── firebase_options.dart
+├── views/                      # Screens (e.g., HomePage, LoginView)
+│   ├── home_screen.dart
+│   └── job_screen.dart
+└── widgets/                    # Reusable UI components
+    └── job_item.dart
 ```
 
 ## Repo policy
 
 ### Branches
-`main` : The main branch containing the releases
-`dev` : The development branch that will be merge into main when a release is created
+` main ` : The main branch containing the releases\
+` dev (default) ` : The development branch that will be merge into main when a release is created \
+
 
 #### Working branches
 One branch per task that will be merge into dev when the task is over
@@ -51,7 +63,7 @@ One branch per task that will be merge into dev when the task is over
 
 ### Commits
 Commit format: 
-```
+``` md
 TYPE (SCOPE): Description
 
 example:
