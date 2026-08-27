@@ -1,0 +1,11 @@
+// Copy this file to Local.xcconfig (gitignored) and put your own Apple team ID.
+// Find it in Xcode > Settings > Accounts, or in the macOS Runner target's
+// "Signing & Capabilities" tab.
+//
+// The team ID is also used as the bundle identifier suffix (see AppInfo.xcconfig)
+// so that each developer's team can register its own app ID.
+//
+// Leave this file out entirely to build without signing (what the CI does).
+
+DEVELOPMENT_TEAM = XXXXXXXXXX
+CODE_SIGN_IDENTITY[sdk=macosx*] = Apple Development
