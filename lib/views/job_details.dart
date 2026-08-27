@@ -448,19 +448,29 @@ class JobDetails extends StatelessWidget {
   }
 
   static String _contractTime(int contractTime) {
-    switch (contractTime) {
-      case 0:
-        return 'Indefinite';
-
-      case 1:
-        return '1 year';
-
-      case 2:
-        return '1 - 2 years';
-
-      default:
-        return 'More than 2 years';
+    // contract time is months
+    if (contractTime == 0) {
+      return 'Indefinite';
     }
+
+    final years = contractTime ~/ 12;
+    final months = contractTime % 12;
+
+    final yearsText = years > 0 ? '$years year${years > 1 ? 's' : ''}' : '';
+
+    final monthsText = months > 0
+        ? '$months month${months > 1 ? 's' : ''}'
+        : '';
+
+    if (years > 0 && months > 0) {
+      return '$yearsText and $monthsText';
+    }
+
+    if (years > 0) {
+      return yearsText;
+    }
+
+    return monthsText;
   }
 
   static String _enumName(String value) {

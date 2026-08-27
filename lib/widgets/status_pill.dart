@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:vagoflax/models/enum/status_model.dart';
 
@@ -10,26 +8,16 @@ class StatusPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 6,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: _getStatusColor(status)
-            .withValues(
-              alpha: 0.1
-            ),
-        borderRadius: BorderRadius.circular(
-          20,
-        ),
+        color: _getStatusColor(status).withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         status.name.toUpperCase(),
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: _getStatusColor(
-            status,
-          ),
+          color: _getStatusColor(status),
           fontSize: 12,
         ),
       ),
