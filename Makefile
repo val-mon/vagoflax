@@ -1,4 +1,5 @@
 .PHONY: clean format analyze run check get
+.DEFAULT_GOAL := goncalo
 
 clean:
 	flutter clean
@@ -12,8 +13,9 @@ format:
 analyze:
 	flutter analyze 
 
-run: format
-	flutter pub get
+run: 
 	flutter run
 
-check: clean get format analyze
+check: get format analyze
+
+goncalo: check run
