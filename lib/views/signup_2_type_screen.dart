@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/widgets/logout_button.dart';
 
 class SignUpTypeScreen extends StatelessWidget {
   const SignUpTypeScreen({super.key});
@@ -9,7 +10,11 @@ class SignUpTypeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Account setup'),
+        centerTitle: true,
+        actions: [const LogoutButton()],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -42,7 +47,7 @@ class SignUpTypeScreen extends StatelessWidget {
                 Provider.of<ApplicationState>(
                   context,
                   listen: false,
-                ).saveSignUpStep2Data('student');
+                ).signUpStep2('student');
                 context.push('/signup/student');
               },
               icon: const Icon(Icons.school, size: 28), // Graduation cap icon
@@ -69,7 +74,7 @@ class SignUpTypeScreen extends StatelessWidget {
                 Provider.of<ApplicationState>(
                   context,
                   listen: false,
-                ).saveSignUpStep2Data('employer');
+                ).signUpStep2('employer');
                 context.push('/signup/employer');
               },
               icon: const Icon(Icons.business, size: 28), // Building icon

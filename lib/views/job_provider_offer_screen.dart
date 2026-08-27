@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:vagoflax/widgets/logout_button.dart';
 
 import '../providers/job_provider.dart';
-import '../widgets/job_item.dart';
+import '../widgets/job_employer_item.dart';
 
 class JobProviderOfferScreen extends StatelessWidget {
   const JobProviderOfferScreen({super.key});
@@ -43,7 +43,7 @@ class JobProviderOfferScreen extends StatelessWidget {
                     itemCount: jobs.length,
                     itemBuilder: (context, index) {
                       final job = jobs[index];
-                      return JobItem(job: job);
+                      return JobEmployerItem(job: job);
                     },
                   ),
           ),

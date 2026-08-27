@@ -10,7 +10,6 @@ import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
 import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'package:vagoflax/views/signup_3_employer_screen.dart';
 import 'package:vagoflax/views/signup_3_student_screen.dart';
-import 'package:vagoflax/views/signup_end_screen.dart';
 
 CustomTransitionPage buildSlidePage({
   required GoRouterState state,
@@ -46,7 +45,7 @@ final router = GoRouter(
           buildSlidePage(state: state, child: const SignUpEmailPwScreen()),
     ),
     GoRoute(
-      path: '/signup/2',
+      path: '/signup/role',
       pageBuilder: (context, state) =>
           buildSlidePage(state: state, child: const SignUpTypeScreen()),
     ),
@@ -59,11 +58,6 @@ final router = GoRouter(
       path: '/signup/employer',
       pageBuilder: (context, state) =>
           buildSlidePage(state: state, child: const SignUpEmployerScreen()),
-    ),
-    GoRoute(
-      path: '/signup/finish',
-      pageBuilder: (context, state) =>
-          buildSlidePage(state: state, child: const SignUpEndScreen()),
     ),
     GoRoute(
       path: '/about',

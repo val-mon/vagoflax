@@ -8,10 +8,10 @@ import 'package:provider/provider.dart';
 
 import '../providers/job_provider.dart';
 
-class JobItem extends StatelessWidget {
+class JobEmployerItem extends StatelessWidget {
   final Job job;
 
-  const JobItem({super.key, required this.job});
+  const JobEmployerItem({super.key, required this.job});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +41,12 @@ class JobItem extends StatelessWidget {
             ),
           ],
         ),
+        onTap: () {
+          context.push(
+            '/job-applications',
+            extra: job,
+          ); // TODO: Implement job applications page
+        },
       ),
     );
   }
