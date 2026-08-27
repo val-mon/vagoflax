@@ -16,15 +16,20 @@ class ApplicationState extends ChangeNotifier {
     init();
   }
 
+  // use account loading to not load anything in the screen while account details are loading
+  bool _accountLoading = false;
+  bool get accountLoading => _accountLoading;
+
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
-  String userId = '';
-  String userRole = '';
+  String _userId = '';
+  String get userId => _userId;
+  String _userRole = '';
+  String get userRole => _userRole;
   String userProfilePicture = '';
+  String? userEmail;
 
-  String? tempEmail;
-  String? tempPassword;
   String? tempRole;
   String? tempName;
   String? tempCanton;
@@ -40,12 +45,14 @@ class ApplicationState extends ChangeNotifier {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    _accountLoading = true;
+
     FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
     FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         _loggedIn = true;
-        userId = user.uid;
+        _userId = user.uid;
 
         try {
           final docSnapshot = await FirebaseFirestore.instance
@@ -55,20 +62,28 @@ class ApplicationState extends ChangeNotifier {
 
           if (docSnapshot.exists) {
             final data = docSnapshot.data()!;
-            userRole = data['role'];
-            userProfilePicture = data['profilePictureUrl'];
+            _userRole = data['role'];
+            userProfilePicture = data['profilePictureUrl'] ?? '';
+            _accountLoading = false;
+          } else {
+            _userRole = '';
+            userProfilePicture = '';
+            _accountLoading = false;
           }
         } catch (e) {
           // TODO: Handle error
           // print('Error fetching user data: $e');
+          _accountLoading = false;
+          signOut();
         }
 
         notifyListeners();
       } else {
         _loggedIn = false;
-        userId = "";
-        userRole = "";
+        _userId = "";
+        _userRole = "";
         userProfilePicture = "";
+        _accountLoading = false;
 
         notifyListeners();
       }
@@ -77,121 +92,112 @@ class ApplicationState extends ChangeNotifier {
 
   // log in function
   Future<void> logIn(String email, String password) async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (e) {
-      // Handle login error
-      // print('Login error: $e');
-    }
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   // sign up functions
-  void saveSignUpStep1Data(String email, String password) {
-    tempEmail = email;
-    tempPassword = password;
+
+  // step one creates the user's account in firebase without adding any data to the users collection in firestore.
+  // This is done to ensure that the email is valid and not already in use.
+  Future<void> signUpStep1(String email, String password) async {
+    userEmail = email;
+    _userId = '';
+    if (userEmail == "" || password == "") {
+      throw Exception('Email or password is empty');
+    }
+
+    // add user to Firebase Auth
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: userEmail!, password: password);
+
+    _userId = userCredential.user?.uid ?? '';
   }
 
-  void saveSignUpStep2Data(String role) {
+  void signUpStep2(String role) {
     tempRole = role;
   }
 
-  void saveSignUpStep3Student(
+  Future<void> signUpStep3Student(
     String name,
     String description,
     String canton,
     String city /*, List<String> skills, List<String> history*/,
     File? profilePicture,
-  ) {
+  ) async {
     // TODO: add skills and history
     tempName = name;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
     tempProfilePicture = profilePicture;
+
+    return finalizeSignUp();
   }
 
-  void saveSignUpStep3Employer(
+  Future<void> signUpStep3Employer(
     String name,
     String description,
     String canton,
     String city,
     int companySize,
     File? profilePicture,
-  ) {
+  ) async {
     tempName = name;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
     tempCompanySize = companySize;
     tempProfilePicture = profilePicture;
+
+    return finalizeSignUp();
   }
 
   Future<void> finalizeSignUp() async {
-    try {
-      if (tempEmail == null || tempPassword == null) {
-        // shouldn't arrive here, but just in case
-        throw Exception('Email or password is null');
-      }
+    // upload profile picture to Cloudinary and get the URL (for profilepictureURL)
+    String profilePictureUrl = "";
 
-      // add user to Firebase Auth
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: tempEmail!,
-            password: tempPassword!,
-          );
-
-      // get new user id
-      final String uid = userCredential.user!.uid;
-
-      // upload profile picture to Cloudinary and get the URL (for profilepictureURL)
-      String profilePictureUrl = "";
-
-      if (tempProfilePicture != null) {
-        profilePictureUrl =
-            await CloudinaryService.uploadProfilePicture(
-              tempProfilePicture!,
-              uid,
-            ) ??
-            "";
-      }
-
-      // then add his account to Firestore collection "users"
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .set(
-            tempRole == 'student'
-                ? {
-                    'email': tempEmail,
-                    'role': tempRole,
-                    'name': tempName,
-                    'description': tempDescription,
-                    'canton': tempCanton,
-                    'city': tempCity,
-                    'profilePictureUrl': profilePictureUrl == ""
-                        ? null
-                        : profilePictureUrl,
-                  }
-                : {
-                    'email': tempEmail,
-                    'role': tempRole,
-                    'name': tempName,
-                    'description': tempDescription,
-                    'canton': tempCanton,
-                    'city': tempCity,
-                    'profilePictureUrl': profilePictureUrl == ""
-                        ? null
-                        : profilePictureUrl,
-                    'companySize': tempCompanySize,
-                  },
-          );
-    } catch (e) {
-      // Handle sign up error
-      // print('Sign up error: $e');
+    if (tempProfilePicture != null) {
+      profilePictureUrl =
+          await CloudinaryService.uploadProfilePicture(
+            tempProfilePicture!,
+            _userId,
+          ) ??
+          "";
     }
+
+    // then add his account to Firestore collection "users"
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .set(
+          tempRole == 'student'
+              ? {
+                  'email': userEmail,
+                  'role': tempRole,
+                  'name': tempName,
+                  'description': tempDescription,
+                  'canton': tempCanton,
+                  'city': tempCity,
+                  'profilePictureUrl': profilePictureUrl == ""
+                      ? null
+                      : profilePictureUrl,
+                }
+              : {
+                  'email': userEmail,
+                  'role': tempRole,
+                  'name': tempName,
+                  'description': tempDescription,
+                  'canton': tempCanton,
+                  'city': tempCity,
+                  'profilePictureUrl': profilePictureUrl == ""
+                      ? null
+                      : profilePictureUrl,
+                  'companySize': tempCompanySize,
+                },
+        );
   }
 
   // log out function

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:vagoflax/views/job_list_screen.dart';
+import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'package:vagoflax/views/welcome_screen.dart';
 import 'package:vagoflax/views/job_provider_offer_screen.dart';
 
@@ -18,6 +19,8 @@ class AuthGate extends StatelessWidget {
         return const JobListScreen();
       } else if (appState.userRole == "employer") {
         return const JobProviderOfferScreen();
+      } else if (appState.userRole == '') {
+        return const SignUpTypeScreen();
       } else {
         return const WelcomeScreen();
       }
