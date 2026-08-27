@@ -10,7 +10,11 @@ class JobApplicationStudentItem extends StatelessWidget {
   final Job job;
   final JobApplication application;
 
-  const JobApplicationStudentItem({super.key, required this.job, required this.application});
+  const JobApplicationStudentItem({
+    super.key,
+    required this.job,
+    required this.application,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -42,28 +42,29 @@ class StudentApplicationsScreen extends StatelessWidget {
           ? const Center(child: CircularProgressIndicator())
           : appliedJobs.isEmpty
           ? const Center(child: Text('You have not applied to any job yet'))
-          : Column( children: [
-              const SizedBox(height: 8),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 120),
-                  itemCount: appliedJobs.length,
-                  itemBuilder: (context, index) {
-                    final job = appliedJobs[index];
-                        
-                final application = applications.firstWhere(
-                  (app) => app.jobId == job.id,
-                );
+          : Column(
+              children: [
+                const SizedBox(height: 8),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 120),
+                    itemCount: appliedJobs.length,
+                    itemBuilder: (context, index) {
+                      final job = appliedJobs[index];
 
-                return JobApplicationStudentItem(
-                  job: job,
-                  application: application,
-                );
-              },
+                      final application = applications.firstWhere(
+                        (app) => app.jobId == job.id,
+                      );
+
+                      return JobApplicationStudentItem(
+                        job: job,
+                        application: application,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          )
-        ]
-      )
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/models/enum/status_model.dart';
 import 'package:vagoflax/widgets/application_status_dialog.dart';
 import 'package:vagoflax/widgets/status_pill.dart';
 
@@ -83,7 +82,10 @@ class JobApplicationsScreen extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
-                    subtitle: Align(alignment: Alignment.centerLeft, child: StatusPill(status: application.status)),
+                    subtitle: Align(
+                      alignment: Alignment.centerLeft,
+                      child: StatusPill(status: application.status),
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
