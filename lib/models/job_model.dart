@@ -21,6 +21,7 @@ class Job {
   final int workloadPercent;
   final double? salary;
   final double? predictedSalary;
+  final List<String> applicants;
 
   Job({
     this.id,
@@ -39,6 +40,7 @@ class Job {
     required this.workloadPercent,
     this.salary,
     this.predictedSalary,
+    this.applicants = const [],
   });
 
   factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
@@ -71,6 +73,7 @@ class Job {
       workloadPercent: data['workloadPercent'] ?? 100,
       salary: (data['salary'] as num?)?.toDouble(),
       predictedSalary: (data['predictedSalary'] as num?)?.toDouble(),
+      applicants: List<String>.from(data['applicants'] ?? []),
     );
   }
 
@@ -91,6 +94,7 @@ class Job {
       'workloadPercent': workloadPercent,
       'salary': salary,
       'predictedSalary': predictedSalary,
+      'applicants': applicants,
     };
   }
 }

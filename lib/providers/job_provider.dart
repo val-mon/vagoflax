@@ -50,6 +50,10 @@ class JobProvider with ChangeNotifier {
     await _jobRepository.deleteJob(job);
   }
 
+  Future<void> applyToJob(String jobId, String userId) async {
+    await _jobRepository.applyToJob(jobId, userId);
+  }
+
   @override
   void dispose() {
     _jobsSubscription?.cancel();

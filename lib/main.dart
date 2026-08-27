@@ -11,7 +11,9 @@ import 'utils/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/job_provider.dart';
+import 'providers/user_provider.dart';
 import 'repositories/firestore_job_repository.dart';
+import 'repositories/firestore_user_repository.dart';
 import 'utils/firebase_options.dart';
 
 void main() async {
