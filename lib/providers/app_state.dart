@@ -98,7 +98,7 @@ class ApplicationState extends ChangeNotifier {
   // log in function
   Future<void> logIn(String email, String password) async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: email,
+      email: email.trim().toLowerCase(),
       password: password,
     );
   }
@@ -108,7 +108,7 @@ class ApplicationState extends ChangeNotifier {
   // step one creates the user's account in firebase without adding any data to the users collection in firestore.
   // This is done to ensure that the email is valid and not already in use.
   Future<void> signUpStep1(String email, String password) async {
-    userEmail = email;
+    userEmail = email.trim().toLowerCase();
     _userId = '';
     if (userEmail == "" || password == "") {
       throw Exception('Email or password is empty');
