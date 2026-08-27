@@ -10,9 +10,11 @@ class SignUpTypeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Account setup'), centerTitle: true, actions: [
-        const LogoutButton(),
-      ]),
+      appBar: AppBar(
+        title: const Text('Account setup'),
+        centerTitle: true,
+        actions: [const LogoutButton()],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
