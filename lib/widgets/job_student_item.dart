@@ -4,10 +4,6 @@ import '../models/job_model.dart';
 
 import 'package:go_router/go_router.dart';
 
-import 'package:provider/provider.dart';
-
-import '../providers/job_provider.dart';
-
 class JobStudentItem extends StatelessWidget {
   final Job job;
 

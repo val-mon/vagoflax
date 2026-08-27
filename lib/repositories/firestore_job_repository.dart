@@ -25,11 +25,26 @@ class FirestoreJobRepository implements JobRepository {
 
   @override
   Future<void> updateJob(Job job) async {
+    if (job.id == null) {
+      throw Exception('Job ID is null');
+    }
+
     await _jobsRef().doc(job.id).update(job.toFirestore());
   }
 
   @override
   Future<void> deleteJob(Job job) async {
+    if (job.id == null) {
+      throw Exception('Job ID is null');
+    }
+
     await _jobsRef().doc(job.id).delete();
+  }
+
+  @override
+  Future<void> applyToJob(String jobId, String userId) async {
+    await _jobsRef().doc(jobId).update({
+      'applicants': FieldValue.arrayUnion([userId]),
+    });
   }
 }

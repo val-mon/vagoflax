@@ -5,4 +5,5 @@ abstract class JobRepository {
   Future<void> addJob(Job job);
   Future<void> updateJob(Job job);
   Future<void> deleteJob(Job job);
+  Future<void> applyToJob(String jobId, String userId);
 }
