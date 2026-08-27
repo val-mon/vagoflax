@@ -19,8 +19,8 @@ class ApplicationState extends ChangeNotifier {
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
-  String? tempEmail;
-  String? tempPassword;
+  String? userEmail;
+  String? userId;
   String? tempRole;
   String? tempName;
   String? tempCanton;
@@ -59,109 +59,105 @@ class ApplicationState extends ChangeNotifier {
   }
 
   // sign up functions
-  void saveSignUpStep1Data(String email, String password) {
-    tempEmail = email;
-    tempPassword = password;
+
+  // step one creates the user's account in firebase without adding any data to the users collection in firestore.
+  // This is done to ensure that the email is valid and not already in use.
+  Future<void> signUpStep1(String email, String password) async {
+    userEmail = email;
+    userId = null;
+    if (userEmail == "" || password == "") {
+      throw Exception('Email or password is empty');
+    }
+
+    // add user to Firebase Auth
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: userEmail!, password: password);
+
+    userId = userCredential.user?.uid;
   }
 
-  void saveSignUpStep2Data(String role) {
+  void signUpStep2(String role) {
     tempRole = role;
   }
 
-  void saveSignUpStep3Student(
+  Future<void> signUpStep3Student(
     String name,
     String description,
     String canton,
     String city /*, List<String> skills, List<String> history*/,
     File? profilePicture,
-  ) {
+  ) async {
     // TODO: add skills and history
     tempName = name;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
     tempProfilePicture = profilePicture;
+
+    return finalizeSignUp();
   }
 
-  void saveSignUpStep3Employer(
+  Future<void> signUpStep3Employer(
     String name,
     String description,
     String canton,
     String city,
     int companySize,
     File? profilePicture,
-  ) {
+  ) async {
     tempName = name;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
     tempCompanySize = companySize;
     tempProfilePicture = profilePicture;
+
+    return finalizeSignUp();
   }
 
   Future<void> finalizeSignUp() async {
-    try {
-      if (tempEmail == null || tempPassword == null) {
-        // shouldn't arrive here, but just in case
-        throw Exception('Email or password is null');
-      }
+    // upload profile picture to Cloudinary and get the URL (for profilepictureURL)
+    String profilePictureUrl = "";
 
-      // add user to Firebase Auth
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: tempEmail!,
-            password: tempPassword!,
-          );
-
-      // get new user id
-      final String uid = userCredential.user!.uid;
-
-      // upload profile picture to Cloudinary and get the URL (for profilepictureURL)
-      String profilePictureUrl = "";
-
-      if (tempProfilePicture != null) {
-        profilePictureUrl =
-            await CloudinaryService.uploadProfilePicture(
-              tempProfilePicture!,
-              uid,
-            ) ??
-            "";
-      }
-
-      // then add his account to Firestore collection "users"
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .set(
-            tempRole == 'student'
-                ? {
-                    'email': tempEmail,
-                    'role': tempRole,
-                    'name': tempName,
-                    'description': tempDescription,
-                    'canton': tempCanton,
-                    'city': tempCity,
-                    'profilePictureUrl': profilePictureUrl == ""
-                        ? null
-                        : profilePictureUrl,
-                  }
-                : {
-                    'email': tempEmail,
-                    'role': tempRole,
-                    'name': tempName,
-                    'description': tempDescription,
-                    'canton': tempCanton,
-                    'city': tempCity,
-                    'profilePictureUrl': profilePictureUrl == ""
-                        ? null
-                        : profilePictureUrl,
-                    'companySize': tempCompanySize,
-                  },
-          );
-    } catch (e) {
-      // Handle sign up error
-      // print('Sign up error: $e');
+    if (tempProfilePicture != null) {
+      profilePictureUrl =
+          await CloudinaryService.uploadProfilePicture(
+            tempProfilePicture!,
+            userId!,
+          ) ??
+          "";
     }
+
+    // then add his account to Firestore collection "users"
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId!)
+        .set(
+          tempRole == 'student'
+              ? {
+                  'email': userEmail,
+                  'role': tempRole,
+                  'name': tempName,
+                  'description': tempDescription,
+                  'canton': tempCanton,
+                  'city': tempCity,
+                  'profilePictureUrl': profilePictureUrl == ""
+                      ? null
+                      : profilePictureUrl,
+                }
+              : {
+                  'email': userEmail,
+                  'role': tempRole,
+                  'name': tempName,
+                  'description': tempDescription,
+                  'canton': tempCanton,
+                  'city': tempCity,
+                  'profilePictureUrl': profilePictureUrl == ""
+                      ? null
+                      : profilePictureUrl,
+                  'companySize': tempCompanySize,
+                },
+        );
   }
 
   // log out function

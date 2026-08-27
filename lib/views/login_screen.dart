@@ -49,7 +49,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: const Icon(Icons.camera_alt),
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Camera recognition not implemented yet.')),
+                      const SnackBar(
+                        content: Text(
+                          'Camera recognition not implemented yet.',
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -82,6 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               onPressed: () async {
                 if (_isLoading) return; // Prevent multiple taps
+
+                // remove old error message
+                ScaffoldMessenger.of(context).clearSnackBars();
 
                 setState(() {
                   _isLoading = true;
@@ -119,8 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   setState(() {
                     _isLoading = false;
                   });
-                  
-                  String errorMessage = 'Unexcpected error occurred. Please try again.';
+
+                  String errorMessage =
+                      'Unexcpected error occurred. Please try again.';
 
                   switch (e.code) {
                     case 'invalid-email':
@@ -151,7 +159,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     _isLoading = false;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('An unexpected error occurred. Please try again.')),
+                    const SnackBar(
+                      content: Text(
+                        'An unexpected error occurred. Please try again.',
+                      ),
+                    ),
                   );
                 }
               },

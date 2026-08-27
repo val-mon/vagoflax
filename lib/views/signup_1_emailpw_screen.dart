@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vagoflax/providers/app_state.dart';
@@ -10,8 +11,10 @@ class SignUpEmailPwScreen extends StatefulWidget {
   State<SignUpEmailPwScreen> createState() => _SignUpEmailPwScreenState();
 }
 
+bool _isLoading = false;
 final _emailController = TextEditingController();
 final _passwordController = TextEditingController();
+final _confirmPasswordController = TextEditingController();
 
 class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
   @override
@@ -77,6 +80,7 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
             const SizedBox(height: 16),
 
             TextField(
+              controller: _confirmPasswordController,
               obscureText: true,
               decoration: InputDecoration(
                 label: Text.rich(
@@ -110,30 +114,97 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                if (_isLoading) return; // Prevent multiple taps
+
+                // remove old error message
+                ScaffoldMessenger.of(context).clearSnackBars();
+
+                setState(() {
+                  _isLoading = true;
+                });
+
                 final email = _emailController.text.trim();
                 final password = _passwordController.text;
+                final confirmPassword = _confirmPasswordController.text;
 
-                if (email.isEmpty || password.isEmpty) {
+                if (password != confirmPassword) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text(
-                        'Please fill in both email and password fields.',
+                        'Passwords do not match. Please try again.',
                       ),
+                      backgroundColor: Colors.red.shade600,
                     ),
                   );
+                  setState(() {
+                    _isLoading = false;
+                  });
                   return;
                 }
 
-                // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
-                context.read<ApplicationState>().saveSignUpStep1Data(
-                  email,
-                  password,
-                );
+                if (email.isEmpty || password.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Please fill in both email and password fields.',
+                      ),
+                      backgroundColor: Colors.red.shade600,
+                    ),
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                }
 
-                context.push('/signup/2');
+                // lancer app_state signUpStep1(email, password) which creates the account, and then navigate to next screen
+                try {
+                  await context.read<ApplicationState>().signUpStep1(
+                    email,
+                    password,
+                  );
+                } on FirebaseAuthException catch (e) {
+                  if (!context.mounted) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error: ${e.message}'),
+                      backgroundColor: Colors.red.shade600,
+                    ),
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                } catch (e) {
+                  if (!context.mounted) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error: $e'),
+                      backgroundColor: Colors.red.shade600,
+                    ),
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                }
+                if (!context.mounted) return;
+
+                context.go('/signup/role');
               },
-              child: const Text('Sign Up', style: TextStyle(fontSize: 16)),
+              child: _isLoading
+                  ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text('Sign Up', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

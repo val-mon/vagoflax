@@ -14,6 +14,7 @@ class SignUpStudentScreen extends StatefulWidget {
 }
 
 class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
+  bool _isLoading = false;
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _cantonController = TextEditingController();
@@ -35,6 +36,7 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
   // disposes of answers when the widget is closed
   @override
   void dispose() {
+    _selectedImage?.delete(); // Delete the temporary image file if it exists
     _nameController.dispose();
     _descriptionController.dispose();
     _cantonController.dispose();
@@ -44,209 +46,248 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Student Sign Up'), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // profile picture
-            Center(
-              child: GestureDetector(
-                onTap: _pickImage,
-                child: Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.grey.shade200,
-                      backgroundImage: _selectedImage != null
-                          ? FileImage(_selectedImage!)
-                          : null,
-                      child: _selectedImage == null
-                          ? const Icon(
-                              Icons.person,
-                              size: 50,
-                              color: Colors.grey,
-                            )
-                          : null,
+    return PopScope(
+      canPop: !_isLoading,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Student account setup'),
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // profile picture
+              Center(
+                child: GestureDetector(
+                  onTap: _isLoading ? null : _pickImage,
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.grey.shade200,
+                        backgroundImage: _selectedImage != null
+                            ? FileImage(_selectedImage!)
+                            : null,
+                        child: _selectedImage == null
+                            ? const Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.grey,
+                              )
+                            : null,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: const BoxDecoration(
+                          color: Colors.black87,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              const Text(
+                'Add a profile picture',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black54, fontSize: 14),
+              ),
+
+              const SizedBox(height: 32),
+              // name
+              TextField(
+                controller: _nameController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  label: Text.rich(
+                    TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Full name',
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        const TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Colors.black87,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              //description
+              TextField(
+                controller: _descriptionController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  label: Text.rich(
+                    TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Description',
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        const TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            const Text(
-              'Add a profile picture',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black54, fontSize: 14),
-            ),
-
-            const SizedBox(height: 32),
-            // name
-            TextField(
-              controller: _nameController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                label: Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Full name',
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
-            ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            //description
-            TextField(
-              controller: _descriptionController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                label: Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Description',
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
+              TextField(
+                controller: _cantonController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  label: Text.rich(
+                    TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Canton (e.g., ZH, GE, VD)',
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        const TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
-            ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            TextField(
-              controller: _cantonController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                label: Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Canton (e.g., ZH, GE, VD)',
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
+              TextField(
+                controller: _cityController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  label: Text.rich(
+                    TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'City',
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        const TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
-            ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 32),
 
-            TextField(
-              controller: _cityController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                label: Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'City',
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black87,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                onPressed: () async {
+                  if (_isLoading) return; // Prevent multiple taps
+
+                  setState(() {
+                    _isLoading = true;
+                  });
+
+                  final name = _nameController.text.trim();
+                  final desc = _descriptionController.text.trim();
+                  final canton = _cantonController.text.trim();
+                  final city = _cityController.text.trim();
+
+                  if (name.isEmpty ||
+                      desc.isEmpty ||
+                      canton.isEmpty ||
+                      city.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please fill in all fields.'),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
+                  try {
+                    await context.read<ApplicationState>().signUpStep3Student(
+                      name,
+                      desc,
+                      canton,
+                      city,
+                      _selectedImage,
+                    );
+                    if (!context.mounted) return;
+                    context.go('/');
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('An error occurred while signing up.'),
+                      ),
+                    );
+                  } finally {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                },
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text(
+                        'Finish signing up',
+                        style: TextStyle(fontSize: 16),
+                      ),
               ),
-            ),
-
-            const SizedBox(height: 32),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black87,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: () {
-                final name = _nameController.text.trim();
-                final desc = _descriptionController.text.trim();
-                final canton = _cantonController.text.trim();
-                final city = _cityController.text.trim();
-
-                if (name.isEmpty ||
-                    desc.isEmpty ||
-                    canton.isEmpty ||
-                    city.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please fill in all fields.')),
-                  );
-                  return;
-                }
-
-                // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
-                context.read<ApplicationState>().saveSignUpStep3Student(
-                  name,
-                  desc,
-                  canton,
-                  city,
-                  _selectedImage,
-                );
-
-                context.go('/signup/finish');
-              },
-              child: const Text(
-                'Finish signing up',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
