@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'enum/status_model.dart';
 
 class JobApplication {
+  final String? id;
   final String studentUuid;
   final String jobId;
   Status status;
@@ -10,6 +11,7 @@ class JobApplication {
   final DateTime? lastUpdatedAt;
 
   JobApplication({
+    required this.id,
     required this.studentUuid,
     required this.jobId,
     required this.status,
@@ -22,6 +24,7 @@ class JobApplication {
     String documentId,
   ) {
     return JobApplication(
+      id: documentId,
       studentUuid: data['studentUuid'] ?? '',
       jobId: data['jobId'] ?? '',
       status: Status.values.byName(data['status'] ?? 'submitted'),

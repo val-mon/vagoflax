@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/models/enum/status_model.dart';
 import 'package:vagoflax/widgets/application_status_dialog.dart';
+import 'package:vagoflax/widgets/status_pill.dart';
 
 import '../providers/application_provider.dart';
 import '../providers/user_provider.dart';
@@ -77,16 +78,12 @@ class JobApplicationsScreen extends StatelessWidget {
                     ),
                     title: Text(
                       '${student.firstName} ${student.lastName}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      'Status: ${application.status.name.toUpperCase()}',
-                      style: TextStyle(
-                        color: _getStatusColor(application.status),
-                        fontWeight: FontWeight.w500,
-                        height: 1.5,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
+                    subtitle: Align(alignment: Alignment.centerLeft, child: StatusPill(status: application.status)),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -132,18 +129,5 @@ class JobApplicationsScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Color _getStatusColor(Status status) {
-    switch (status) {
-      case Status.evaluated:
-        return Colors.orange;
-      case Status.accepted:
-        return Colors.green;
-      case Status.rejected:
-        return Colors.red;
-      case Status.submitted:
-        return Colors.blueAccent;
-    }
   }
 }
