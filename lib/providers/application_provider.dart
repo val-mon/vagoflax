@@ -51,7 +51,6 @@ class ApplicationProvider extends ChangeNotifier {
     String studentUuid,
     String newStatus,
   ) async {
-
     try {
       await _repository.changeApplicationStatus(jobId, studentUuid, newStatus);
     } catch (e) {
