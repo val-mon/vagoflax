@@ -74,7 +74,7 @@ class Job {
     );
   }
 
-  Map<String, dynamic> toFirestore(String userUuid) {
+  Map<String, dynamic> toFirestore() {
     return {
       'userUuid': userUuid,
       'title': title,

@@ -22,6 +22,8 @@ import 'package:go_router/go_router.dart';
 
 import 'views/about_screen.dart';
 
+import 'models/job_model.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await dotenv.load(fileName: '.env');
@@ -185,9 +187,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/add-job',
       pageBuilder: (context, state) {
+        final job = state.extra as Job?;
         return CustomTransitionPage(
           key: state.pageKey,
-          child: const AddJobScreen(),
+          child: AddJobScreen(job: job),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position:

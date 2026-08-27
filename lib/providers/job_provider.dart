@@ -38,8 +38,16 @@ class JobProvider with ChangeNotifier {
     );
   }
 
-  Future<void> addJob(Job job, String userUuid) async {
-    await _jobRepository.addJob(job, userUuid);
+  Future<void> addJob(Job job) async {
+    await _jobRepository.addJob(job);
+  }
+
+  Future<void> updateJob(Job job) async {
+    await _jobRepository.updateJob(job);
+  }
+
+  Future<void> deleteJob(Job job) async {
+    await _jobRepository.deleteJob(job);
   }
 
   @override
