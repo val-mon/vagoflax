@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/app_state.dart';
 import 'package:vagoflax/providers/user_provider.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
 import 'package:vagoflax/widgets/user_item.dart';
+import 'package:vagoflax/widgets/profile_button.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // On écoute le UserProvider (à adapter selon le nom de ton provider)
     final userProvider = Provider.of<UserProvider>(context, listen: true);
     final users = userProvider.users;
     final isLoading = userProvider.isLoading;
@@ -20,15 +19,7 @@ class AdminScreen extends StatelessWidget {
         leading: const AboutIcon(),
         title: const Text('Admin Screen'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Log out',
-            onPressed: () {
-              context.read<ApplicationState>().signOut();
-            },
-          ),
-        ],
+        actions: [const ProfileButton()],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -41,7 +32,6 @@ class AdminScreen extends StatelessWidget {
 
                 return UserItem(user: user);
               },
-              // )
             ),
     );
   }

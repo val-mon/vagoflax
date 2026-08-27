@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/widgets/logout_button.dart';
+import 'package:vagoflax/widgets/profile_button.dart';
 
 import '../providers/job_provider.dart';
 import '../widgets/job_employer_item.dart';
@@ -18,7 +18,7 @@ class JobProviderOfferScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My offers'),
-        actions: [const LogoutButton()],
+        actions: [const ProfileButton()],
       ),
       body: Column(
         children: [
