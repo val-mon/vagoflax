@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vagoflax/models/history_model.dart';
 import 'package:vagoflax/models/review_model.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
 
 class User {
   final String id;
@@ -12,7 +13,8 @@ class User {
   final String lastName;
   final String name; // Company name for employers
   final String profilePictureUrl;
-  final String role;
+  final String faceRecognitionUrl;
+  final UserRole role;
   final List<String> skills;
   final List<Review> reviews;
   final List<HistoryEntry> history;
@@ -28,6 +30,7 @@ class User {
     required this.lastName,
     required this.name,
     required this.profilePictureUrl,
+    required this.faceRecognitionUrl,
     required this.role,
     this.companySize,
     this.createdAt,
@@ -48,7 +51,8 @@ class User {
       lastName: data['lastName'] ?? '',
       name: data['name'] ?? '',
       profilePictureUrl: data['profilePictureUrl'] ?? '',
-      role: data['role'] ?? '',
+      faceRecognitionUrl: data['faceRecognitionUrl'] ?? '',
+      role: UserRole.fromFirestore(data['role']),
       companySize: (data['companySize'] as num?)?.toInt(),
       skills: List<String>.from(data['skills'] ?? []),
       createdAt: data['createdAt'] != null
@@ -91,7 +95,8 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'profilePictureUrl': profilePictureUrl,
-      'role': role,
+      'faceRecognitionUrl': faceRecognitionUrl,
+      'role': role.toFirestore(),
       'skills': skills,
       'companySize': companySize,
       'reviews': reviews
