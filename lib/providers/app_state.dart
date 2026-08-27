@@ -52,15 +52,10 @@ class ApplicationState extends ChangeNotifier {
 
   // log in function
   Future<void> logIn(String email, String password) async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (e) {
-      // Handle login error
-      // print('Login error: $e');
-    }
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   // sign up functions
