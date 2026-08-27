@@ -16,7 +16,7 @@ class User {
   final List<Review> reviews;
   final List<HistoryEntry> history;
   final int? companySize;
-
+  final DateTime? createdAt;
   User({
     required this.id,
     required this.canton,
@@ -28,6 +28,7 @@ class User {
     required this.profilePictureUrl,
     required this.role,
     this.companySize,
+    this.createdAt,
     this.skills = const [],
     this.reviews = const [],
     this.history = const [],
@@ -47,6 +48,9 @@ class User {
       role: data['role'] ?? '',
       companySize: (data['companySize'] as num?)?.toInt(),
       skills: List<String>.from(data['skills'] ?? []),
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
+          : null,
       reviews:
           (data['reviews'] as List<dynamic>?)
               ?.map(

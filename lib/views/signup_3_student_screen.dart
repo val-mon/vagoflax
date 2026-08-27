@@ -15,7 +15,8 @@ class SignUpStudentScreen extends StatefulWidget {
 
 class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
   bool _isLoading = false;
-  final _nameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _cantonController = TextEditingController();
   final _cityController = TextEditingController();
@@ -37,7 +38,8 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
   @override
   void dispose() {
     _selectedImage?.delete(); // Delete the temporary image file if it exists
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _descriptionController.dispose();
     _cantonController.dispose();
     _cityController.dispose();
@@ -106,29 +108,61 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
               ),
 
               const SizedBox(height: 32),
-              // name
-              TextField(
-                controller: _nameController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  label: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Full name',
-                          style: TextStyle(color: Colors.black54),
+              // firstname
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _firstNameController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        label: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'First name',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              const TextSpan(
+                                text: ' *',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ],
+                          ),
                         ),
-                        const TextSpan(
-                          text: ' *',
-                          style: TextStyle(color: Colors.red),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      controller: _lastNameController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        label: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'Last name',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              const TextSpan(
+                                text: ' *',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ],
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
 
               const SizedBox(height: 16),
@@ -228,12 +262,14 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
                     _isLoading = true;
                   });
 
-                  final name = _nameController.text.trim();
+                  final firstName = _firstNameController.text.trim();
+                  final lastName = _lastNameController.text.trim();
                   final desc = _descriptionController.text.trim();
                   final canton = _cantonController.text.trim();
                   final city = _cityController.text.trim();
 
-                  if (name.isEmpty ||
+                  if (firstName.isEmpty ||
+                      lastName.isEmpty ||
                       desc.isEmpty ||
                       canton.isEmpty ||
                       city.isEmpty) {
@@ -251,7 +287,8 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
                   // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
                   try {
                     await context.read<ApplicationState>().signUpStep3Student(
-                      name,
+                      firstName,
+                      lastName,
                       desc,
                       canton,
                       city,
