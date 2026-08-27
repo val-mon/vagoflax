@@ -177,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  crystal_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: crystal_navigation_bar
+      sha256: dd64f2d0ac56099016f285fe9d01307e870d44acd9205735b7255629ce324f36
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   cupertino_icons:
     dependency: "direct main"
     description:
