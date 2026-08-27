@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/user_model.dart';
+import '../models/enum/user_role_model.dart';
 
 class UserItem extends StatelessWidget {
   final User user;
@@ -29,7 +30,7 @@ class UserItem extends StatelessWidget {
 
         // User name
         title: Text(
-          user.role == 'student'
+          user.role == UserRole.student
               ? "${user.firstName} ${user.lastName}"
               : user.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -42,7 +43,7 @@ class UserItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Badge pour le rôle (ex: STUDENT ou EMPLOYER)
-              if (user.role.isNotEmpty)
+              if (user.role != UserRole.unknown)
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -53,7 +54,7 @@ class UserItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    user.role.toUpperCase(),
+                    user.role.name.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 10,
