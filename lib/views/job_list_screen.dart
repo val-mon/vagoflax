@@ -20,9 +20,7 @@ class JobListScreen extends StatelessWidget {
         leading: const AboutIcon(),
         title: const Text('Vagoflax'),
         centerTitle: true,
-        actions: [
-          const LogoutButton(),
-        ],
+        actions: [const LogoutButton()],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

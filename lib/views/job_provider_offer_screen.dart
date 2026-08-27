@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/widgets/logout_button.dart';
 
 import '../providers/job_provider.dart';
 import '../widgets/job_item.dart';
-import 'add_job_screen.dart';
 
 class JobProviderOfferScreen extends StatelessWidget {
   const JobProviderOfferScreen({super.key});
@@ -16,9 +16,10 @@ class JobProviderOfferScreen extends StatelessWidget {
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My offers'), actions: [
-        const LogoutButton(),
-      ]),
+      appBar: AppBar(
+        title: const Text('My offers'),
+        actions: [const LogoutButton()],
+      ),
       body: Column(
         children: [
           Padding(
@@ -50,9 +51,7 @@ class JobProviderOfferScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (context) => const AddJobScreen()));
+          context.push('/add-job');
         },
         child: const Icon(Icons.add),
       ),
