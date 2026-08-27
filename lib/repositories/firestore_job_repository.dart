@@ -20,10 +20,6 @@ class FirestoreJobRepository implements JobRepository {
 
   @override
   Future<void> addJob(Job job, String userUuid) {
-    return _jobsRef().add(
-      {
-        ...job.toFirestore(userUuid),
-      }
-    );
+    return _jobsRef().add({...job.toFirestore(userUuid)});
   }
 }

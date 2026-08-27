@@ -43,4 +43,8 @@ class UserProvider with ChangeNotifier {
     _usersSubscription?.cancel();
     super.dispose();
   }
+
+  void addUser(User user) {
+    _userRepository.addUser(user);
+  }
 }

@@ -16,9 +16,10 @@ class JobProviderOfferScreen extends StatelessWidget {
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My offers'), actions: [
-        const LogoutButton(),
-      ]),
+      appBar: AppBar(
+        title: const Text('My offers'),
+        actions: [const LogoutButton()],
+      ),
       body: Column(
         children: [
           Padding(

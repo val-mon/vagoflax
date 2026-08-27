@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/job_provider.dart';
 import '../models/job_model.dart';
 import '../models/enum/diplomas_model.dart';
@@ -9,7 +10,7 @@ import '../models/enum/languages_model.dart';
 import '../models/enum/industry_model.dart';
 
 class JobForm extends StatefulWidget {
-  const JobForm({super.key}); 
+  const JobForm({super.key});
 
   @override
   State<JobForm> createState() => _JobFormState();
