@@ -27,8 +27,31 @@ class ApplicationState extends ChangeNotifier {
   String get userId => _userId;
   String _userRole = '';
   String get userRole => _userRole;
-  String userProfilePicture = '';
-  String? userEmail;
+  String _userProfilePicture = '';
+  String get profilePicture => _userProfilePicture;
+  String? _userEmail;
+  String get email => _userEmail ?? '';
+
+  String _firstName = '';
+  String get firstName => _firstName;
+  String _lastName = '';
+  String get lastName => _lastName;
+  String _city = '';
+  String get city => _city;
+  String _canton = '';
+  String get canton => _canton;
+  String _description = '';
+  String get description => _description;
+  List<String> _skills = [];
+  List<String> get skills => _skills;
+
+  List<String> _history = [];
+  List<String> get history => _history;
+
+  String _name = '';
+  String get name => _name;
+  int? _companySize;
+  int? get companySize => _companySize;
 
   String? tempRole;
   String? tempCanton;
@@ -57,25 +80,11 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = true;
         notifyListeners();
         _userId = user.uid;
-        userEmail = user.email;
+        _userEmail = user.email;
 
         try {
-          final docSnapshot = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .get();
-
-          if (docSnapshot.exists) {
-            final data = docSnapshot.data()!;
-            _userRole = data['role'] ?? '';
-            userProfilePicture = data['profilePictureUrl'] ?? '';
-          } else {
-            _userRole = '';
-            userProfilePicture = '';
-          }
+          await _loadUserData(user.uid);
         } catch (e) {
-          // TODO: Handle error
-          // print('Error fetching user data: $e');
           signOut();
         } finally {
           _accountLoading = false;
@@ -85,10 +94,8 @@ class ApplicationState extends ChangeNotifier {
       } else {
         _loggedIn = false;
         _userId = "";
-        _userRole = "";
-        userProfilePicture = "";
         _accountLoading = false;
-
+        _resetUserData();
         notifyListeners();
       }
     });
@@ -107,15 +114,15 @@ class ApplicationState extends ChangeNotifier {
   // step one creates the user's account in firebase without adding any data to the users collection in firestore.
   // This is done to ensure that the email is valid and not already in use.
   Future<void> signUpStep1(String email, String password) async {
-    userEmail = email.trim().toLowerCase();
+    _userEmail = email.trim().toLowerCase();
     _userId = '';
-    if (userEmail == "" || password == "") {
+    if (_userEmail == "" || password == "") {
       throw Exception('Email or password is empty');
     }
 
     // add user to Firebase Auth
     UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: userEmail!, password: password);
+        .createUserWithEmailAndPassword(email: email, password: password);
 
     _userId = userCredential.user?.uid ?? '';
   }
@@ -181,7 +188,7 @@ class ApplicationState extends ChangeNotifier {
         .set(
           tempRole == 'student'
               ? {
-                  'email': userEmail,
+                  'email': email,
                   'role': tempRole,
                   'firstName': tempFirstName,
                   'lastName': tempLastName,
@@ -194,7 +201,7 @@ class ApplicationState extends ChangeNotifier {
                   'createdAt': FieldValue.serverTimestamp(),
                 }
               : {
-                  'email': userEmail,
+                  'email': email,
                   'role': tempRole,
                   'name': tempName,
                   'description': tempDescription,
@@ -216,5 +223,71 @@ class ApplicationState extends ChangeNotifier {
   // log out function
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> _loadUserData(String uid) async {
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data()!;
+      _userRole = data['role'] ?? '';
+      _userProfilePicture = data['profilePictureUrl'] ?? '';
+      _userEmail = data['email'] ?? '';
+      _firstName = data['firstName'] ?? '';
+      _lastName = data['lastName'] ?? '';
+      _city = data['city'] ?? '';
+      _canton = data['canton'] ?? '';
+      _description = data['description'] ?? '';
+      _skills = List<String>.from(data['skills'] ?? []);
+      _name = data['name'] ?? '';
+      _companySize = (data['companySize'] as num?)?.toInt();
+      _history = List<String>.from(data['history'] ?? []);
+    } else {
+      _resetUserData();
+    }
+  }
+
+  void _resetUserData() {
+    _userRole = '';
+    _userProfilePicture = '';
+    _userEmail = '';
+    _firstName = '';
+    _lastName = '';
+    _city = '';
+    _canton = '';
+    _description = '';
+    _skills = [];
+    _name = '';
+    _companySize = null;
+    _history = [];
+  }
+
+  Future<void> reloadUserData() async {
+    if (_userId.isEmpty) return;
+    await _loadUserData(_userId);
+    notifyListeners();
+  }
+
+  Future<void> updateProfile({
+    required String firstName,
+    required String lastName,
+    required String city,
+    required String canton,
+    required String description,
+    required List<String> skills,
+    required List<String> history,
+  }) async {
+    await FirebaseFirestore.instance.collection('users').doc(_userId).update({
+      'firstName': firstName,
+      'lastName': lastName,
+      'city': city,
+      'canton': canton,
+      'description': description,
+      'skills': skills,
+      'history': history,
+    });
   }
 }
