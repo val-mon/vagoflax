@@ -17,4 +17,19 @@ class FirestoreJobRepository implements JobRepository {
           .toList(),
     );
   }
+
+  @override
+  Future<void> addJob(Job job) {
+    return _jobsRef().add({...job.toFirestore()});
+  }
+
+  @override
+  Future<void> updateJob(Job job) async {
+    await _jobsRef().doc(job.id).update(job.toFirestore());
+  }
+
+  @override
+  Future<void> deleteJob(Job job) async {
+    await _jobsRef().doc(job.id).delete();
+  }
 }

@@ -8,6 +8,7 @@ import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'package:vagoflax/views/signup_3_employer_screen.dart';
 import 'package:vagoflax/views/signup_3_student_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:vagoflax/views/add_job_screen.dart';
 
 import 'utils/theme.dart';
 
@@ -20,6 +21,8 @@ import 'utils/firebase_options.dart';
 import 'package:go_router/go_router.dart';
 
 import 'views/about_screen.dart';
+
+import 'models/job_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,6 +86,16 @@ final _router = GoRouter(
       path: '/about',
       pageBuilder: (context, state) =>
           buildSlidePage(state: state, child: const AboutScreen()),
+    ),
+    GoRoute(
+      path: '/add-job',
+      pageBuilder: (context, state) {
+        final job = state.extra as Job?;
+        return buildSlidePage(
+          state: state,
+          child: AddJobScreen(job: job),
+        );
+      },
     ),
   ],
 );

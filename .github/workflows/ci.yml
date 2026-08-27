@@ -152,5 +152,16 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Disable macOS code signing
+        run: |
+          cat > macos/Runner/Configs/Local.xcconfig <<'EOF'
+          DEVELOPMENT_TEAM =
+          CODE_SIGN_IDENTITY =
+          CODE_SIGN_STYLE = Manual
+          CODE_SIGNING_ALLOWED = NO
+          CODE_SIGNING_REQUIRED = NO
+          ENABLE_HARDENED_RUNTIME = NO
+          EOF
+
       - name: Build macOS
         run: flutter build macos --debug
