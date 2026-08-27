@@ -28,6 +28,25 @@ ThemeData buildThemeData() {
       backgroundColor: Colors.black87,
       foregroundColor: Colors.white,
     ),
+
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black87,
+      elevation: 0,
+    ),
+
+    listTileTheme: ListTileThemeData(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      tileColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    ),
+
+    chipTheme: ChipThemeData(
+      backgroundColor: Colors.white,
+      selectedColor: Colors.grey[400]!,
+      labelStyle: const TextStyle(color: Colors.black87),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Colors.black87)),
+    ),
   );
 }
 
