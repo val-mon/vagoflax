@@ -18,6 +18,14 @@ final _confirmPasswordController = TextEditingController();
 
 class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
   @override
+  void dispose() {
+    _emailController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Sign Up'), centerTitle: true),

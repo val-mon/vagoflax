@@ -31,13 +31,17 @@ class ApplicationState extends ChangeNotifier {
   String? userEmail;
 
   String? tempRole;
-  String? tempName;
   String? tempCanton;
   String? tempCity;
   File? tempProfilePicture;
   String? tempDescription;
 
+  // student specific fields
+  String? tempFirstName;
+  String? tempLastName;
+
   // company specific fields
+  String? tempName;
   int? tempCompanySize;
 
   Future<void> init() async {
@@ -53,6 +57,7 @@ class ApplicationState extends ChangeNotifier {
       if (user != null) {
         _loggedIn = true;
         _userId = user.uid;
+        userEmail = user.email;
 
         try {
           final docSnapshot = await FirebaseFirestore.instance
@@ -62,7 +67,7 @@ class ApplicationState extends ChangeNotifier {
 
           if (docSnapshot.exists) {
             final data = docSnapshot.data()!;
-            _userRole = data['role'];
+            _userRole = data['role'] ?? '';
             userProfilePicture = data['profilePictureUrl'] ?? '';
             _accountLoading = false;
           } else {
@@ -121,14 +126,16 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> signUpStep3Student(
-    String name,
+    String firstname,
+    String lastname,
     String description,
     String canton,
     String city /*, List<String> skills, List<String> history*/,
     File? profilePicture,
   ) async {
     // TODO: add skills and history
-    tempName = name;
+    tempFirstName = firstname;
+    tempLastName = lastname;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
@@ -177,13 +184,15 @@ class ApplicationState extends ChangeNotifier {
               ? {
                   'email': userEmail,
                   'role': tempRole,
-                  'name': tempName,
+                  'firstName': tempFirstName,
+                  'lastName': tempLastName,
                   'description': tempDescription,
                   'canton': tempCanton,
                   'city': tempCity,
                   'profilePictureUrl': profilePictureUrl == ""
                       ? null
                       : profilePictureUrl,
+                  'createdAt': FieldValue.serverTimestamp(),
                 }
               : {
                   'email': userEmail,
@@ -196,8 +205,13 @@ class ApplicationState extends ChangeNotifier {
                       ? null
                       : profilePictureUrl,
                   'companySize': tempCompanySize,
+                  'createdAt': FieldValue.serverTimestamp(),
                 },
         );
+
+    _userRole = tempRole ?? '';
+
+    notifyListeners();
   }
 
   // log out function

@@ -10,13 +10,14 @@ class User {
   final String email;
   final String firstName;
   final String lastName;
+  final String name; // Company name for employers
   final String profilePictureUrl;
   final String role;
   final List<String> skills;
   final List<Review> reviews;
   final List<HistoryEntry> history;
   final int? companySize;
-
+  final DateTime? createdAt;
   User({
     required this.id,
     required this.canton,
@@ -25,9 +26,11 @@ class User {
     required this.email,
     required this.firstName,
     required this.lastName,
+    required this.name,
     required this.profilePictureUrl,
     required this.role,
     this.companySize,
+    this.createdAt,
     this.skills = const [],
     this.reviews = const [],
     this.history = const [],
@@ -43,10 +46,14 @@ class User {
       email: data['email'] ?? '',
       firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',
+      name: data['name'] ?? '',
       profilePictureUrl: data['profilePictureUrl'] ?? '',
       role: data['role'] ?? '',
       companySize: (data['companySize'] as num?)?.toInt(),
       skills: List<String>.from(data['skills'] ?? []),
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
+          : null,
       reviews:
           (data['reviews'] as List<dynamic>?)
               ?.map(
