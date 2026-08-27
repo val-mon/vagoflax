@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:vagoflax/views/admin_screen.dart';
 import 'package:vagoflax/views/job_list_screen.dart';
+import 'package:vagoflax/views/loading_screen.dart';
 import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'package:vagoflax/views/welcome_screen.dart';
 import 'package:vagoflax/views/job_provider_offer_screen.dart';
@@ -14,6 +15,11 @@ class AuthGate extends StatelessWidget {
   Widget build(BuildContext context) {
     final loggedIn = context.watch<ApplicationState>().loggedIn;
     final userRole = context.watch<ApplicationState>().userRole;
+    final isAccountLoading = context.watch<ApplicationState>().accountLoading;
+
+    if (isAccountLoading) {
+      return const LoadingScreen();
+    }
 
     if (loggedIn) {
       if (userRole == "student") {

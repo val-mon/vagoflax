@@ -17,7 +17,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
   // use account loading to not load anything in the screen while account details are loading
-  bool _accountLoading = false;
+  bool _accountLoading = true;
   bool get accountLoading => _accountLoading;
 
   bool _loggedIn = false;
@@ -49,12 +49,11 @@ class ApplicationState extends ChangeNotifier {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    _accountLoading = true;
-
     FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
     FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
+        _accountLoading = true;
         _loggedIn = true;
         _userId = user.uid;
         userEmail = user.email;
@@ -69,17 +68,16 @@ class ApplicationState extends ChangeNotifier {
             final data = docSnapshot.data()!;
             _userRole = data['role'] ?? '';
             userProfilePicture = data['profilePictureUrl'] ?? '';
-            _accountLoading = false;
           } else {
             _userRole = '';
             userProfilePicture = '';
-            _accountLoading = false;
           }
         } catch (e) {
           // TODO: Handle error
           // print('Error fetching user data: $e');
-          _accountLoading = false;
           signOut();
+        } finally {
+          _accountLoading = false;
         }
 
         notifyListeners();
