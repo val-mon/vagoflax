@@ -42,7 +42,10 @@ class JobEmployerItem extends StatelessWidget {
           ],
         ),
         onTap: () {
-          context.push('/job-applications', extra: job); // TODO: Implement job applications page
+          context.push(
+            '/job-applications',
+            extra: job,
+          ); // TODO: Implement job applications page
         },
       ),
     );
