@@ -126,6 +126,7 @@ class _JobListScreenState extends State<JobListScreen> {
                   child: filteredJobs.isEmpty
                       ? const Center(child: Text('No jobs match your filters'))
                       : ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 120),
                           itemCount: filteredJobs.length,
                           itemBuilder: (context, index) {
                             final job = filteredJobs[index];
