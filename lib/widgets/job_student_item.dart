@@ -20,8 +20,9 @@ class JobStudentItem extends StatelessWidget {
           context.push(
             '/job-details',
             extra: job,
-          ); // TODO: Implement job details page
+          );
         },
+        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       ),
     );
   }
