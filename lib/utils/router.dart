@@ -12,6 +12,8 @@ import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
 import 'package:vagoflax/views/signup_2_type_screen.dart';
 import 'package:vagoflax/views/signup_3_employer_screen.dart';
 import 'package:vagoflax/views/signup_3_student_screen.dart';
+import 'package:vagoflax/views/profile_screen.dart';
+import 'package:vagoflax/widgets/profile_edit_form.dart';
 
 CustomTransitionPage buildSlidePage({
   required GoRouterState state,
@@ -98,6 +100,16 @@ final router = GoRouter(
           ),
         );
       },
+    ),
+    GoRoute(
+      path: '/profile',
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const ProfileScreen()),
+    ),
+    GoRoute(
+      path: '/profile/edit',
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const ProfileEditForm()),
     ),
   ],
 );

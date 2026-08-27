@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
-import 'package:vagoflax/widgets/logout_button.dart';
 import 'package:vagoflax/widgets/search_filter.dart';
+import 'package:vagoflax/widgets/profile_button.dart';
 
 import '../providers/job_provider.dart';
 import '../widgets/job_student_item.dart';
@@ -94,9 +94,8 @@ class _JobListScreenState extends State<JobListScreen> {
         leading: const AboutIcon(),
         title: const Text('Vagoflax'),
         centerTitle: true,
-        actions: const [LogoutButton()],
+        actions: [const ProfileButton()],
       ),
-
       endDrawer: JobFilterDrawer(
         jobs: jobs,
         initialFilters: filters,
