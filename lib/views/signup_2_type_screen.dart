@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/widgets/logout_button.dart';
 
 class SignUpTypeScreen extends StatelessWidget {
   const SignUpTypeScreen({super.key});
@@ -9,7 +10,9 @@ class SignUpTypeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Account setup'), centerTitle: true),
+      appBar: AppBar(title: const Text('Account setup'), centerTitle: true, actions: [
+        const LogoutButton(),
+      ]),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(

@@ -16,11 +16,17 @@ class ApplicationState extends ChangeNotifier {
     init();
   }
 
+  // use account loading to not load anything in the screen while account details are loading
+  bool _accountLoading = false;
+  bool get accountLoading => _accountLoading;
+
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
-  String userId = '';
-  String userRole = '';
+  String _userId = '';
+  String get userId => _userId;
+  String _userRole = '';
+  String get userRole => _userRole;
   String userProfilePicture = '';
   String? userEmail;
 
@@ -39,12 +45,14 @@ class ApplicationState extends ChangeNotifier {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    _accountLoading = true;
+
     FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
     FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         _loggedIn = true;
-        userId = user.uid;
+        _userId = user.uid;
 
         try {
           final docSnapshot = await FirebaseFirestore.instance
@@ -54,20 +62,28 @@ class ApplicationState extends ChangeNotifier {
 
           if (docSnapshot.exists) {
             final data = docSnapshot.data()!;
-            userRole = data['role'];
-            userProfilePicture = data['profilePictureUrl'];
+            _userRole = data['role'];
+            userProfilePicture = data['profilePictureUrl'] ?? '';
+            _accountLoading = false;
+          } else {
+            _userRole = '';
+            userProfilePicture = '';
+            _accountLoading = false;
           }
         } catch (e) {
           // TODO: Handle error
           // print('Error fetching user data: $e');
+          _accountLoading = false;
+          signOut();
         }
 
         notifyListeners();
       } else {
         _loggedIn = false;
-        userId = "";
-        userRole = "";
+        _userId = "";
+        _userRole = "";
         userProfilePicture = "";
+        _accountLoading = false;
 
         notifyListeners();
       }
@@ -88,7 +104,7 @@ class ApplicationState extends ChangeNotifier {
   // This is done to ensure that the email is valid and not already in use.
   Future<void> signUpStep1(String email, String password) async {
     userEmail = email;
-    userId = '';
+    _userId = '';
     if (userEmail == "" || password == "") {
       throw Exception('Email or password is empty');
     }
@@ -97,7 +113,7 @@ class ApplicationState extends ChangeNotifier {
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: userEmail!, password: password);
 
-    userId = userCredential.user?.uid;
+    _userId = userCredential.user?.uid ?? '';
   }
 
   void signUpStep2(String role) {
@@ -147,7 +163,7 @@ class ApplicationState extends ChangeNotifier {
       profilePictureUrl =
           await CloudinaryService.uploadProfilePicture(
             tempProfilePicture!,
-            userId!,
+            _userId,
           ) ??
           "";
     }
@@ -155,7 +171,7 @@ class ApplicationState extends ChangeNotifier {
     // then add his account to Firestore collection "users"
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(userId!)
+        .doc(_userId)
         .set(
           tempRole == 'student'
               ? {
