@@ -10,6 +10,7 @@ class User {
   final String email;
   final String firstName;
   final String lastName;
+  final String name; // Company name for employers
   final String profilePictureUrl;
   final String role;
   final List<String> skills;
@@ -25,6 +26,7 @@ class User {
     required this.email,
     required this.firstName,
     required this.lastName,
+    required this.name,
     required this.profilePictureUrl,
     required this.role,
     this.companySize,
@@ -44,6 +46,7 @@ class User {
       email: data['email'] ?? '',
       firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',
+      name: data['name'] ?? '',
       profilePictureUrl: data['profilePictureUrl'] ?? '',
       role: data['role'] ?? '',
       companySize: (data['companySize'] as num?)?.toInt(),

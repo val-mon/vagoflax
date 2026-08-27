@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/repositories/firestore_user_repository.dart';
 import 'package:vagoflax/utils/router.dart';
 
 import 'utils/theme.dart';
@@ -30,9 +32,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ApplicationState()),
-        ChangeNotifierProvider(
-          create: (_) => JobProvider(FirestoreJobRepository()),
-        ),
+        ChangeNotifierProvider(create: (_) => JobProvider(FirestoreJobRepository())),
+        ChangeNotifierProvider(create: (_) => UserProvider(FirestoreUserRepository())),
       ],
       child: MaterialApp.router(
         title: 'Vagoflax',
