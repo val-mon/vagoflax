@@ -1,19 +1,25 @@
-.PHONY: clean format analyze run check get
+.PHONY: help clean get format analyze run check goncalo
 
-clean:
+.DEFAULT_GOAL := help
+
+help: ## Affiche la liste des commandes disponibles
+	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_-]+:.*##/ {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+clean: ## Supprime les fichiers générés par Flutter
 	flutter clean
 
-get:
+get: ## Installe les dépendances Flutter
 	flutter pub get
 
-format:
+format: ## Formate le code Dart
 	dart format .
 
-analyze:
-	flutter analyze 
+analyze: ## Analyse statiquement le projet
+	flutter analyze
 
-run: format
-	flutter pub get
+run: ## Lance l'application Flutter
 	flutter run
 
-check: clean get format analyze
+check: get format analyze ## Installe, formate et analyse le projet
+
+goncalo: check run ## Vérifie le projet puis lance l'application
