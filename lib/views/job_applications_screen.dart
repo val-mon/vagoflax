@@ -1,0 +1,149 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/status_model.dart';
+import 'package:vagoflax/widgets/application_status_dialog.dart';
+
+import '../providers/application_provider.dart';
+import '../providers/user_provider.dart';
+
+class JobApplicationsScreen extends StatelessWidget {
+  final String jobId;
+  final String jobTitle;
+
+  const JobApplicationsScreen({
+    super.key,
+    required this.jobId,
+    required this.jobTitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final applicationProvider = context.watch<ApplicationProvider>();
+    final userProvider = context.read<UserProvider>();
+
+    // Filtering
+    final jobApplications = applicationProvider.applications
+        .where((app) => app.jobId == jobId)
+        .toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Column(
+          children: [
+            const Text(
+              'Candidates',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            Text(
+              jobTitle,
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
+            ),
+          ],
+        ),
+        centerTitle: true,
+      ),
+      body: applicationProvider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : jobApplications.isEmpty
+          ? _buildEmptyState()
+          : ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: jobApplications.length,
+              itemBuilder: (context, index) {
+                final application = jobApplications[index];
+
+                final student = userProvider.users.firstWhere(
+                  (u) => u.id == application.studentUuid,
+                );
+
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 0,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(12),
+                    leading: CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.grey.shade300,
+                      backgroundImage: student.profilePictureUrl.isNotEmpty
+                          ? NetworkImage(student.profilePictureUrl)
+                          : null,
+                      child: student.profilePictureUrl.isEmpty
+                          ? const Icon(Icons.person, color: Colors.grey)
+                          : null,
+                    ),
+                    title: Text(
+                      '${student.firstName} ${student.lastName}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      'Status: ${application.status.name.toUpperCase()}',
+                      style: TextStyle(
+                        color: _getStatusColor(application.status),
+                        fontWeight: FontWeight.w500,
+                        height: 1.5,
+                      ),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.person_search),
+                          tooltip: 'View Profile',
+                          onPressed: () {
+                            context.push('/profile', extra: student);
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          tooltip: "Change Application Status",
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => ApplicationStatusDialog(
+                                application: application,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.inbox_outlined, size: 60, color: Colors.grey),
+          SizedBox(height: 16),
+          Text(
+            'No applications yet',
+            style: TextStyle(fontSize: 18, color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getStatusColor(Status status) {
+    switch (status) {
+      case Status.evaluated:
+        return Colors.orange;
+      case Status.accepted:
+        return Colors.green;
+      case Status.rejected:
+        return Colors.red;
+      case Status.submitted:
+        return Colors.blueAccent;
+    }
+  }
+}

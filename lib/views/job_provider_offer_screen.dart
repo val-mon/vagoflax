@@ -14,7 +14,9 @@ class JobProviderOfferScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final appState = Provider.of<ApplicationState>(context, listen: false);
     final jobProvider = Provider.of<JobProvider>(context, listen: true);
-    final jobs = jobProvider.jobs.where((job) => job.userUuid == appState.userId).toList();
+    final jobs = jobProvider.jobs
+        .where((job) => job.userUuid == appState.userId)
+        .toList();
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(

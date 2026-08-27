@@ -24,6 +24,13 @@ class JobEmployerItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
+              icon: const Icon(Icons.person_search),
+              tooltip: 'View Applications',
+              onPressed: () {
+                context.push('/job-applications', extra: job);
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.edit),
               onPressed: () {
                 context.push('/add-job', extra: job);
@@ -41,12 +48,7 @@ class JobEmployerItem extends StatelessWidget {
             ),
           ],
         ),
-        onTap: () {
-          context.push(
-            '/job-applications',
-            extra: job,
-          ); // TODO: Implement job applications page
-        },
+        onTap: () => context.push('/job-details', extra: job),
       ),
     );
   }

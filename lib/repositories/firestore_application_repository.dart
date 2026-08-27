@@ -54,4 +54,15 @@ class FirestoreApplicationRepository implements ApplicationRepository {
 
     return docSnapshot.exists;
   }
+
+  @override
+  Future<List<JobApplication>> getApplicationsForJob(String jobId) async {
+    final querySnapshot = await _applicationsRef()
+        .where('jobId', isEqualTo: jobId)
+        .get();
+
+    return querySnapshot.docs
+        .map((doc) => JobApplication.fromFirestore(doc.data(), doc.id))
+        .toList();
+  }
 }

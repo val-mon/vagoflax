@@ -5,7 +5,7 @@ import 'enum/status_model.dart';
 class JobApplication {
   final String studentUuid;
   final String jobId;
-  final Status status;
+  Status status;
   final DateTime? createdAt;
   final DateTime? lastUpdatedAt;
 
