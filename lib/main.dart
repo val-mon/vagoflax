@@ -32,156 +32,63 @@ void main() async {
   runApp(const MyApp());
 }
 
+CustomTransitionPage buildSlidePage({
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: child, // destination
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(1.0, 0.0),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
+        child: child,
+      );
+    },
+  );
+}
+
 final _router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(path: '/', builder: (context, state) => const AuthGate()),
     GoRoute(
       path: '/login',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const LoginScreen(), // L'écran de destination
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const LoginScreen()),
     ),
     GoRoute(
       path: '/signup',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SignUpEmailPwScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const SignUpEmailPwScreen()),
     ),
     GoRoute(
       path: '/signup/2',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SignUpTypeScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const SignUpTypeScreen()),
     ),
     GoRoute(
       path: '/signup/student',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SignUpStudentScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const SignUpStudentScreen()),
     ),
     GoRoute(
       path: '/signup/employer',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SignUpEmployerScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const SignUpEmployerScreen()),
     ),
     GoRoute(
       path: '/signup/finish',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SignUpEndScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const SignUpEndScreen()),
     ),
     GoRoute(
       path: '/about',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const AboutScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const AboutScreen()),
     ),
   ],
 );
