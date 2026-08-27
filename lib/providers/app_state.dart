@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
@@ -6,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart'
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vagoflax/services/cloudinary.dart';
 
 import '../utils/firebase_options.dart';
 
@@ -27,7 +29,7 @@ class ApplicationState extends ChangeNotifier {
   String? tempName;
   String? tempCanton;
   String? tempCity;
-  String? tempProfilePictureUrl;
+  File? tempProfilePicture;
   String? tempDescription;
 
   // company specific fields
@@ -101,12 +103,14 @@ class ApplicationState extends ChangeNotifier {
     String description,
     String canton,
     String city /*, List<String> skills, List<String> history*/,
+    File? profilePicture,
   ) {
-    // TODO: add profile picture, skills and history
+    // TODO: add skills and history
     tempName = name;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
+    tempProfilePicture = profilePicture;
   }
 
   void saveSignUpStep3Employer(
@@ -115,13 +119,14 @@ class ApplicationState extends ChangeNotifier {
     String canton,
     String city,
     int companySize,
+    File? profilePicture,
   ) {
-    // TODO: add profile picture
     tempName = name;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
     tempCompanySize = companySize;
+    tempProfilePicture = profilePicture;
   }
 
   Future<void> finalizeSignUp() async {
@@ -138,9 +143,22 @@ class ApplicationState extends ChangeNotifier {
             password: tempPassword!,
           );
 
-      // then add his account to Firestore collection "users"
+      // get new user id
       final String uid = userCredential.user!.uid;
 
+      // upload profile picture to Cloudinary and get the URL (for profilepictureURL)
+      String profilePictureUrl = "";
+
+      if (tempProfilePicture != null) {
+        profilePictureUrl =
+            await CloudinaryService.uploadProfilePicture(
+              tempProfilePicture!,
+              uid,
+            ) ??
+            "";
+      }
+
+      // then add his account to Firestore collection "users"
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
@@ -153,7 +171,9 @@ class ApplicationState extends ChangeNotifier {
                     'description': tempDescription,
                     'canton': tempCanton,
                     'city': tempCity,
-                    'profilePictureUrl': tempProfilePictureUrl,
+                    'profilePictureUrl': profilePictureUrl == ""
+                        ? null
+                        : profilePictureUrl,
                   }
                 : {
                     'email': tempEmail,
@@ -162,7 +182,9 @@ class ApplicationState extends ChangeNotifier {
                     'description': tempDescription,
                     'canton': tempCanton,
                     'city': tempCity,
-                    'profilePictureUrl': tempProfilePictureUrl,
+                    'profilePictureUrl': profilePictureUrl == ""
+                        ? null
+                        : profilePictureUrl,
                     'companySize': tempCompanySize,
                   },
           );

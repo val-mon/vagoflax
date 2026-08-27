@@ -3,6 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
+
 class SignUpEmployerScreen extends StatefulWidget {
   const SignUpEmployerScreen({super.key});
 
@@ -10,13 +14,36 @@ class SignUpEmployerScreen extends StatefulWidget {
   State<SignUpEmployerScreen> createState() => _SignUpEmployerScreenState();
 }
 
-final _nameController = TextEditingController();
-final _descriptionController = TextEditingController();
-final _cantonController = TextEditingController();
-final _cityController = TextEditingController();
-final _companySizeController = TextEditingController();
-
 class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _cantonController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _companySizeController = TextEditingController();
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  // disposes of answers when the widget is closed
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _cantonController.dispose();
+    _cityController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +54,53 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // profile picture
+            Center(
+              child: GestureDetector(
+                onTap: _pickImage,
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey.shade200,
+                      backgroundImage: _selectedImage != null
+                          ? FileImage(_selectedImage!)
+                          : null,
+                      child: _selectedImage == null
+                          ? const Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.grey,
+                            )
+                          : null,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              'Add a profile picture',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black54, fontSize: 14),
+            ),
+
+            const SizedBox(height: 32),
             // name
             TextField(
               controller: _nameController,
@@ -194,6 +268,7 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                   canton,
                   city,
                   companySize,
+                  _selectedImage,
                 );
 
                 context.go('/signup/finish');

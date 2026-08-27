@@ -16,6 +16,8 @@ class LoginScreen extends StatefulWidget {
 final _emailController = TextEditingController();
 final _passwordController = TextEditingController();
 
+bool _isLoading = false;
+
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               onPressed: () async {
+                if (_isLoading) return; // Prevent multiple taps
+
+                setState(() {
+                  _isLoading = true;
+                });
+
                 final email = _emailController.text.trim();
                 final password = _passwordController.text;
 
@@ -88,18 +96,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   );
+                  setState(() {
+                    _isLoading = false;
+                  });
                   return;
                 }
 
                 try {
                   await context.read<ApplicationState>().logIn(email, password);
                   if (context.mounted) context.go('/');
+                  setState(() {
+                    _isLoading = false;
+                  });
                 } on FirebaseAuthException catch (e) {
-                  // TODO: CHANGE THIS ERROR HANDLING !!
+                  setState(() {
+                    _isLoading = false;
+                  });
                   SnackBar(content: Text('Login failed: ${e.message}'));
                 }
               },
-              child: const Text('Log In', style: TextStyle(fontSize: 16)),
+              child: _isLoading
+                  ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text('Log In', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

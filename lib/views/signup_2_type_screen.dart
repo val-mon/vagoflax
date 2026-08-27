@@ -43,7 +43,7 @@ class SignUpTypeScreen extends StatelessWidget {
                   context,
                   listen: false,
                 ).saveSignUpStep2Data('student');
-                context.go('/signup/student');
+                context.push('/signup/student');
               },
               icon: const Icon(Icons.school, size: 28), // Graduation cap icon
               label: const Text(
@@ -70,7 +70,7 @@ class SignUpTypeScreen extends StatelessWidget {
                   context,
                   listen: false,
                 ).saveSignUpStep2Data('employer');
-                context.go('/signup/employer');
+                context.push('/signup/employer');
               },
               icon: const Icon(Icons.business, size: 28), // Building icon
               label: const Text(
