@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/providers/app_state.dart';
 import 'package:vagoflax/widgets/logout_button.dart';
 
 import '../providers/job_provider.dart';
@@ -11,8 +12,9 @@ class JobProviderOfferScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<ApplicationState>(context, listen: false);
     final jobProvider = Provider.of<JobProvider>(context, listen: true);
-    final jobs = jobProvider.jobs;
+    final jobs = jobProvider.jobs.where((job) => job.userUuid == appState.userId).toList();
     final isLoading = jobProvider.isLoading;
 
     return Scaffold(
