@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/user_model.dart';
 
 class UserItem extends StatelessWidget {
@@ -10,9 +11,7 @@ class UserItem extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
 
@@ -30,11 +29,10 @@ class UserItem extends StatelessWidget {
 
         // User name
         title: Text(
-          user.role == 'student' ? "${user.firstName} ${user.lastName}" : user.name,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          user.role == 'student'
+              ? "${user.firstName} ${user.lastName}"
+              : user.name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
 
         // Role and location
@@ -46,7 +44,10 @@ class UserItem extends StatelessWidget {
               // Badge pour le rôle (ex: STUDENT ou EMPLOYER)
               if (user.role.isNotEmpty)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black87,
                     borderRadius: BorderRadius.circular(8),
@@ -70,8 +71,11 @@ class UserItem extends StatelessWidget {
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      '${user.city ?? 'Ville'} - ${user.canton ?? 'Canton'}',
-                      style: const TextStyle(color: Colors.black54, fontSize: 13),
+                      '${user.city} - ${user.canton}',
+                      style: const TextStyle(
+                        color: Colors.black54,
+                        fontSize: 13,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

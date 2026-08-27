@@ -32,8 +32,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ApplicationState()),
-        ChangeNotifierProvider(create: (_) => JobProvider(FirestoreJobRepository())),
-        ChangeNotifierProvider(create: (_) => UserProvider(FirestoreUserRepository())),
+        ChangeNotifierProvider(
+          create: (_) => JobProvider(FirestoreJobRepository()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(FirestoreUserRepository()),
+        ),
       ],
       child: MaterialApp.router(
         title: 'Vagoflax',

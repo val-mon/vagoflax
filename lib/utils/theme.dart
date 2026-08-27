@@ -45,7 +45,10 @@ ThemeData buildThemeData() {
       backgroundColor: Colors.white,
       selectedColor: Colors.grey[400]!,
       labelStyle: const TextStyle(color: Colors.black87),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Colors.black87)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(color: Colors.black87),
+      ),
     ),
   );
 }
