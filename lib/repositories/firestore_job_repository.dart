@@ -44,7 +44,14 @@ class FirestoreJobRepository implements JobRepository {
   @override
   Future<void> applyToJob(String jobId, String userId) async {
     await _jobsRef().doc(jobId).update({
-      'applicants': FieldValue.arrayUnion([userId]),
+      'applicants': FieldValue.arrayUnion([
+        {
+          'student_uuid': userId,
+          'status': 'submitted',
+          'date': FieldValue.serverTimestamp(),
+          'lastUpdated': FieldValue.serverTimestamp(),
+        },
+      ]),
     });
   }
 }
