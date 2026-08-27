@@ -50,6 +50,10 @@ ThemeData buildThemeData() {
         side: const BorderSide(color: Colors.black87),
       ),
     ),
+
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: Colors.black87,
+    ),
   );
 }
 
