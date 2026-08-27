@@ -55,6 +55,7 @@ class ApplicationState extends ChangeNotifier {
       if (user != null) {
         _accountLoading = true;
         _loggedIn = true;
+        notifyListeners();
         _userId = user.uid;
         userEmail = user.email;
 
