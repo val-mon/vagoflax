@@ -74,11 +74,13 @@ class UserProvider with ChangeNotifier {
   Future<void> updateUser({
     String? firstName,
     String? lastName,
+    String? companyName,
     String? city,
     String? canton,
     String? description,
     List<String>? skills,
     List<HistoryEntry>? history,
+    int? companySize,
     File? profilePicture,
   }) async {
     if (currentUser == null) return;
@@ -95,7 +97,7 @@ class UserProvider with ChangeNotifier {
           profilePictureUrl;
     }
 
-    final updatedUser = currentUser!.copyWith(
+    final updatedUser = currentUser!.role == UserRole.student ? currentUser!.copyWith(
       firstName: firstName ?? currentUser!.firstName,
       lastName: lastName ?? currentUser!.lastName,
       city: city ?? currentUser!.city,
@@ -103,6 +105,10 @@ class UserProvider with ChangeNotifier {
       description: description ?? currentUser!.description,
       skills: skills ?? currentUser!.skills,
       history: history ?? currentUser!.history,
+      profilePictureUrl: profilePictureUrl,
+    ) : currentUser!.copyWith(
+      companyName: companyName ?? currentUser!.companyName,
+      companySize: companySize ?? currentUser!.companySize,
       profilePictureUrl: profilePictureUrl,
     );
 

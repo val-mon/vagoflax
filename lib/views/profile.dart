@@ -39,8 +39,6 @@ class ProfileScreen extends StatelessWidget {
         user.id != userProvider.currentUser!.id &&
         user.hasUserBeenReviewedBy(userProvider.currentUser!.id);
 
-    print("profilePictureUrl: ${user.profilePictureUrl}, hasProfilePicture: ${user.hasProfilePicture}");
-
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
       body: Column(

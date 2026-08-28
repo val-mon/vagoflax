@@ -126,6 +126,8 @@ class User {
   User copyWith({
     String? firstName,
     String? lastName,
+    String? companyName,
+    int? companySize,
     String? city,
     String? canton,
     String? description,
@@ -133,7 +135,7 @@ class User {
     List<HistoryEntry>? history,
     String? profilePictureUrl,
   }) {
-    return User(
+    return role == UserRole.student ? User(
       // id, email and role can't be changed (atleast for now)
       id: id,
       email: email,
@@ -145,6 +147,16 @@ class User {
       description: description ?? this.description,
       skills: skills ?? this.skills,
       history: history ?? this.history,
+      profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+    ) : User(
+      id: id,
+      email: email,
+      role: role,
+      companyName: companyName ?? this.companyName,
+      companySize: companySize ?? this.companySize,
+      city: city ?? this.city,
+      canton: canton ?? this.canton,
+      description: description ?? this.description,
       profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
     );
   }
