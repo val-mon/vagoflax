@@ -86,7 +86,8 @@ class _JobListScreenState extends State<JobListScreen> {
           matchesDiplomas &&
           matchesRoles &&
           matchesIndustries &&
-          matchesLanguages;
+          matchesLanguages &&
+          job.visible;
     }).toList();
 
     return Scaffold(
