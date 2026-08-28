@@ -108,6 +108,8 @@ class ApplicationState extends ChangeNotifier {
         .createUserWithEmailAndPassword(email: email, password: password);
 
     _userId = userCredential.user?.uid ?? '';
+
+    notifyListeners();
   }
 
   void signUpStep2(String role) {

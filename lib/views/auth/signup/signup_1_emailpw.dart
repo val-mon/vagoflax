@@ -11,12 +11,13 @@ class SignUpEmailPwScreen extends StatefulWidget {
   State<SignUpEmailPwScreen> createState() => _SignUpEmailPwScreenState();
 }
 
-bool _isLoading = false;
-final _emailController = TextEditingController();
-final _passwordController = TextEditingController();
-final _confirmPasswordController = TextEditingController();
 
 class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
+  bool _isLoading = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  
   @override
   void dispose() {
     _emailController.clear();
@@ -175,18 +176,23 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                 } on FirebaseAuthException catch (e) {
                   if (!context.mounted) return;
 
+                  setState(() {
+                    _isLoading = false;
+                  });
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Error: ${e.message}'),
                       backgroundColor: Colors.red.shade600,
                     ),
                   );
-                  setState(() {
-                    _isLoading = false;
-                  });
                   return;
                 } catch (e) {
                   if (!context.mounted) return;
+
+                  setState(() {
+                    _isLoading = false;
+                  });
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -194,12 +200,14 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                       backgroundColor: Colors.red.shade600,
                     ),
                   );
-                  setState(() {
-                    _isLoading = false;
-                  });
                   return;
                 }
+
                 if (!context.mounted) return;
+
+                setState(() {
+                  _isLoading = false;
+                });
 
                 context.go('/signup/role');
               },
