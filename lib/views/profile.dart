@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/models/user_model.dart';
 import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/widgets/leave_review_sheet.dart';
 import 'package:vagoflax/widgets/logout_button.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vagoflax/widgets/user_rating_badge.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key, this.userId});
@@ -33,6 +35,12 @@ class ProfileScreen extends StatelessWidget {
       user = userProvider.currentUser!;
     }
 
+    final userAlreadyReviewed =
+        user.id != userProvider.currentUser!.id &&
+        user.hasUserBeenReviewedBy(userProvider.currentUser!.id);
+
+    print("profilePictureUrl: ${user.profilePictureUrl}, hasProfilePicture: ${user.hasProfilePicture}");
+
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
       body: Column(
@@ -47,12 +55,12 @@ class ProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.grey.shade200,
-                      backgroundImage: userProvider.hasProfilePicture(user)
+                      backgroundImage: user.hasProfilePicture
                           ? NetworkImage(
                               userProvider.currentUser!.profilePictureUrl!,
                             )
                           : null,
-                      child: !userProvider.hasProfilePicture(user)
+                      child: !user.hasProfilePicture
                           ? const Icon(
                               Icons.person,
                               size: 40,
@@ -61,13 +69,14 @@ class ProfileScreen extends StatelessWidget {
                           : null,
                     ),
                   ),
+                  UserRatingBadge(rating: user.averageRating, count: user.reviewCount,),
                   const SizedBox(height: 24),
 
                   // firstname et lastname si étudiant, sinon companyname
                   if (user.role == UserRole.student) ...[
                     _line('First name', user.firstName ?? ''),
                     _line('Last name', user.lastName ?? ''),
-                  ] else if (userProvider.hasProfilePicture(user) &&
+                  ] else if (user.hasProfilePicture &&
                       user.role == UserRole.employer) ...[
                     _line('Company Name', user.companyName ?? ''),
                   ],
@@ -125,7 +134,31 @@ class ProfileScreen extends StatelessWidget {
                         const LogoutButton(),
                       ],
                     ),
-                  ]
+                  ] else ...[
+                    // Show message if viewing another user's profile
+                    Center(
+                      child: userAlreadyReviewed
+                          ? const Text('You have already reviewed this user')
+                          : ElevatedButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
+                                  ),
+                                  builder: (ctx) => LeaveReviewSheet(
+                                    targetUserId: user.id,
+                                    currentUserId: userProvider.currentUser!.id,
+                                  ),
+                                );
+                              },
+                              child: const Text('Leave a review'),
+                            ),
+                    ),
+                  ],
                 ],
               ),
             ),

@@ -63,8 +63,8 @@ class User {
               ?.map(
                 (reviewData) => Review(
                   createdAt: (reviewData['createdAt'] as Timestamp).toDate(),
-                  from: reviewData['from'] ?? '',
-                  message: reviewData['message'] ?? '',
+                  reviewerId: reviewData['reviewerId'] ?? '',
+                  comment: reviewData['comment'] ?? '',
                   rating: (reviewData['rating'] as num).toDouble(),
                 ),
               )
@@ -104,8 +104,8 @@ class User {
           .map(
             (review) => {
               'createdAt': review.createdAt,
-              'from': review.from,
-              'message': review.message,
+              'reviewerId': review.reviewerId,
+              'comment': review.comment,
               'rating': review.rating,
             },
           )
@@ -148,4 +148,21 @@ class User {
       profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
     );
   }
+
+  bool get hasProfilePicture =>
+      profilePictureUrl != null && profilePictureUrl!.trim().isNotEmpty;
+
+  bool hasUserBeenReviewedBy(String reviewerId) {
+    if (reviewerId.isEmpty) return false;
+    return reviews.any((review) => review.reviewerId == reviewerId);
+  }
+
+  double get averageRating {
+    if (reviews.isEmpty) return 0.0;
+    final total = reviews.fold<double>(0, (s, item) => s + item.rating);
+    return total / reviews.length;
+  }
+
+  /// Total review count
+  int get reviewCount => reviews.length;
 }

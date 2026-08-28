@@ -133,7 +133,20 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool hasProfilePicture(User user) {
-    return user.profilePictureUrl != null && user.profilePictureUrl!.isNotEmpty;
+  Future<void> addReview({
+    required String targetUserId,
+    required String reviewerId,
+    required int rating,
+    required String comment,
+  }) async {
+    assert(rating >= 1 && rating <= 5, 'Rating must be between 1 and 5');
+    assert(comment.isNotEmpty, 'Comment cannot be empty');
+
+    return await _userRepository.addReview(
+      targetUserId: targetUserId,
+      reviewerId: reviewerId,
+      rating: rating,
+      comment: comment,
+    );
   }
 }
