@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../models/job_model.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/job_provider.dart';
 
 class JobEmployerItem extends StatelessWidget {
@@ -20,11 +23,8 @@ class JobEmployerItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (!job.visible) ...[
-              Icon(
-                Icons.visibility_off,
-                color: Colors.grey.shade600,
-              ),
-              const SizedBox(width: 8,)
+              Icon(Icons.visibility_off, color: Colors.grey.shade600),
+              const SizedBox(width: 8),
             ],
             IconButton(
               icon: const Icon(Icons.person_search),

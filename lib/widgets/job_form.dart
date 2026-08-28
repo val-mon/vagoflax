@@ -209,7 +209,6 @@ class _JobFormState extends State<JobForm> {
                 });
               },
               secondary: const Icon(Icons.visibility),
-
             ),
             const SizedBox(height: 24),
 

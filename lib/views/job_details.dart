@@ -138,7 +138,10 @@ class JobDetails extends StatelessWidget {
               const SizedBox(height: 25),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.amber.shade50,
                   border: Border.all(color: Colors.amber.shade400, width: 1.5),
