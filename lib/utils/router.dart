@@ -5,6 +5,7 @@ import 'package:vagoflax/models/job_model.dart';
 import 'package:vagoflax/views/about_screen.dart';
 import 'package:vagoflax/views/add_job_screen.dart';
 import 'package:vagoflax/views/auth_gate.dart';
+import 'package:vagoflax/views/job_applications_screen.dart';
 import 'package:vagoflax/views/job_details.dart';
 import 'package:vagoflax/views/login_screen.dart';
 import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
@@ -84,6 +85,19 @@ final router = GoRouter(
         return buildSlidePage(
           state: state,
           child: JobDetails(job: job),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/job-applications',
+      pageBuilder: (context, state) {
+        final job = state.extra as Job?;
+        return buildSlidePage(
+          state: state,
+          child: JobApplicationsScreen(
+            jobId: job?.id ?? '',
+            jobTitle: job?.title ?? '',
+          ),
         );
       },
     ),

@@ -9,9 +9,9 @@ class User {
   final String city;
   final String description;
   final String email;
-  final String firstName;
-  final String lastName;
-  final String companyName; // Company name for employers
+  final String? firstName;
+  final String? lastName;
+  final String? companyName; // Company name for employers
   final String profilePictureUrl;
   final String faceRecognitionUrl;
   final UserRole role;
@@ -26,8 +26,8 @@ class User {
     required this.city,
     required this.description,
     required this.email,
-    required this.firstName,
-    required this.lastName,
+    this.firstName,
+    this.lastName,
     required this.profilePictureUrl,
     required this.faceRecognitionUrl,
     required this.role,

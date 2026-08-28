@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:vagoflax/providers/application_provider.dart';
 import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/repositories/firestore_application_repository.dart';
 import 'package:vagoflax/repositories/firestore_user_repository.dart';
 import 'package:vagoflax/utils/router.dart';
 
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => UserProvider(FirestoreUserRepository()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ApplicationProvider(FirestoreApplicationRepository()),
         ),
       ],
       child: MaterialApp.router(

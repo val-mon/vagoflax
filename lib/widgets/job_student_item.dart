@@ -17,11 +17,9 @@ class JobStudentItem extends StatelessWidget {
         title: Text(job.title),
         subtitle: Text(job.description),
         onTap: () {
-          context.push(
-            '/job-details',
-            extra: job,
-          ); // TODO: Implement job details page
+          context.push('/job-details', extra: job);
         },
+        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       ),
     );
   }

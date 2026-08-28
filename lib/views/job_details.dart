@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/providers/application_provider.dart';
 
 import '../models/job_model.dart';
 import '../models/user_model.dart';
@@ -22,6 +23,7 @@ class JobDetails extends StatelessWidget {
     final appState = context.watch<ApplicationState>();
     final userProvider = context.watch<UserProvider>();
     final jobProvider = context.watch<JobProvider>();
+    final applicationProvider = context.watch<ApplicationProvider>();
 
     final currentUserId = appState.userId;
     final isStudent = appState.userRole == 'student';
@@ -45,9 +47,6 @@ class JobDetails extends StatelessWidget {
     } catch (_) {
       company = null;
     }
-
-    // Check if the current student has already applied.
-    final alreadyApplied = currentJob.applicants.contains(appState.userId);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -324,65 +323,92 @@ class JobDetails extends StatelessWidget {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-            child: SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: !isStudent || alreadyApplied
-                    ? null
-                    : () async {
-                        if (currentJob.id == null) {
-                          return;
-                        }
+            child: FutureBuilder<bool>(
+              future: applicationProvider.hasApplied(job!.id!, currentUserId),
+              builder: (context, snapshot) {
+                // loading
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return ElevatedButton(
+                    onPressed: null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey.shade200,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  );
+                }
 
-                        try {
-                          await context.read<JobProvider>().applyToJob(
-                            currentJob.id!,
-                            currentUserId,
-                          );
+                // result
+                final alreadyApplied = snapshot.data ?? false;
 
-                          if (!context.mounted) {
+                return ElevatedButton(
+                  onPressed: !isStudent || alreadyApplied
+                      ? null
+                      : () async {
+                          if (currentJob.id == null) {
                             return;
                           }
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Application sent!')),
-                          );
-                        } catch (e) {
-                          if (!context.mounted) {
-                            return;
-                          }
+                          try {
+                            await context
+                                .read<ApplicationProvider>()
+                                .applyToJob(currentJob.id!, currentUserId);
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Unable to send application'),
-                            ),
-                          );
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: alreadyApplied ? Colors.grey.shade300 : null,
-                  foregroundColor: alreadyApplied ? Colors.grey.shade700 : null,
-                  disabledBackgroundColor: alreadyApplied
-                      ? Colors.grey.shade300
-                      : Colors.grey.shade200,
-                  disabledForegroundColor: Colors.grey.shade700,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                            if (!context.mounted) {
+                              return;
+                            }
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Application sent!'),
+                              ),
+                            );
+                          } catch (e) {
+                            if (!context.mounted) {
+                              return;
+                            }
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Unable to send application'),
+                              ),
+                            );
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: alreadyApplied
+                        ? Colors.grey.shade300
+                        : null,
+                    foregroundColor: alreadyApplied
+                        ? Colors.grey.shade700
+                        : null,
+                    disabledBackgroundColor: alreadyApplied
+                        ? Colors.grey.shade300
+                        : Colors.grey.shade200,
+                    disabledForegroundColor: Colors.grey.shade700,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
-                ),
-                child: Text(
-                  alreadyApplied
-                      ? 'Already applied'
-                      : !isStudent
-                      ? 'Only students can apply'
-                      : 'Apply',
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    alreadyApplied
+                        ? 'Already applied'
+                        : !isStudent
+                        ? 'Only students can apply'
+                        : 'Apply',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ),
@@ -395,13 +421,7 @@ class JobDetails extends StatelessWidget {
       return 'Company';
     }
 
-    final name = '${company.firstName} ${company.lastName}'.trim();
-
-    if (name.isEmpty) {
-      return 'Company';
-    }
-
-    return name;
+    return company.companyName ?? 'Company';
   }
 
   static String _location(User? company) {
@@ -428,19 +448,29 @@ class JobDetails extends StatelessWidget {
   }
 
   static String _contractTime(int contractTime) {
-    switch (contractTime) {
-      case 0:
-        return 'Indefinite';
-
-      case 1:
-        return '1 year';
-
-      case 2:
-        return '1 - 2 years';
-
-      default:
-        return 'More than 2 years';
+    // contract time is months
+    if (contractTime == 0) {
+      return 'Indefinite';
     }
+
+    final years = contractTime ~/ 12;
+    final months = contractTime % 12;
+
+    final yearsText = years > 0 ? '$years year${years > 1 ? 's' : ''}' : '';
+
+    final monthsText = months > 0
+        ? '$months month${months > 1 ? 's' : ''}'
+        : '';
+
+    if (years > 0 && months > 0) {
+      return '$yearsText and $monthsText';
+    }
+
+    if (years > 0) {
+      return yearsText;
+    }
+
+    return monthsText;
   }
 
   static String _enumName(String value) {
