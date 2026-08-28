@@ -19,6 +19,6 @@ class FirestoreUserRepository implements UserRepository {
 
   @override
   Future<void> addUser(User user) {
-    return _usersRef().add({...user.toFirestore()});
+    return _usersRef().doc(user.id).set(user.toFirestore());
   }
 }
