@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:vagoflax/models/history_model.dart';
+import 'package:vagoflax/services/cloudinary.dart';
 
 import '../models/user_model.dart';
 import '../repositories/user_repository.dart';
@@ -10,6 +13,12 @@ class UserProvider with ChangeNotifier {
   StreamSubscription<List<User>>? _usersSubscription;
   List<User> _users = [];
   bool _isLoading = false;
+
+  User? currentUser;
+
+  bool get hasProfilePicture =>
+      currentUser?.profilePictureUrl != null &&
+      currentUser?.profilePictureUrl!.isNotEmpty == true;
 
   List<User> get users => _users;
   bool get isLoading => _isLoading;
@@ -44,7 +53,68 @@ class UserProvider with ChangeNotifier {
     super.dispose();
   }
 
-  void addUser(User user) {
-    _userRepository.addUser(user);
+  Future<void> addUser(User user) async {
+    await _userRepository.addUser(user);
+
+    currentUser = user;
+    notifyListeners();
+  }
+
+  Future<void> loadUserData(String uid) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      currentUser = await _userRepository.getUserById(uid);
+    } catch (e) {
+      currentUser = null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateUser({
+    String? firstName,
+    String? lastName,
+    String? city,
+    String? canton,
+    String? description,
+    List<String>? skills,
+    List<HistoryEntry>? history,
+    File? profilePicture,
+  }) async {
+    if (currentUser == null) return;
+
+    String? profilePictureUrl = currentUser!.profilePictureUrl;
+
+    if (profilePicture != null) {
+      // Upload the new profile picture and get its URL
+      profilePictureUrl =
+          await CloudinaryService.uploadProfilePicture(
+            profilePicture,
+            currentUser!.id,
+          ) ??
+          profilePictureUrl;
+    }
+
+    final updatedUser = currentUser!.copyWith(
+      firstName: firstName ?? currentUser!.firstName,
+      lastName: lastName ?? currentUser!.lastName,
+      city: city ?? currentUser!.city,
+      canton: canton ?? currentUser!.canton,
+      description: description ?? currentUser!.description,
+      skills: skills ?? currentUser!.skills,
+      history: history ?? currentUser!.history,
+      profilePictureUrl: profilePictureUrl,
+    );
+
+    await _userRepository.updateUser(updatedUser);
+    notifyListeners();
+  }
+
+  void clearUser() {
+    currentUser = null;
+    notifyListeners();
   }
 }

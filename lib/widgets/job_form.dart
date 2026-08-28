@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/providers/user_provider.dart';
 
 import '../providers/job_provider.dart';
 import '../models/job_model.dart';
@@ -10,8 +11,6 @@ import '../models/enum/languages_model.dart';
 import '../models/enum/industry_model.dart';
 
 import 'package:go_router/go_router.dart';
-
-import '../providers/app_state.dart';
 
 class JobForm extends StatefulWidget {
   final Job? job;
@@ -256,7 +255,7 @@ class _JobFormState extends State<JobForm> {
 
     final job = Job(
       id: widget.job?.id,
-      userUuid: context.read<ApplicationState>().userId,
+      userUuid: context.read<UserProvider>().currentUser?.id,
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       diplomas: _selectedDiplomas,

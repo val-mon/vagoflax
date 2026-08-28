@@ -7,12 +7,17 @@ import 'package:firebase_auth/firebase_auth.dart'
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
+import 'package:vagoflax/providers/user_provider.dart';
 import 'package:vagoflax/services/cloudinary.dart';
+import 'package:vagoflax/models/user_model.dart' as usermodel;
 
 import '../utils/firebase_options.dart';
 
 class ApplicationState extends ChangeNotifier {
-  ApplicationState() {
+  final UserProvider userProvider;
+
+  ApplicationState({required this.userProvider}) {
     init();
   }
 
@@ -24,34 +29,7 @@ class ApplicationState extends ChangeNotifier {
   bool get loggedIn => _loggedIn;
 
   String _userId = '';
-  String get userId => _userId;
-  String _userRole = '';
-  String get userRole => _userRole;
-  String _userProfilePicture = '';
-  String get profilePicture => _userProfilePicture;
   String? _userEmail;
-  String get email => _userEmail ?? '';
-
-  String _firstName = '';
-  String get firstName => _firstName;
-  String _lastName = '';
-  String get lastName => _lastName;
-  String _city = '';
-  String get city => _city;
-  String _canton = '';
-  String get canton => _canton;
-  String _description = '';
-  String get description => _description;
-  List<String> _skills = [];
-  List<String> get skills => _skills;
-
-  List<String> _history = [];
-  List<String> get history => _history;
-
-  String _name = '';
-  String get name => _name;
-  int? _companySize;
-  int? get companySize => _companySize;
 
   String? tempRole;
   String? tempCanton;
@@ -66,6 +44,11 @@ class ApplicationState extends ChangeNotifier {
   // company specific fields
   String? tempCompanyName;
   int? tempCompanySize;
+
+  void updateUserProvider(UserProvider newUserProvider) {
+    userProvider.currentUser = newUserProvider.currentUser;
+    notifyListeners();
+  }
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -83,7 +66,7 @@ class ApplicationState extends ChangeNotifier {
         _userEmail = user.email;
 
         try {
-          await _loadUserData(user.uid);
+          await userProvider.loadUserData(user.uid);
         } catch (e) {
           signOut();
         } finally {
@@ -95,7 +78,7 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = false;
         _userId = "";
         _accountLoading = false;
-        _resetUserData();
+        userProvider.currentUser = null;
         notifyListeners();
       }
     });
@@ -170,7 +153,7 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> finalizeSignUp() async {
     // upload profile picture to Cloudinary and get the URL (for profilepictureURL)
-    String profilePictureUrl = "";
+    String? profilePictureUrl;
 
     if (tempProfilePicture != null) {
       profilePictureUrl =
@@ -181,41 +164,23 @@ class ApplicationState extends ChangeNotifier {
           "";
     }
 
-    // then add his account to Firestore collection "users"
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_userId)
-        .set(
-          tempRole == 'student'
-              ? {
-                  'email': email,
-                  'role': tempRole,
-                  'firstName': tempFirstName,
-                  'lastName': tempLastName,
-                  'description': tempDescription,
-                  'canton': tempCanton,
-                  'city': tempCity,
-                  'profilePictureUrl': profilePictureUrl == ""
-                      ? null
-                      : profilePictureUrl,
-                  'createdAt': FieldValue.serverTimestamp(),
-                }
-              : {
-                  'email': email,
-                  'role': tempRole,
-                  'companyName': tempCompanyName,
-                  'description': tempDescription,
-                  'canton': tempCanton,
-                  'city': tempCity,
-                  'profilePictureUrl': profilePictureUrl == ""
-                      ? null
-                      : profilePictureUrl,
-                  'companySize': tempCompanySize,
-                  'createdAt': FieldValue.serverTimestamp(),
-                },
-        );
+    usermodel.User user = usermodel.User(
+      id: _userId,
+      email: _userEmail ?? FirebaseAuth.instance.currentUser?.email ?? '',
+      role: tempRole == 'student' ? UserRole.student : UserRole.employer,
+      profilePictureUrl: profilePictureUrl,
+      faceRecognitionUrl: null,
+      firstName: tempFirstName,
+      lastName: tempLastName,
+      description: tempDescription ?? '',
+      canton: tempCanton ?? '',
+      city: tempCity ?? '',
+      companyName: tempCompanyName,
+      companySize: tempCompanySize,
+    );
 
-    _userRole = tempRole ?? '';
+    // then add his account to Firestore collection "users"
+    await userProvider.addUser(user);
 
     notifyListeners();
   }
@@ -225,49 +190,9 @@ class ApplicationState extends ChangeNotifier {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<void> _loadUserData(String uid) async {
-    final docSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get();
-
-    if (docSnapshot.exists) {
-      final data = docSnapshot.data()!;
-      _userRole = data['role'] ?? '';
-      _userProfilePicture = data['profilePictureUrl'] ?? '';
-      _userEmail = data['email'] ?? '';
-      _firstName = data['firstName'] ?? '';
-      _lastName = data['lastName'] ?? '';
-      _city = data['city'] ?? '';
-      _canton = data['canton'] ?? '';
-      _description = data['description'] ?? '';
-      _skills = List<String>.from(data['skills'] ?? []);
-      _name = data['name'] ?? '';
-      _companySize = (data['companySize'] as num?)?.toInt();
-      _history = List<String>.from(data['history'] ?? []);
-    } else {
-      _resetUserData();
-    }
-  }
-
-  void _resetUserData() {
-    _userRole = '';
-    _userProfilePicture = '';
-    _userEmail = '';
-    _firstName = '';
-    _lastName = '';
-    _city = '';
-    _canton = '';
-    _description = '';
-    _skills = [];
-    _name = '';
-    _companySize = null;
-    _history = [];
-  }
-
   Future<void> reloadUserData() async {
     if (_userId.isEmpty) return;
-    await _loadUserData(_userId);
+    await userProvider.loadUserData(_userId);
     notifyListeners();
   }
 

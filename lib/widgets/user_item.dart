@@ -9,6 +9,8 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasProfilePicture =
+        user.profilePictureUrl != null && user.profilePictureUrl!.isNotEmpty;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
@@ -20,10 +22,10 @@ class UserItem extends StatelessWidget {
         leading: CircleAvatar(
           radius: 30,
           backgroundColor: Colors.grey.shade200,
-          backgroundImage: user.profilePictureUrl.isNotEmpty
-              ? NetworkImage(user.profilePictureUrl)
+          backgroundImage: hasProfilePicture
+              ? NetworkImage(user.profilePictureUrl!)
               : null,
-          child: user.profilePictureUrl.isEmpty
+          child: !hasProfilePicture
               ? const Icon(Icons.person, size: 32, color: Colors.grey)
               : null,
         ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/providers/application_provider.dart';
 
 import '../models/job_model.dart';
 import '../models/user_model.dart';
-import '../providers/app_state.dart';
 import '../providers/job_provider.dart';
 import '../providers/user_provider.dart';
 
@@ -20,13 +20,12 @@ class JobDetails extends StatelessWidget {
       return const Scaffold(body: Center(child: Text('Job not found')));
     }
 
-    final appState = context.watch<ApplicationState>();
     final userProvider = context.watch<UserProvider>();
     final jobProvider = context.watch<JobProvider>();
     final applicationProvider = context.watch<ApplicationProvider>();
 
-    final currentUserId = appState.userId;
-    final isStudent = appState.userRole == 'student';
+    final currentUserId = userProvider.currentUser?.id ?? '';
+    final isStudent = userProvider.currentUser?.role == UserRole.student;
 
     // Get the updated job from the provider.
     Job currentJob = job!;

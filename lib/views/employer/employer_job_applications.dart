@@ -6,8 +6,8 @@ import 'package:vagoflax/models/user_model.dart';
 import 'package:vagoflax/widgets/application_status_dialog.dart';
 import 'package:vagoflax/widgets/status_pill.dart';
 
-import '../providers/application_provider.dart';
-import '../providers/user_provider.dart';
+import '../../providers/application_provider.dart';
+import '../../providers/user_provider.dart';
 
 class JobApplicationsScreen extends StatelessWidget {
   final String jobId;
@@ -61,14 +61,16 @@ class JobApplicationsScreen extends StatelessWidget {
                     id: "-1",
                     email: '',
                     role: UserRole.student,
-                    profilePictureUrl: '',
                     createdAt: DateTime.now(),
                     canton: "",
                     city: "",
                     description: "",
-                    faceRecognitionUrl: "",
                   ),
                 );
+
+                final hasProfilePicture =
+                    student.profilePictureUrl != null &&
+                    student.profilePictureUrl!.isNotEmpty;
 
                 if (student.id == "-1") {
                   return const Text("Error displaying student information");
@@ -85,10 +87,10 @@ class JobApplicationsScreen extends StatelessWidget {
                     leading: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.grey.shade300,
-                      backgroundImage: student.profilePictureUrl.isNotEmpty
-                          ? NetworkImage(student.profilePictureUrl)
+                      backgroundImage: hasProfilePicture
+                          ? NetworkImage(student.profilePictureUrl!)
                           : null,
-                      child: student.profilePictureUrl.isEmpty
+                      child: !hasProfilePicture
                           ? const Icon(Icons.person, color: Colors.grey)
                           : null,
                     ),

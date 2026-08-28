@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/providers/application_provider.dart';
-
+import 'package:vagoflax/providers/user_provider.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
 import 'package:vagoflax/widgets/job_application_student_item.dart';
 import 'package:vagoflax/widgets/profile_button.dart';
 
-import '../providers/app_state.dart';
-import '../providers/job_provider.dart';
+import '../../providers/job_provider.dart';
 
 class StudentApplicationsScreen extends StatelessWidget {
   const StudentApplicationsScreen({super.key});
@@ -15,7 +14,7 @@ class StudentApplicationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final jobProvider = context.watch<JobProvider>();
-    final userId = context.watch<ApplicationState>().userId;
+    final userId = context.watch<UserProvider>().currentUser?.id;
     final applicationProvider = context.watch<ApplicationProvider>();
 
     final applications = applicationProvider.applications

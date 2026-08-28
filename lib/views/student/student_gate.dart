@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:vagoflax/views/student_search.dart';
-import 'package:vagoflax/views/student_applications.dart';
+import 'package:vagoflax/views/student/student_search.dart';
+import 'package:vagoflax/views/student/student_applications.dart';
 
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 

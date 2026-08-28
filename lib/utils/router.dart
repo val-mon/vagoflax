@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vagoflax/models/job_model.dart';
 
-import 'package:vagoflax/views/about_screen.dart';
-import 'package:vagoflax/views/add_job_screen.dart';
-import 'package:vagoflax/views/auth_gate.dart';
-import 'package:vagoflax/views/job_applications_screen.dart';
+import 'package:vagoflax/views/about_us.dart';
+import 'package:vagoflax/views/employer/add_job.dart';
+import 'package:vagoflax/views/auth/auth_gate.dart';
+import 'package:vagoflax/views/employer/employer_job_applications.dart';
 import 'package:vagoflax/views/job_details.dart';
-import 'package:vagoflax/views/login_screen.dart';
-import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
-import 'package:vagoflax/views/signup_2_type_screen.dart';
-import 'package:vagoflax/views/signup_3_employer_screen.dart';
-import 'package:vagoflax/views/signup_3_student_screen.dart';
-import 'package:vagoflax/views/profile_screen.dart';
+import 'package:vagoflax/views/auth/login/login.dart';
+import 'package:vagoflax/views/auth/signup/signup_1_emailpw.dart';
+import 'package:vagoflax/views/auth/signup/signup_2_type.dart';
+import 'package:vagoflax/views/auth/signup/signup_3_employer.dart';
+import 'package:vagoflax/views/auth/signup/signup_3_student.dart';
+import 'package:vagoflax/views/profile.dart';
 import 'package:vagoflax/widgets/profile_edit_form.dart';
 
 CustomTransitionPage buildSlidePage({

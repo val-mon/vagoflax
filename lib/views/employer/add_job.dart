@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/job_form.dart';
+import '../../widgets/job_form.dart';
 
-import '../models/job_model.dart';
+import '../../models/job_model.dart';
 
 class AddJobScreen extends StatelessWidget {
   final Job? job;
