@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'enum/diplomas_model.dart';
 import 'enum/role_model.dart';
 import 'enum/perks_model.dart';
@@ -21,6 +23,7 @@ class Job {
   final int workloadPercent;
   final double? salary;
   final double? predictedSalary;
+  final DateTime? createdAt;
 
   Job({
     this.id,
@@ -39,6 +42,7 @@ class Job {
     required this.workloadPercent,
     this.salary,
     this.predictedSalary,
+    this.createdAt,
   });
 
   factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
@@ -71,6 +75,9 @@ class Job {
       workloadPercent: data['workloadPercent'] ?? 100,
       salary: (data['salary'] as num?)?.toDouble(),
       predictedSalary: (data['predictedSalary'] as num?)?.toDouble(),
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
+          : null,
     );
   }
 
@@ -91,6 +98,7 @@ class Job {
       'workloadPercent': workloadPercent,
       'salary': salary,
       'predictedSalary': predictedSalary,
+      'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : null,
     };
   }
 }

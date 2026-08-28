@@ -62,7 +62,7 @@ class JobDetails extends StatelessWidget {
           },
         ),
         title: const Text(
-          'Vagoflax',
+          'Job information',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -200,6 +200,23 @@ class JobDetails extends StatelessWidget {
               title: 'Contract',
               value: _contractTime(currentJob.contractTime),
             ),
+
+            // Posted time
+            if (currentJob.createdAt == null)
+              const SizedBox.shrink()
+            else
+              Column(
+                children: [
+                  const SizedBox(height: 12),
+
+                  _InfoRow(
+                    icon: Icons.access_time_outlined,
+                    title: 'Posted',
+                    value:
+                        '${currentJob.createdAt!.day.toString().padLeft(2, '0')}/${currentJob.createdAt!.month.toString().padLeft(2, '0')}/${currentJob.createdAt!.year}',
+                  ),
+                ],
+              ),
 
             const SizedBox(height: 35),
 
