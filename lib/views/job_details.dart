@@ -166,7 +166,7 @@ class JobDetails extends StatelessWidget {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'It does not appear in the search results for candidates. You can change this in the job\'s settings.',
+                            'It does not appear in the search results for candidates. ${userProvider.currentUser!.role == UserRole.employer ? 'You can change this in the job\'s settings.' : 'You can only see this offer because you applied.'}',
                             style: TextStyle(
                               color: Colors.amber.shade900,
                               fontSize: 13,
