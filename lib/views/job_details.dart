@@ -421,7 +421,7 @@ class JobDetails extends StatelessWidget {
       return 'Company';
     }
 
-    return company.name ?? 'Company';
+    return company.companyName ?? 'Company';
   }
 
   static String _location(User? company) {

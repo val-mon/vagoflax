@@ -57,7 +57,17 @@ class JobApplicationsScreen extends StatelessWidget {
 
                 final student = users.firstWhere(
                   (u) => u.id == application.studentUuid,
-                  orElse: () => User(id: "-1", email: '', role: UserRole.student, profilePictureUrl: '', createdAt: DateTime.now(), canton: "", city: "", description: "", faceRecognitionUrl: ""),
+                  orElse: () => User(
+                    id: "-1",
+                    email: '',
+                    role: UserRole.student,
+                    profilePictureUrl: '',
+                    createdAt: DateTime.now(),
+                    canton: "",
+                    city: "",
+                    description: "",
+                    faceRecognitionUrl: "",
+                  ),
                 );
 
                 if (student.id == "-1") {

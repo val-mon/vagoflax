@@ -11,7 +11,7 @@ class User {
   final String email;
   final String? firstName;
   final String? lastName;
-  final String? name; // Company name for employers
+  final String? companyName; // Company name for employers
   final String profilePictureUrl;
   final String faceRecognitionUrl;
   final UserRole role;
@@ -28,11 +28,11 @@ class User {
     required this.email,
     this.firstName,
     this.lastName,
-    this.name,
     required this.profilePictureUrl,
     required this.faceRecognitionUrl,
     required this.role,
     this.companySize,
+    this.companyName = '',
     this.createdAt,
     this.skills = const [],
     this.reviews = const [],
@@ -49,7 +49,7 @@ class User {
       email: data['email'] ?? '',
       firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',
-      name: data['name'] ?? '',
+      companyName: data['companyName'] ?? '',
       profilePictureUrl: data['profilePictureUrl'] ?? '',
       faceRecognitionUrl: data['faceRecognitionUrl'] ?? '',
       role: UserRole.fromFirestore(data['role']),
@@ -99,6 +99,7 @@ class User {
       'role': role.toFirestore(),
       'skills': skills,
       'companySize': companySize,
+      'companyName': companyName,
       'reviews': reviews
           .map(
             (review) => {
