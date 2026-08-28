@@ -97,20 +97,22 @@ class UserProvider with ChangeNotifier {
           profilePictureUrl;
     }
 
-    final updatedUser = currentUser!.role == UserRole.student ? currentUser!.copyWith(
-      firstName: firstName ?? currentUser!.firstName,
-      lastName: lastName ?? currentUser!.lastName,
-      city: city ?? currentUser!.city,
-      canton: canton ?? currentUser!.canton,
-      description: description ?? currentUser!.description,
-      skills: skills ?? currentUser!.skills,
-      history: history ?? currentUser!.history,
-      profilePictureUrl: profilePictureUrl,
-    ) : currentUser!.copyWith(
-      companyName: companyName ?? currentUser!.companyName,
-      companySize: companySize ?? currentUser!.companySize,
-      profilePictureUrl: profilePictureUrl,
-    );
+    final updatedUser = currentUser!.role == UserRole.student
+        ? currentUser!.copyWith(
+            firstName: firstName ?? currentUser!.firstName,
+            lastName: lastName ?? currentUser!.lastName,
+            city: city ?? currentUser!.city,
+            canton: canton ?? currentUser!.canton,
+            description: description ?? currentUser!.description,
+            skills: skills ?? currentUser!.skills,
+            history: history ?? currentUser!.history,
+            profilePictureUrl: profilePictureUrl,
+          )
+        : currentUser!.copyWith(
+            companyName: companyName ?? currentUser!.companyName,
+            companySize: companySize ?? currentUser!.companySize,
+            profilePictureUrl: profilePictureUrl,
+          );
 
     await _userRepository.updateUser(updatedUser);
     notifyListeners();

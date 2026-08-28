@@ -138,65 +138,68 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
               const SizedBox(height: 24),
 
               if (state?.role == UserRole.student) ...[
-              Text('Skills', style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: _skills.map((s) {
-                  return Chip(
-                    label: Text(s),
-                    onDeleted: () => setState(() => _skills.remove(s)),
-                  );
-                }).toList(),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _skillController,
-                      decoration: const InputDecoration(
-                        labelText: 'Add a skill',
+                Text('Skills', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: _skills.map((s) {
+                    return Chip(
+                      label: Text(s),
+                      onDeleted: () => setState(() => _skills.remove(s)),
+                    );
+                  }).toList(),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _skillController,
+                        decoration: const InputDecoration(
+                          labelText: 'Add a skill',
+                        ),
+                        onSubmitted: (_) => _addSkill(),
                       ),
-                      onSubmitted: (_) => _addSkill(),
                     ),
-                  ),
-                  IconButton(icon: const Icon(Icons.add), onPressed: _addSkill),
-                ],
-              ),
-              const SizedBox(height: 24),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: _addSkill,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
 
-              Text('History', style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: _history.map((s) {
-                  return Chip(
-                    label: Text(
-                      s.jobTitle,
-                    ), // TODO: FIX HISTORY RENDERING (AND EDIT AS WELL)
-                    onDeleted: () => setState(() => _history.remove(s)),
-                  );
-                }).toList(),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _historyController,
-                      decoration: const InputDecoration(
-                        labelText: 'Add a history item',
+                Text('History', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: _history.map((s) {
+                    return Chip(
+                      label: Text(
+                        s.jobTitle,
+                      ), // TODO: FIX HISTORY RENDERING (AND EDIT AS WELL)
+                      onDeleted: () => setState(() => _history.remove(s)),
+                    );
+                  }).toList(),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _historyController,
+                        decoration: const InputDecoration(
+                          labelText: 'Add a history item',
+                        ),
+                        onSubmitted: (_) => _addHistory(),
                       ),
-                      onSubmitted: (_) => _addHistory(),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: _addHistory,
-                  ),
-                ],
-              ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: _addHistory,
+                    ),
+                  ],
+                ),
               ] else ...[
                 TextFormField(
                   controller: _companySizeController,
@@ -206,7 +209,12 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
               ],
               const SizedBox(height: 24),
 
-              ElevatedButton(onPressed: _save, child: isSaving ? const CircularProgressIndicator() : const Text('Save')),
+              ElevatedButton(
+                onPressed: _save,
+                child: isSaving
+                    ? const CircularProgressIndicator()
+                    : const Text('Save'),
+              ),
             ],
           ),
         ),

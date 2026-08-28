@@ -67,7 +67,10 @@ class ProfileScreen extends StatelessWidget {
                           : null,
                     ),
                   ),
-                  UserRatingBadge(rating: user.averageRating, count: user.reviewCount,),
+                  UserRatingBadge(
+                    rating: user.averageRating,
+                    count: user.reviewCount,
+                  ),
                   const SizedBox(height: 24),
 
                   // firstname et lastname si étudiant, sinon companyname

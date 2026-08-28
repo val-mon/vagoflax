@@ -7,6 +7,7 @@ import '../models/job_model.dart';
 import '../models/user_model.dart';
 import '../providers/job_provider.dart';
 import '../providers/user_provider.dart';
+
 import 'package:go_router/go_router.dart';
 
 /// Page displaying the details of a job.

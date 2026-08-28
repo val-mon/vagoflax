@@ -4,11 +4,7 @@ class UserRatingBadge extends StatelessWidget {
   final double rating;
   final int count;
 
-  const UserRatingBadge({
-    super.key,
-    required this.rating,
-    required this.count,
-  });
+  const UserRatingBadge({super.key, required this.rating, required this.count});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +12,11 @@ class UserRatingBadge extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.star_outline_rounded, size: 18, color: Colors.grey.shade500),
+          Icon(
+            Icons.star_outline_rounded,
+            size: 18,
+            color: Colors.grey.shade500,
+          ),
           const SizedBox(width: 4),
           Text(
             'No reviews yet',
@@ -33,18 +33,12 @@ class UserRatingBadge extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           rating.toStringAsFixed(1),
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 4),
         Text(
           '($count)',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey.shade600,
-          ),
+          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
         ),
       ],
     );
