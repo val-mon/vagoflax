@@ -32,7 +32,7 @@ class UserItem extends StatelessWidget {
         title: Text(
           user.role == UserRole.student
               ? "${user.firstName} ${user.lastName}"
-              : user.name,
+              : user.companyName,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
 

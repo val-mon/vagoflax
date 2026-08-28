@@ -41,7 +41,7 @@ class ApplicationState extends ChangeNotifier {
   String? tempLastName;
 
   // company specific fields
-  String? tempName;
+  String? tempCompanyName;
   int? tempCompanySize;
 
   Future<void> init() async {
@@ -144,14 +144,14 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> signUpStep3Employer(
-    String name,
+    String companyName,
     String description,
     String canton,
     String city,
     int companySize,
     File? profilePicture,
   ) async {
-    tempName = name;
+    tempCompanyName = companyName;
     tempDescription = description;
     tempCanton = canton;
     tempCity = city;
@@ -196,7 +196,7 @@ class ApplicationState extends ChangeNotifier {
               : {
                   'email': userEmail,
                   'role': tempRole,
-                  'name': tempName,
+                  'companyName': tempCompanyName,
                   'description': tempDescription,
                   'canton': tempCanton,
                   'city': tempCity,
