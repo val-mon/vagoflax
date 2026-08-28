@@ -11,13 +11,12 @@ class SignUpEmailPwScreen extends StatefulWidget {
   State<SignUpEmailPwScreen> createState() => _SignUpEmailPwScreenState();
 }
 
-
 class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
   bool _isLoading = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   @override
   void dispose() {
     _emailController.clear();
