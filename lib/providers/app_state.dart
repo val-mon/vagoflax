@@ -279,6 +279,7 @@ class ApplicationState extends ChangeNotifier {
     required String description,
     required List<String> skills,
     required List<String> history,
+    required File? profilePicture,
   }) async {
     await FirebaseFirestore.instance.collection('users').doc(_userId).update({
       'firstName': firstName,
@@ -288,6 +289,12 @@ class ApplicationState extends ChangeNotifier {
       'description': description,
       'skills': skills,
       'history': history,
+      if (profilePicture != null)
+        'profilePictureUrl': await CloudinaryService.uploadProfilePicture(
+              profilePicture,
+              _userId,
+            ) ??
+            '',
     });
   }
 }
