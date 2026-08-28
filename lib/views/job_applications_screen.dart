@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
+import 'package:vagoflax/models/user_model.dart';
 import 'package:vagoflax/widgets/application_status_dialog.dart';
 import 'package:vagoflax/widgets/status_pill.dart';
 
@@ -20,7 +22,7 @@ class JobApplicationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final applicationProvider = context.watch<ApplicationProvider>();
-    final userProvider = context.read<UserProvider>();
+    final users = context.watch<UserProvider>().users;
 
     // Filtering
     final jobApplications = applicationProvider.applications
@@ -53,9 +55,14 @@ class JobApplicationsScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final application = jobApplications[index];
 
-                final student = userProvider.users.firstWhere(
+                final student = users.firstWhere(
                   (u) => u.id == application.studentUuid,
+                  orElse: () => User(id: "-1", email: '', role: UserRole.student, profilePictureUrl: '', createdAt: DateTime.now(), canton: "", city: "", description: "", faceRecognitionUrl: ""),
                 );
+
+                if (student.id == "-1") {
+                  return const Text("Error displaying student information");
+                }
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 12),

@@ -31,8 +31,8 @@ class UserItem extends StatelessWidget {
         // User name
         title: Text(
           user.role == UserRole.student
-              ? "${user.firstName} ${user.lastName}"
-              : user.name,
+              ? "${user.firstName ?? 'Unknown'} ${user.lastName ?? 'User'}"
+              : user.name ?? 'Unknown',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
 
