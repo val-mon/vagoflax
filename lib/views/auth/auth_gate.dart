@@ -3,12 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:vagoflax/providers/user_provider.dart';
-import 'package:vagoflax/views/admin_screen.dart';
-import 'package:vagoflax/views/student_gate.dart';
-import 'package:vagoflax/views/loading_screen.dart';
-import 'package:vagoflax/views/signup_2_type_screen.dart';
-import 'package:vagoflax/views/welcome_screen.dart';
-import 'package:vagoflax/views/job_provider_offer_screen.dart';
+import 'package:vagoflax/views/admin.dart';
+import 'package:vagoflax/views/student/student_gate.dart';
+import 'package:vagoflax/views/loading.dart';
+import 'package:vagoflax/views/auth/signup/signup_2_type.dart';
+import 'package:vagoflax/views/auth/welcome.dart';
+import 'package:vagoflax/views/employer/employer_job_offer.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});

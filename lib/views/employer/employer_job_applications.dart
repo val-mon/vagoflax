@@ -6,8 +6,8 @@ import 'package:vagoflax/models/user_model.dart';
 import 'package:vagoflax/widgets/application_status_dialog.dart';
 import 'package:vagoflax/widgets/status_pill.dart';
 
-import '../providers/application_provider.dart';
-import '../providers/user_provider.dart';
+import '../../providers/application_provider.dart';
+import '../../providers/user_provider.dart';
 
 class JobApplicationsScreen extends StatelessWidget {
   final String jobId;

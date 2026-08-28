@@ -6,7 +6,7 @@ import 'package:vagoflax/widgets/about_icon.dart';
 import 'package:vagoflax/widgets/job_application_student_item.dart';
 import 'package:vagoflax/widgets/profile_button.dart';
 
-import '../providers/job_provider.dart';
+import '../../providers/job_provider.dart';
 
 class StudentApplicationsScreen extends StatelessWidget {
   const StudentApplicationsScreen({super.key});

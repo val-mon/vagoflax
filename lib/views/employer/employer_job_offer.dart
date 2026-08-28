@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:vagoflax/providers/user_provider.dart';
 import 'package:vagoflax/widgets/profile_button.dart';
 
-import '../providers/job_provider.dart';
-import '../widgets/job_employer_item.dart';
+import '../../providers/job_provider.dart';
+import '../../widgets/job_employer_item.dart';
 
 class JobProviderOfferScreen extends StatelessWidget {
   const JobProviderOfferScreen({super.key});
