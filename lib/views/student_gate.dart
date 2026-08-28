@@ -22,41 +22,75 @@ class _StudentGateState extends State<StudentGate> {
     return Scaffold(
       extendBody: true,
 
-      // Index stack keeps the state (search, filters, scroll) of each page
       body: IndexedStack(index: _selectedIndex, children: _pages),
 
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: CrystalNavigationBar(
-          currentIndex: _selectedIndex,
-          unselectedItemColor: Colors.white70,
-          // Translucent: the blurred content behind shows through (glass look)
-          backgroundColor: Colors.black.withValues(alpha: 0.55),
-          borderWidth: 1,
-          outlineBorderColor: Colors.white24,
-          // Items are laid out with spaceBetween, so a narrower bar brings the
-          // two buttons closer to the center
-          marginR: const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: [
-            /// Jobs
-            CrystalNavigationBarItem(
-              icon: Icons.work,
-              unselectedIcon: Icons.work_outline,
-              selectedColor: Colors.white,
-            ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 8),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final screenWidth = constraints.maxWidth;
 
-            /// Applications
-            CrystalNavigationBarItem(
-              icon: Icons.assignment,
-              unselectedIcon: Icons.assignment_outlined,
-              selectedColor: Colors.white,
-            ),
-          ],
+            final barWidth = screenWidth < 600 ? 220.0 : 280.0;
+
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: barWidth,
+                height: 80,
+                child: Transform.scale(
+                  scaleY: 0.9,
+                  alignment: Alignment.bottomCenter,
+                  child: CrystalNavigationBar(
+                    currentIndex: _selectedIndex,
+
+                    unselectedItemColor: Colors.white70,
+
+                    backgroundColor: Colors.black.withValues(alpha: 0.5),
+
+                    borderWidth: 1.5,
+
+                    outlineBorderColor: Colors.white.withValues(alpha: 0.8),
+
+                    borderRadius: 32,
+
+                    paddingR: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+
+                    itemPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+
+                    marginR: EdgeInsets.zero,
+
+                    onTap: (index) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+
+                    items: [
+                      // jobs list
+                      CrystalNavigationBarItem(
+                        icon: Icons.work,
+                        unselectedIcon: Icons.work_outline,
+                        selectedColor: Colors.white,
+                      ),
+
+                      // applications list
+                      CrystalNavigationBarItem(
+                        icon: Icons.assignment,
+                        unselectedIcon: Icons.assignment_outlined,
+                        selectedColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
