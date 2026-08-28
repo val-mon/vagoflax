@@ -18,7 +18,23 @@ class FirestoreUserRepository implements UserRepository {
   }
 
   @override
-  Future<void> addUser(User user) {
-    return _usersRef().doc(user.id).set(user.toFirestore());
+  Future<void> addUser(User user) async {
+    return await _usersRef().doc(user.id).set(user.toFirestore());
+  }
+
+  @override
+  Future<User> getUserById(String uid) async {
+    final docSnapshot = await _usersRef().doc(uid).get();
+
+    if (!docSnapshot.exists) {
+      throw Exception("User not found in Firestore");
+    }
+
+    return User.fromFirestore(docSnapshot.data()!, uid);
+  }
+
+  @override
+  Future<void> updateUser(User user) async {
+    await _usersRef().doc(user.id).update(user.toFirestore());
   }
 }

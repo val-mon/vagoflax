@@ -12,8 +12,8 @@ class User {
   final String? firstName;
   final String? lastName;
   final String? companyName; // Company name for employers
-  final String profilePictureUrl;
-  final String faceRecognitionUrl;
+  final String? profilePictureUrl;
+  final String? faceRecognitionUrl;
   final UserRole role;
   final List<String> skills;
   final List<Review> reviews;
@@ -28,8 +28,8 @@ class User {
     required this.email,
     this.firstName,
     this.lastName,
-    required this.profilePictureUrl,
-    required this.faceRecognitionUrl,
+    this.profilePictureUrl,
+    this.faceRecognitionUrl,
     required this.role,
     this.companySize,
     this.companyName = '',
@@ -121,5 +121,31 @@ class User {
           )
           .toList(),
     };
+  }
+
+  User copyWith({
+    String? firstName,
+    String? lastName,
+    String? city,
+    String? canton,
+    String? description,
+    List<String>? skills,
+    List<HistoryEntry>? history,
+    String? profilePictureUrl,
+  }) {
+    return User(
+      // id, email and role can't be changed (atleast for now)
+      id: id,
+      email: email,
+      role: role,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      city: city ?? this.city,
+      canton: canton ?? this.canton,
+      description: description ?? this.description,
+      skills: skills ?? this.skills,
+      history: history ?? this.history,
+      profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+    );
   }
 }

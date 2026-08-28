@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/models/history_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:io';
+
+import 'package:vagoflax/providers/user_provider.dart';
 
 class ProfileEditForm extends StatefulWidget {
   const ProfileEditForm({super.key});
@@ -27,7 +29,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final _historyController = TextEditingController();
 
   final List<String> _skills = [];
-  final List<String> _history = [];
+  final List<HistoryEntry> _history = [];
 
   Future<void> _pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -39,14 +41,14 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   @override
   void initState() {
     super.initState();
-    final state = context.read<ApplicationState>();
-    _firstNameController.text = state.firstName;
-    _lastNameController.text = state.lastName;
-    _cityController.text = state.city;
-    _cantonController.text = state.canton;
-    _descriptionController.text = state.description;
-    _skills.addAll(state.skills);
-    _history.addAll(state.history);
+    final state = context.read<UserProvider>().currentUser;
+    _firstNameController.text = state?.firstName ?? '';
+    _lastNameController.text = state?.lastName ?? '';
+    _cityController.text = state?.city ?? '';
+    _cantonController.text = state?.canton ?? '';
+    _descriptionController.text = state?.description ?? '';
+    _skills.addAll(state?.skills ?? []);
+    _history.addAll(state?.history ?? []);
   }
 
   @override
@@ -152,7 +154,9 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                 runSpacing: 4,
                 children: _history.map((s) {
                   return Chip(
-                    label: Text(s),
+                    label: Text(
+                      s.jobTitle,
+                    ), // TODO: FIX HISTORY RENDERING (AND EDIT AS WELL)
                     onDeleted: () => setState(() => _history.remove(s)),
                   );
                 }).toList(),
@@ -195,9 +199,26 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
 
   void _addHistory() {
     final text = _historyController.text.trim();
-    if (text.isEmpty || _history.contains(text)) return;
+    if (text.isEmpty ||
+        _history.contains(
+          HistoryEntry(
+            jobTitle: text,
+            company: text,
+            startedAt: DateTime.now(),
+            endedAt: DateTime.now(),
+          ),
+        )) {
+      return; // TODO: FIX THIS
+    }
     setState(() {
-      _history.add(text);
+      _history.add(
+        HistoryEntry(
+          jobTitle: text,
+          company: text,
+          startedAt: DateTime.now(),
+          endedAt: DateTime.now(),
+        ),
+      ); // Placeholder dates
       _historyController.clear();
     });
   }
@@ -208,7 +229,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    await context.read<ApplicationState>().updateProfile(
+    await context.read<UserProvider>().updateUser(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       city: _cityController.text.trim(),

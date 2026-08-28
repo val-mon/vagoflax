@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/providers/user_provider.dart';
 import 'package:vagoflax/views/admin_screen.dart';
 import 'package:vagoflax/views/student_gate.dart';
 import 'package:vagoflax/views/loading_screen.dart';
@@ -14,7 +16,7 @@ class AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loggedIn = context.watch<ApplicationState>().loggedIn;
-    final userRole = context.watch<ApplicationState>().userRole;
+    final user = context.watch<UserProvider>().currentUser;
     final isAccountLoading = context.watch<ApplicationState>().accountLoading;
 
     if (isAccountLoading) {
@@ -22,14 +24,15 @@ class AuthGate extends StatelessWidget {
     }
 
     if (loggedIn) {
-      if (userRole == "student") {
-        return const StudentGate();
-      } else if (userRole == "employer") {
-        return const JobProviderOfferScreen();
-      } else if (userRole == "admin") {
-        return const AdminScreen();
-      } else if (userRole == '') {
+      if (user == null) {
         return const SignUpTypeScreen();
+      }
+      if (user.role == UserRole.student) {
+        return const StudentGate();
+      } else if (user.role == UserRole.employer) {
+        return const JobProviderOfferScreen();
+      } else if (user.role == UserRole.admin) {
+        return const AdminScreen();
       } else {
         return const WelcomeScreen();
       }

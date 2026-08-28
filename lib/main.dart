@@ -33,12 +33,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ApplicationState()),
-        ChangeNotifierProvider(
-          create: (_) => JobProvider(FirestoreJobRepository()),
-        ),
         ChangeNotifierProvider(
           create: (_) => UserProvider(FirestoreUserRepository()),
+        ),
+        ChangeNotifierProxyProvider<UserProvider, ApplicationState>(
+          create: (context) =>
+              ApplicationState(userProvider: context.read<UserProvider>()),
+          update: (_, userProvider, previousState) =>
+              (previousState ?? ApplicationState(userProvider: userProvider))
+                ..updateUserProvider(userProvider),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => JobProvider(FirestoreJobRepository()),
         ),
         ChangeNotifierProvider(
           create: (_) => ApplicationProvider(FirestoreApplicationRepository()),

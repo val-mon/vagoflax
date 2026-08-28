@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
+import 'package:vagoflax/providers/user_provider.dart';
 import 'package:vagoflax/widgets/logout_button.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +11,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<ApplicationState>();
+    final userProvider = context.watch<UserProvider>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -25,10 +27,12 @@ class ProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.grey.shade200,
-                      backgroundImage: state.profilePicture.isNotEmpty
-                          ? NetworkImage(state.profilePicture)
+                      backgroundImage: userProvider.hasProfilePicture
+                          ? NetworkImage(
+                              userProvider.currentUser!.profilePictureUrl!,
+                            )
                           : null,
-                      child: state.profilePicture.isEmpty
+                      child: !userProvider.hasProfilePicture
                           ? const Icon(
                               Icons.person,
                               size: 40,
@@ -38,23 +42,43 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  _line('First name', state.firstName),
-                  _line('Last name', state.lastName),
-                  _line('Email', state.email),
+
+                  // firstname et lastname si étudiant, sinon companyname
+                  if (userProvider.currentUser!.role == UserRole.student) ...[
+                    _line(
+                      'First name',
+                      userProvider.currentUser!.firstName ?? '',
+                    ),
+                    _line(
+                      'Last name',
+                      userProvider.currentUser!.lastName ?? '',
+                    ),
+                  ] else if (userProvider.currentUser!.role ==
+                      UserRole.employer) ...[
+                    _line(
+                      'Company Name',
+                      userProvider.currentUser?.companyName ?? '',
+                    ),
+                  ],
+
+                  _line('Email', userProvider.currentUser?.email ?? ''),
                   const SizedBox(height: 20),
-                  _line('City', state.city),
-                  _line('Canton', state.canton),
-                  _line('Description', state.description),
+                  _line('City', userProvider.currentUser?.city ?? ''),
+                  _line('Canton', userProvider.currentUser?.canton ?? ''),
+                  _line(
+                    'Description',
+                    userProvider.currentUser?.description ?? '',
+                  ),
                   const SizedBox(height: 12),
 
                   Text('Skills', style: Theme.of(context).textTheme.labelLarge),
                   const SizedBox(height: 4),
-                  state.skills.isEmpty
+                  userProvider.currentUser!.skills.isEmpty
                       ? const Text('-')
                       : Wrap(
                           spacing: 8,
                           runSpacing: 4,
-                          children: state.skills
+                          children: userProvider.currentUser!.skills
                               .map((s) => Chip(label: Text(s)))
                               .toList(),
                         ),
@@ -64,11 +88,11 @@ class ProfileScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(height: 4),
-                  state.history.isEmpty
+                  userProvider.currentUser!.history.isEmpty
                       ? const Text('-')
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: state.history
+                          children: userProvider.currentUser!.history
                               .map((h) => Text('• $h'))
                               .toList(),
                         ),
