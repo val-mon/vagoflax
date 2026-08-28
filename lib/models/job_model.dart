@@ -24,6 +24,7 @@ class Job {
   final double? salary;
   final double? predictedSalary;
   final DateTime? createdAt;
+  final bool visible;
 
   Job({
     this.id,
@@ -43,6 +44,7 @@ class Job {
     this.salary,
     this.predictedSalary,
     this.createdAt,
+    required this.visible,
   });
 
   factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
@@ -78,6 +80,7 @@ class Job {
       createdAt: data['createdAt'] != null
           ? (data['createdAt'] as Timestamp).toDate()
           : null,
+      visible: (data['visible'] as bool?) ?? true,
     );
   }
 
@@ -98,6 +101,7 @@ class Job {
       'workloadPercent': workloadPercent,
       'salary': salary,
       'predictedSalary': predictedSalary,
+      'visible': visible,
       'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : null,
     };
   }

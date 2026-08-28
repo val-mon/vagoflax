@@ -32,6 +32,7 @@ class _JobFormState extends State<JobForm> {
   final _paternityLeaveController = TextEditingController();
   final _workloadPercentController = TextEditingController();
   final _salaryController = TextEditingController();
+  bool _visible = true;
 
   Role _selectedRole = Role.intern;
   Industry _selectedIndustry = Industry.informationTechnology;
@@ -59,6 +60,7 @@ class _JobFormState extends State<JobForm> {
       _selectedDiplomas.addAll(job.diplomas);
       _selectedPerks.addAll(job.perks);
       _selectedLanguages.addAll(job.languages);
+      _visible = job.visible;
     } else {
       // DEfault values for a new job
       _holidaysController.text = '20';
@@ -196,6 +198,18 @@ class _JobFormState extends State<JobForm> {
                 decimal: true,
               ),
             ),
+            const SizedBox(height: 16),
+            SwitchListTile(
+              title: const Text('Is job visible?'),
+              value: _visible,
+              tileColor: Colors.transparent,
+              onChanged: (value) {
+                setState(() {
+                  _visible = value;
+                });
+              },
+              secondary: const Icon(Icons.visibility),
+            ),
             const SizedBox(height: 24),
 
             ElevatedButton(
@@ -269,6 +283,7 @@ class _JobFormState extends State<JobForm> {
       paternityLeave: int.parse(_paternityLeaveController.text),
       workloadPercent: int.parse(_workloadPercentController.text),
       salary: double.tryParse(_salaryController.text),
+      visible: _visible,
     );
 
     if (widget.job == null) {

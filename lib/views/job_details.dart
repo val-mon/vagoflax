@@ -134,6 +134,56 @@ class JobDetails extends StatelessWidget {
               ],
             ),
 
+            if (!currentJob.visible) ...[
+              const SizedBox(height: 25),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.amber.shade50,
+                  border: Border.all(color: Colors.amber.shade400, width: 1.5),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.visibility_off_rounded,
+                      color: Colors.amber.shade900,
+                      size: 26,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'This job offer is not visible to students',
+                            style: TextStyle(
+                              color: Colors.amber.shade900,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'It does not appear in the search results for candidates. ${userProvider.currentUser!.role == UserRole.employer ? 'You can change this in the job\'s settings.' : 'You can only see this offer because you applied.'}',
+                            style: TextStyle(
+                              color: Colors.amber.shade900,
+                              fontSize: 13,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+
             const SizedBox(height: 35),
 
             /// JOB TITLE
