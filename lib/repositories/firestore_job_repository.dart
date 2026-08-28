@@ -20,7 +20,10 @@ class FirestoreJobRepository implements JobRepository {
 
   @override
   Future<void> addJob(Job job) {
-    return _jobsRef().add({...job.toFirestore()});
+    return _jobsRef().add({
+      ...job.toFirestore(),
+      'createdAt': FieldValue.serverTimestamp(),
+    });
   }
 
   @override
