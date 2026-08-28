@@ -108,11 +108,15 @@ class JobApplicationsScreen extends StatelessWidget {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // user profile
                         IconButton(
                           icon: const Icon(Icons.person_search),
                           tooltip: 'View Profile',
                           onPressed: () {
-                            context.push('/profile', extra: student);
+                            context.push(
+                              '/profile/${student.id}',
+                              extra: student,
+                            );
                           },
                         ),
                         IconButton(

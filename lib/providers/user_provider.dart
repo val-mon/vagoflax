@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/models/history_model.dart';
 import 'package:vagoflax/services/cloudinary.dart';
 
@@ -15,10 +16,6 @@ class UserProvider with ChangeNotifier {
   bool _isLoading = false;
 
   User? currentUser;
-
-  bool get hasProfilePicture =>
-      currentUser?.profilePictureUrl != null &&
-      currentUser?.profilePictureUrl!.isNotEmpty == true;
 
   List<User> get users => _users;
   bool get isLoading => _isLoading;
@@ -113,8 +110,30 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  User? getUserFromId(String userId) {
+    User? user = _users.firstWhere(
+      (user) => user.id == userId,
+      orElse: () => User(
+        id: "-1",
+        email: '',
+        role: UserRole.student,
+        profilePictureUrl: '',
+        createdAt: DateTime.now(),
+        canton: "",
+        city: "",
+        description: "",
+      ),
+    );
+
+    return user.id == "-1" ? null : user;
+  }
+
   void clearUser() {
     currentUser = null;
     notifyListeners();
+  }
+
+  bool hasProfilePicture(User user) {
+    return user.profilePictureUrl != null && user.profilePictureUrl!.isNotEmpty;
   }
 }
