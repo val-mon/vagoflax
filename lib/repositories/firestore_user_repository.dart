@@ -35,6 +35,25 @@ class FirestoreUserRepository implements UserRepository {
 
   @override
   Future<void> updateUser(User user) async {
-    await _usersRef().doc(user.id).update(user.toFirestore());
+    return await _usersRef().doc(user.id).update(user.toFirestore());
+  }
+
+  @override
+  Future<void> addReview({
+    required String targetUserId,
+    required String reviewerId,
+    required int rating,
+    required String comment,
+  }) async {
+    final reviewData = {
+      'reviewerId': reviewerId,
+      'rating': rating,
+      'comment': comment,
+      'createdAt': Timestamp.now(),
+    };
+
+    return await _usersRef().doc(targetUserId).update({
+      'reviews': FieldValue.arrayUnion([reviewData]),
+    });
   }
 }

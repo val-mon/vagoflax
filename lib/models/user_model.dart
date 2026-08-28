@@ -63,8 +63,8 @@ class User {
               ?.map(
                 (reviewData) => Review(
                   createdAt: (reviewData['createdAt'] as Timestamp).toDate(),
-                  from: reviewData['from'] ?? '',
-                  message: reviewData['message'] ?? '',
+                  reviewerId: reviewData['reviewerId'] ?? '',
+                  comment: reviewData['comment'] ?? '',
                   rating: (reviewData['rating'] as num).toDouble(),
                 ),
               )
@@ -104,8 +104,8 @@ class User {
           .map(
             (review) => {
               'createdAt': review.createdAt,
-              'from': review.from,
-              'message': review.message,
+              'reviewerId': review.reviewerId,
+              'comment': review.comment,
               'rating': review.rating,
             },
           )
@@ -126,6 +126,8 @@ class User {
   User copyWith({
     String? firstName,
     String? lastName,
+    String? companyName,
+    int? companySize,
     String? city,
     String? canton,
     String? description,
@@ -133,19 +135,48 @@ class User {
     List<HistoryEntry>? history,
     String? profilePictureUrl,
   }) {
-    return User(
-      // id, email and role can't be changed (atleast for now)
-      id: id,
-      email: email,
-      role: role,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      city: city ?? this.city,
-      canton: canton ?? this.canton,
-      description: description ?? this.description,
-      skills: skills ?? this.skills,
-      history: history ?? this.history,
-      profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
-    );
+    return role == UserRole.student
+        ? User(
+            // id, email and role can't be changed (atleast for now)
+            id: id,
+            email: email,
+            role: role,
+            firstName: firstName ?? this.firstName,
+            lastName: lastName ?? this.lastName,
+            city: city ?? this.city,
+            canton: canton ?? this.canton,
+            description: description ?? this.description,
+            skills: skills ?? this.skills,
+            history: history ?? this.history,
+            profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+          )
+        : User(
+            id: id,
+            email: email,
+            role: role,
+            companyName: companyName ?? this.companyName,
+            companySize: companySize ?? this.companySize,
+            city: city ?? this.city,
+            canton: canton ?? this.canton,
+            description: description ?? this.description,
+            profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+          );
   }
+
+  bool get hasProfilePicture =>
+      profilePictureUrl != null && profilePictureUrl!.trim().isNotEmpty;
+
+  bool hasUserBeenReviewedBy(String reviewerId) {
+    if (reviewerId.isEmpty) return false;
+    return reviews.any((review) => review.reviewerId == reviewerId);
+  }
+
+  double get averageRating {
+    if (reviews.isEmpty) return 0.0;
+    final total = reviews.fold<double>(0, (s, item) => s + item.rating);
+    return total / reviews.length;
+  }
+
+  /// Total review count
+  int get reviewCount => reviews.length;
 }

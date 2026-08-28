@@ -8,6 +8,8 @@ import '../models/user_model.dart';
 import '../providers/job_provider.dart';
 import '../providers/user_provider.dart';
 
+import 'package:go_router/go_router.dart';
+
 /// Page displaying the details of a job.
 class JobDetails extends StatelessWidget {
   final Job? job;
@@ -76,7 +78,16 @@ class JobDetails extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _CompanyImage(imageUrl: company?.profilePictureUrl),
+                GestureDetector(
+                  onTap: () {
+                    if (company == null) {
+                      return;
+                    }
+
+                    context.push("/profile/${company.id}");
+                  },
+                  child: _CompanyImage(imageUrl: company?.profilePictureUrl),
+                ),
 
                 const SizedBox(width: 20),
 

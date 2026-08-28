@@ -111,5 +111,15 @@ final router = GoRouter(
       pageBuilder: (context, state) =>
           buildSlidePage(state: state, child: const ProfileEditForm()),
     ),
+    GoRoute(
+      path: '/profile/:id',
+      pageBuilder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return buildSlidePage(
+          state: state,
+          child: ProfileScreen(userId: id),
+        );
+      },
+    ),
   ],
 );

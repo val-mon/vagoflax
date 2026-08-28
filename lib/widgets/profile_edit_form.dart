@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/models/history_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -22,14 +23,18 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
 
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+  final _companyNameController = TextEditingController();
   final _cityController = TextEditingController();
   final _cantonController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _skillController = TextEditingController();
   final _historyController = TextEditingController();
+  final _companySizeController = TextEditingController();
 
   final List<String> _skills = [];
   final List<HistoryEntry> _history = [];
+
+  bool isSaving = false;
 
   Future<void> _pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -44,9 +49,11 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     final state = context.read<UserProvider>().currentUser;
     _firstNameController.text = state?.firstName ?? '';
     _lastNameController.text = state?.lastName ?? '';
+    _companyNameController.text = state?.companyName ?? '';
     _cityController.text = state?.city ?? '';
     _cantonController.text = state?.canton ?? '';
     _descriptionController.text = state?.description ?? '';
+    _companySizeController.text = state?.companySize?.toString() ?? '';
     _skills.addAll(state?.skills ?? []);
     _history.addAll(state?.history ?? []);
   }
@@ -55,9 +62,11 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _companyNameController.dispose();
     _cityController.dispose();
     _cantonController.dispose();
     _descriptionController.dispose();
+    _companySizeController.dispose();
     _historyController.dispose();
     _skillController.dispose();
     super.dispose();
@@ -65,6 +74,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.read<UserProvider>().currentUser;
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Profile')),
       body: SingleChildScrollView(
@@ -90,17 +100,25 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                 ),
               ),
               const SizedBox(height: 24),
-              TextFormField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(labelText: 'First name'),
-                validator: _required,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(labelText: 'Last name'),
-                validator: _required,
-              ),
+              if (state?.role == UserRole.student) ...[
+                TextFormField(
+                  controller: _firstNameController,
+                  decoration: const InputDecoration(labelText: 'First name'),
+                  validator: _required,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _lastNameController,
+                  decoration: const InputDecoration(labelText: 'Last name'),
+                  validator: _required,
+                ),
+              ] else if (state?.role == UserRole.employer) ...[
+                TextFormField(
+                  controller: _companyNameController,
+                  decoration: const InputDecoration(labelText: 'Company name'),
+                  validator: _required,
+                ),
+              ],
               const SizedBox(height: 16),
               TextFormField(
                 controller: _cityController,
@@ -119,68 +137,84 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
               ),
               const SizedBox(height: 24),
 
-              Text('Skills', style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: _skills.map((s) {
-                  return Chip(
-                    label: Text(s),
-                    onDeleted: () => setState(() => _skills.remove(s)),
-                  );
-                }).toList(),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _skillController,
-                      decoration: const InputDecoration(
-                        labelText: 'Add a skill',
+              if (state?.role == UserRole.student) ...[
+                Text('Skills', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: _skills.map((s) {
+                    return Chip(
+                      label: Text(s),
+                      onDeleted: () => setState(() => _skills.remove(s)),
+                    );
+                  }).toList(),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _skillController,
+                        decoration: const InputDecoration(
+                          labelText: 'Add a skill',
+                        ),
+                        onSubmitted: (_) => _addSkill(),
                       ),
-                      onSubmitted: (_) => _addSkill(),
                     ),
-                  ),
-                  IconButton(icon: const Icon(Icons.add), onPressed: _addSkill),
-                ],
-              ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: _addSkill,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                Text('History', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: _history.map((s) {
+                    return Chip(
+                      label: Text(
+                        s.jobTitle,
+                      ), // TODO: FIX HISTORY RENDERING (AND EDIT AS WELL)
+                      onDeleted: () => setState(() => _history.remove(s)),
+                    );
+                  }).toList(),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _historyController,
+                        decoration: const InputDecoration(
+                          labelText: 'Add a history item',
+                        ),
+                        onSubmitted: (_) => _addHistory(),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: _addHistory,
+                    ),
+                  ],
+                ),
+              ] else ...[
+                TextFormField(
+                  controller: _companySizeController,
+                  decoration: const InputDecoration(labelText: 'Company size'),
+                  keyboardType: TextInputType.number,
+                ),
+              ],
               const SizedBox(height: 24),
 
-              Text('History', style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: _history.map((s) {
-                  return Chip(
-                    label: Text(
-                      s.jobTitle,
-                    ), // TODO: FIX HISTORY RENDERING (AND EDIT AS WELL)
-                    onDeleted: () => setState(() => _history.remove(s)),
-                  );
-                }).toList(),
+              ElevatedButton(
+                onPressed: _save,
+                child: isSaving
+                    ? const CircularProgressIndicator()
+                    : const Text('Save'),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _historyController,
-                      decoration: const InputDecoration(
-                        labelText: 'Add a history item',
-                      ),
-                      onSubmitted: (_) => _addHistory(),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: _addHistory,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-
-              ElevatedButton(onPressed: _save, child: const Text('Save')),
             ],
           ),
         ),
@@ -229,17 +263,31 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    await context.read<UserProvider>().updateUser(
-      firstName: _firstNameController.text.trim(),
-      lastName: _lastNameController.text.trim(),
-      city: _cityController.text.trim(),
-      canton: _cantonController.text.trim(),
-      description: _descriptionController.text.trim(),
-      skills: _skills,
-      history: _history,
-      profilePicture: _profilePicture,
-    );
+    setState(() => isSaving = true);
 
+    if (context.read<UserProvider>().currentUser?.role == UserRole.student) {
+      await context.read<UserProvider>().updateUser(
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        city: _cityController.text.trim(),
+        canton: _cantonController.text.trim(),
+        description: _descriptionController.text.trim(),
+        skills: _skills,
+        history: _history,
+        profilePicture: _profilePicture,
+      );
+    } else {
+      await context.read<UserProvider>().updateUser(
+        companyName: _companyNameController.text.trim(),
+        companySize: int.tryParse(_companySizeController.text.trim()),
+        city: _cityController.text.trim(),
+        canton: _cantonController.text.trim(),
+        description: _descriptionController.text.trim(),
+        profilePicture: _profilePicture,
+      );
+    }
+
+    setState(() => isSaving = false);
     if (!mounted) return;
     context.pop();
   }

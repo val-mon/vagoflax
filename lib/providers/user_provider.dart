@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/models/history_model.dart';
 import 'package:vagoflax/services/cloudinary.dart';
 
@@ -15,10 +16,6 @@ class UserProvider with ChangeNotifier {
   bool _isLoading = false;
 
   User? currentUser;
-
-  bool get hasProfilePicture =>
-      currentUser?.profilePictureUrl != null &&
-      currentUser?.profilePictureUrl!.isNotEmpty == true;
 
   List<User> get users => _users;
   bool get isLoading => _isLoading;
@@ -77,11 +74,13 @@ class UserProvider with ChangeNotifier {
   Future<void> updateUser({
     String? firstName,
     String? lastName,
+    String? companyName,
     String? city,
     String? canton,
     String? description,
     List<String>? skills,
     List<HistoryEntry>? history,
+    int? companySize,
     File? profilePicture,
   }) async {
     if (currentUser == null) return;
@@ -98,23 +97,64 @@ class UserProvider with ChangeNotifier {
           profilePictureUrl;
     }
 
-    final updatedUser = currentUser!.copyWith(
-      firstName: firstName ?? currentUser!.firstName,
-      lastName: lastName ?? currentUser!.lastName,
-      city: city ?? currentUser!.city,
-      canton: canton ?? currentUser!.canton,
-      description: description ?? currentUser!.description,
-      skills: skills ?? currentUser!.skills,
-      history: history ?? currentUser!.history,
-      profilePictureUrl: profilePictureUrl,
-    );
+    final updatedUser = currentUser!.role == UserRole.student
+        ? currentUser!.copyWith(
+            firstName: firstName ?? currentUser!.firstName,
+            lastName: lastName ?? currentUser!.lastName,
+            city: city ?? currentUser!.city,
+            canton: canton ?? currentUser!.canton,
+            description: description ?? currentUser!.description,
+            skills: skills ?? currentUser!.skills,
+            history: history ?? currentUser!.history,
+            profilePictureUrl: profilePictureUrl,
+          )
+        : currentUser!.copyWith(
+            companyName: companyName ?? currentUser!.companyName,
+            companySize: companySize ?? currentUser!.companySize,
+            profilePictureUrl: profilePictureUrl,
+          );
 
     await _userRepository.updateUser(updatedUser);
     notifyListeners();
   }
 
+  User? getUserFromId(String userId) {
+    User? user = _users.firstWhere(
+      (user) => user.id == userId,
+      orElse: () => User(
+        id: "-1",
+        email: '',
+        role: UserRole.student,
+        profilePictureUrl: '',
+        createdAt: DateTime.now(),
+        canton: "",
+        city: "",
+        description: "",
+      ),
+    );
+
+    return user.id == "-1" ? null : user;
+  }
+
   void clearUser() {
     currentUser = null;
     notifyListeners();
+  }
+
+  Future<void> addReview({
+    required String targetUserId,
+    required String reviewerId,
+    required int rating,
+    required String comment,
+  }) async {
+    assert(rating >= 1 && rating <= 5, 'Rating must be between 1 and 5');
+    assert(comment.isNotEmpty, 'Comment cannot be empty');
+
+    return await _userRepository.addReview(
+      targetUserId: targetUserId,
+      reviewerId: reviewerId,
+      rating: rating,
+      comment: comment,
+    );
   }
 }
