@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'dart:io';
 
 class ProfileEditForm extends StatefulWidget {
@@ -27,14 +28,13 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
 
   final List<String> _skills = [];
   final List<String> _history = [];
-    
+
   Future<void> _pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (picked != null) {
       setState(() => _profilePicture = File(picked.path));
     }
   }
-
 
   @override
   void initState() {
@@ -73,21 +73,21 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Center(
-                    child: GestureDetector(
-                      onTap: _pickImage,
-                      child: CircleAvatar(
-                        radius: 48,
-                        backgroundColor: Colors.grey[300],
-                        backgroundImage: _profilePicture != null
-                            ? FileImage(_profilePicture!)
-                            : null,
-                        child: _profilePicture == null
-                            ? const Icon(Icons.add_a_photo, size: 32)
-                            : null,
-                      ),
-                    ),
+                child: GestureDetector(
+                  onTap: _pickImage,
+                  child: CircleAvatar(
+                    radius: 48,
+                    backgroundColor: Colors.grey[300],
+                    backgroundImage: _profilePicture != null
+                        ? FileImage(_profilePicture!)
+                        : null,
+                    child: _profilePicture == null
+                        ? const Icon(Icons.add_a_photo, size: 32)
+                        : null,
                   ),
-                  const SizedBox(height: 24),
+                ),
+              ),
+              const SizedBox(height: 24),
               TextFormField(
                 controller: _firstNameController,
                 decoration: const InputDecoration(labelText: 'First name'),

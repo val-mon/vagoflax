@@ -290,7 +290,8 @@ class ApplicationState extends ChangeNotifier {
       'skills': skills,
       'history': history,
       if (profilePicture != null)
-        'profilePictureUrl': await CloudinaryService.uploadProfilePicture(
+        'profilePictureUrl':
+            await CloudinaryService.uploadProfilePicture(
               profilePicture,
               _userId,
             ) ??
