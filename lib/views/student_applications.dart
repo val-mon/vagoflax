@@ -4,7 +4,7 @@ import 'package:vagoflax/providers/application_provider.dart';
 
 import 'package:vagoflax/widgets/about_icon.dart';
 import 'package:vagoflax/widgets/job_application_student_item.dart';
-import 'package:vagoflax/widgets/logout_button.dart';
+import 'package:vagoflax/widgets/profile_button.dart';
 
 import '../providers/app_state.dart';
 import '../providers/job_provider.dart';
@@ -35,7 +35,7 @@ class StudentApplicationsScreen extends StatelessWidget {
         leading: const AboutIcon(),
         title: const Text('My applications'),
         centerTitle: true,
-        actions: const [LogoutButton()],
+        actions: const [ProfileButton()],
       ),
 
       body: applicationProvider.isLoading
