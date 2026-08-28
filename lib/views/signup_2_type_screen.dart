@@ -12,14 +12,16 @@ class SignUpTypeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Account setup'),
         centerTitle: true,
-        actions: [IconButton(
-          icon: const Icon(Icons.logout),
-          tooltip: 'Logout',
-          onPressed: () {
-            context.read<ApplicationState>().signOut();
-            context.go('/');
-          },
-        )],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: () {
+              context.read<ApplicationState>().signOut();
+              context.go('/');
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
