@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vagoflax/models/translation_model.dart';
 
 import '../models/job_model.dart';
 import 'job_repository.dart';
@@ -53,6 +54,19 @@ class FirestoreJobRepository implements JobRepository {
           'status': 'submitted',
           'date': FieldValue.serverTimestamp(),
           'lastUpdated': FieldValue.serverTimestamp(),
+        },
+      ]),
+    });
+  }
+
+  @override
+  Future<void> addTranslation(String jobId, JobTranslation translation) async {
+    await _jobsRef().doc(jobId).update({
+      'translations': FieldValue.arrayUnion([
+        {
+          'title': translation.title,
+          'description': translation.description,
+          'language': translation.language.name,
         },
       ]),
     });

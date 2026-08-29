@@ -1,3 +1,5 @@
+import 'package:vagoflax/models/translation_model.dart';
+
 import '../models/job_model.dart';
 
 abstract class JobRepository {
@@ -6,4 +8,5 @@ abstract class JobRepository {
   Future<void> updateJob(Job job);
   Future<void> deleteJob(Job job);
   Future<void> applyToJob(String jobId, String userId);
+  Future<void> addTranslation(String jobId, JobTranslation translation);
 }

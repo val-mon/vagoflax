@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vagoflax/models/translation_model.dart';
 
 import 'enum/diplomas_model.dart';
 import 'enum/role_model.dart';
@@ -25,6 +26,7 @@ class Job {
   final double? predictedSalary;
   final DateTime? createdAt;
   final bool visible;
+  final List<JobTranslation> translations;
 
   Job({
     this.id,
@@ -45,6 +47,7 @@ class Job {
     this.predictedSalary,
     this.createdAt,
     required this.visible,
+    required this.translations,
   });
 
   factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
@@ -81,6 +84,9 @@ class Job {
           ? (data['createdAt'] as Timestamp).toDate()
           : null,
       visible: (data['visible'] as bool?) ?? true,
+      translations: (data['translations'] as List<dynamic>? ?? [])
+          .map((t) => JobTranslation.from(t as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -102,7 +108,21 @@ class Job {
       'salary': salary,
       'predictedSalary': predictedSalary,
       'visible': visible,
+      'translations': translations
+          .map(
+            (t) => {
+              'title': t.title,
+              'description': t.description,
+              'language': t.language.name,
+            },
+          )
+          .toList(),
       'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : null,
     };
+  }
+
+  /// can return an error if the translation is not found, so make sure to handle that in the calling code.
+  JobTranslation findTranslationByLanguage(Languages language) {
+    return translations.firstWhere((t) => t.language == language);
   }
 }
