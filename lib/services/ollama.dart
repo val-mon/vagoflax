@@ -16,11 +16,11 @@ class OllamaService {
     final json = {
       "title": tr.title,
       "description": tr.description,
-      "language": tr.language.name,
+      "language": tr.language?.name,
     };
 
     final prompt =
-        "You are a professional translator and must translate the following JSON to the specified language. The JSON is: $json. Return only the valid translated JSON, do not add any other text.";
+        "You are a professional translator and must translate the following JSON to the specified language. If the language is not specified, translate to English. If the specified language is the same as the original, return the original JSON. The JSON is: $json. Return only the valid translated JSON, do not add any other text.";
 
     final response = await http.post(
       Uri.parse("https://ollama.com/api/generate"),
@@ -56,7 +56,7 @@ class OllamaService {
 
       // make sure we have the language field
       translationData['language'] =
-          translationData['language'] ?? tr.language.name;
+          translationData['language'] ?? tr.language?.name;
 
       return JobTranslation.from(translationData);
     } else {

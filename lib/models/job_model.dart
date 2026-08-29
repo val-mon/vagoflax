@@ -113,7 +113,7 @@ class Job {
             (t) => {
               'title': t.title,
               'description': t.description,
-              'language': t.language.name,
+              'language': t.language?.name,
             },
           )
           .toList(),

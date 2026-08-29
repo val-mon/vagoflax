@@ -66,7 +66,7 @@ class FirestoreJobRepository implements JobRepository {
         {
           'title': translation.title,
           'description': translation.description,
-          'language': translation.language.name,
+          'language': translation.language?.name,
         },
       ]),
     });

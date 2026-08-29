@@ -28,7 +28,7 @@ class _JobDetailsState extends State<JobDetails> {
   JobTranslation translationState = JobTranslation(
     title: '',
     description: '',
-    language: Languages.english,
+    language: null,
   );
 
   void _showLanguageSelectionDialog() {
@@ -43,8 +43,10 @@ class _JobDetailsState extends State<JobDetails> {
               Text('Choose Language'),
             ],
           ),
-          children: Languages.values.map((lang) {
+          children: [null, ...Languages.values].map((lang) {
             final isSelected = translationState.language == lang;
+            final label = lang == null ? 'ORIGINAL' : lang.name.toUpperCase();
+
             return SimpleDialogOption(
               onPressed: () {
                 Navigator.pop(ctx);
@@ -61,7 +63,7 @@ class _JobDetailsState extends State<JobDetails> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      lang.name.toUpperCase(),
+                      label.toUpperCase(),
                       style: TextStyle(
                         fontWeight: isSelected
                             ? FontWeight.bold
@@ -78,26 +80,24 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  Future<void> _onLanguageSelected(Languages lang) async {
+  Future<void> _onLanguageSelected(Languages? lang) async {
     if (translationState.language == lang && translated) return;
 
     final currentJob = widget.job;
     if (currentJob == null || currentJob.id == null) return;
 
-    // 1. Si on sélectionne la langue d'origine (English)
-    if (lang == Languages.english) {
+    if (lang == null) {
       setState(() {
         translated = false;
         translationState = JobTranslation(
           title: currentJob.title,
           description: currentJob.description,
-          language: Languages.english,
+          language: null,
         );
       });
       return;
     }
 
-    // 2. Recherche en cache dans le modèle
     try {
       final cached = currentJob.findTranslationByLanguage(lang);
       setState(() {
@@ -109,7 +109,7 @@ class _JobDetailsState extends State<JobDetails> {
       // Non trouvé, on passe à la génération
     }
 
-    // 3. Génération IA
+    // AI translation
     if (!mounted) return;
     final messenger = ScaffoldMessenger.of(context);
     final jobProvider = context.read<JobProvider>();
@@ -140,7 +140,13 @@ class _JobDetailsState extends State<JobDetails> {
       );
     } catch (e) {
       if (!mounted) return;
-      messenger.showSnackBar(SnackBar(content: Text('Error translating: $e')));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            'Error translating. Please try again later. If the issue persists, contact your administrator.',
+          ),
+        ),
+      );
     }
   }
 
@@ -198,7 +204,7 @@ class _JobDetailsState extends State<JobDetails> {
         ),
         actions: [
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert), // Les trois petits points
+            icon: const Icon(Icons.more_vert),
             tooltip: 'Options',
             onSelected: (value) {
               if (value == 'translate') {
@@ -210,13 +216,9 @@ class _JobDetailsState extends State<JobDetails> {
                 value: 'translate',
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.auto_awesome,
-                      color: Colors.blueAccent,
-                      size: 20,
-                    ),
+                    Icon(Icons.translate_outlined, size: 20),
                     SizedBox(width: 12),
-                    Text('Translate with AI'),
+                    Text('Translate job details'),
                   ],
                 ),
               ),
@@ -352,7 +354,7 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ],
 
-            const SizedBox(height: 35),
+            const SizedBox(height: 15),
 
             /// JOB TITLE
             Text(
@@ -360,7 +362,55 @@ class _JobDetailsState extends State<JobDetails> {
               style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
             ),
 
-            const SizedBox(height: 25),
+            if (translated) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.translate, size: 14, color: Colors.grey.shade500),
+                  const SizedBox(width: 6),
+                  Text.rich(
+                    TextSpan(
+                      text: 'Translated automatically • ',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                translated = false;
+                                translationState = JobTranslation(
+                                  title: currentJob.title,
+                                  description: currentJob.description,
+                                  language: null,
+                                );
+                              });
+                            },
+                            child: Text(
+                              'View original',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.blue.shade700,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ] else ...[
+              const SizedBox(height: 15),
+            ],
 
             /// DESCRIPTION
             _SectionTitle(title: 'Description'),

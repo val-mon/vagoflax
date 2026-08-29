@@ -3,7 +3,7 @@ import 'package:vagoflax/models/enum/languages_model.dart';
 class JobTranslation {
   final String title;
   final String description;
-  final Languages language;
+  final Languages? language;
 
   JobTranslation({
     required this.title,
