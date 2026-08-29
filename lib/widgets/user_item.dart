@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../models/user_model.dart';
 import '../models/enum/user_role_model.dart';
@@ -89,7 +90,7 @@ class UserItem extends StatelessWidget {
         ),
         trailing: const Icon(Icons.chevron_right, color: Colors.grey),
         onTap: () {
-          // context.push('/user_details', extra: user);
+          context.push('/profile/${user.id}');
         },
       ),
     );
