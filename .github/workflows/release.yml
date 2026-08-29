@@ -39,10 +39,12 @@ jobs:
           CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
           CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
           CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+          OLLAMA_APIKEY: ${{ secrets.OLLAMA_APIKEY }}
         run: |
           echo "CLOUDINARY_CLOUDNAME=$CLOUDINARY_CLOUDNAME" >> .env
           echo "CLOUDINARY_APIKEY=$CLOUDINARY_APIKEY" >> .env
           echo "CLOUDINARY_APISECRET=$CLOUDINARY_APISECRET" >> .env
+          echo "OLLAMA_APIKEY=$OLLAMA_APIKEY" >> .env
         shell: bash
 
       - name: Install dependencies
@@ -136,10 +138,12 @@ jobs:
           CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
           CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
           CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+          OLLAMA_APIKEY: ${{ secrets.OLLAMA_APIKEY }}
         run: |
           echo "CLOUDINARY_CLOUDNAME=$CLOUDINARY_CLOUDNAME" >> .env
           echo "CLOUDINARY_APIKEY=$CLOUDINARY_APIKEY" >> .env
           echo "CLOUDINARY_APISECRET=$CLOUDINARY_APISECRET" >> .env
+          echo "OLLAMA_APIKEY=$OLLAMA_APIKEY" >> .env
         shell: bash
 
       - name: Install dependencies
@@ -192,10 +196,12 @@ jobs:
           CLOUDINARY_CLOUDNAME: ${{ secrets.CLOUDINARY_CLOUDNAME }}
           CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
           CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+          OLLAMA_APIKEY: ${{ secrets.OLLAMA_APIKEY }}
         run: |
           echo "CLOUDINARY_CLOUDNAME=$CLOUDINARY_CLOUDNAME" >> .env
           echo "CLOUDINARY_APIKEY=$CLOUDINARY_APIKEY" >> .env
           echo "CLOUDINARY_APISECRET=$CLOUDINARY_APISECRET" >> .env
+          echo "OLLAMA_APIKEY=$OLLAMA_APIKEY" >> .env
         shell: bash
 
       - name: Install dependencies

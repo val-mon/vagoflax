@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:vagoflax/models/translation_model.dart';
 
 import '../models/job_model.dart';
 import '../repositories/job_repository.dart';
@@ -52,6 +53,10 @@ class JobProvider with ChangeNotifier {
 
   Future<void> applyToJob(String jobId, String userId) async {
     await _jobRepository.applyToJob(jobId, userId);
+  }
+
+  Future<void> addTranslation(String jobId, JobTranslation translation) async {
+    await _jobRepository.addTranslation(jobId, translation);
   }
 
   @override

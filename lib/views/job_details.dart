@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/languages_model.dart';
 import 'package:vagoflax/models/enum/user_role_model.dart';
+import 'package:vagoflax/models/translation_model.dart';
 import 'package:vagoflax/providers/application_provider.dart';
+import 'package:vagoflax/services/ollama.dart';
 
 import '../models/job_model.dart';
 import '../models/user_model.dart';
@@ -11,14 +14,139 @@ import '../providers/user_provider.dart';
 import 'package:go_router/go_router.dart';
 
 /// Page displaying the details of a job.
-class JobDetails extends StatelessWidget {
+class JobDetails extends StatefulWidget {
   final Job? job;
 
   const JobDetails({super.key, this.job});
 
   @override
+  State<JobDetails> createState() => _JobDetailsState();
+}
+
+class _JobDetailsState extends State<JobDetails> {
+  bool translated = false;
+  JobTranslation translationState = JobTranslation(
+    title: '',
+    description: '',
+    language: Languages.english,
+  );
+
+  void _showLanguageSelectionDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return SimpleDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.translate, size: 22),
+              SizedBox(width: 10),
+              Text('Choose Language'),
+            ],
+          ),
+          children: Languages.values.map((lang) {
+            final isSelected = translationState.language == lang;
+            return SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(ctx);
+                _onLanguageSelected(lang);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Row(
+                  children: [
+                    Icon(
+                      isSelected ? Icons.check_circle : Icons.circle_outlined,
+                      color: isSelected ? Colors.blueAccent : Colors.grey,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      lang.name.toUpperCase(),
+                      style: TextStyle(
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  Future<void> _onLanguageSelected(Languages lang) async {
+    if (translationState.language == lang && translated) return;
+
+    final currentJob = widget.job;
+    if (currentJob == null || currentJob.id == null) return;
+
+    // 1. Si on sélectionne la langue d'origine (English)
+    if (lang == Languages.english) {
+      setState(() {
+        translated = false;
+        translationState = JobTranslation(
+          title: currentJob.title,
+          description: currentJob.description,
+          language: Languages.english,
+        );
+      });
+      return;
+    }
+
+    // 2. Recherche en cache dans le modèle
+    try {
+      final cached = currentJob.findTranslationByLanguage(lang);
+      setState(() {
+        translationState = cached;
+        translated = true;
+      });
+      return;
+    } catch (_) {
+      // Non trouvé, on passe à la génération
+    }
+
+    // 3. Génération IA
+    if (!mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final jobProvider = context.read<JobProvider>();
+
+    messenger.showSnackBar(
+      SnackBar(content: Text('Generating translation for ${lang.name}...')),
+    );
+
+    try {
+      final result = await OllamaService.translate(
+        JobTranslation(
+          title: currentJob.title,
+          description: currentJob.description,
+          language: lang,
+        ),
+      );
+
+      await jobProvider.addTranslation(currentJob.id!, result);
+
+      if (!mounted) return;
+      setState(() {
+        translationState = result;
+        translated = true;
+      });
+
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Translation complete!')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      messenger.showSnackBar(SnackBar(content: Text('Error translating: $e')));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (job == null) {
+    if (widget.job == null) {
       return const Scaffold(body: Center(child: Text('Job not found')));
     }
 
@@ -30,12 +158,14 @@ class JobDetails extends StatelessWidget {
     final isStudent = userProvider.currentUser?.role == UserRole.student;
 
     // Get the updated job from the provider.
-    Job currentJob = job!;
+    Job currentJob = widget.job!;
 
     try {
-      currentJob = jobProvider.jobs.firstWhere((item) => item.id == job!.id);
+      currentJob = jobProvider.jobs.firstWhere(
+        (item) => item.id == widget.job!.id,
+      );
     } catch (_) {
-      currentJob = job!;
+      currentJob = widget.job!;
     }
 
     // Get the company that published the job.
@@ -66,6 +196,33 @@ class JobDetails extends StatelessWidget {
           'Job information',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert), // Les trois petits points
+            tooltip: 'Options',
+            onSelected: (value) {
+              if (value == 'translate') {
+                _showLanguageSelectionDialog();
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem<String>(
+                value: 'translate',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.auto_awesome,
+                      color: Colors.blueAccent,
+                      size: 20,
+                    ),
+                    SizedBox(width: 12),
+                    Text('Translate with AI'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
         centerTitle: true,
       ),
 
@@ -199,19 +356,21 @@ class JobDetails extends StatelessWidget {
 
             /// JOB TITLE
             Text(
-              currentJob.title,
+              !translated ? currentJob.title : translationState.title,
               style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 25),
 
             /// DESCRIPTION
-            const _SectionTitle(title: 'Description'),
+            _SectionTitle(title: 'Description'),
 
             const SizedBox(height: 10),
 
             Text(
-              currentJob.description,
+              !translated
+                  ? currentJob.description
+                  : translationState.description,
               style: const TextStyle(fontSize: 16, height: 1.5),
             ),
 
@@ -401,7 +560,10 @@ class JobDetails extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
             child: FutureBuilder<bool>(
-              future: applicationProvider.hasApplied(job!.id!, currentUserId),
+              future: applicationProvider.hasApplied(
+                currentJob.id!,
+                currentUserId,
+              ),
               builder: (context, snapshot) {
                 // loading
                 if (snapshot.connectionState == ConnectionState.waiting) {

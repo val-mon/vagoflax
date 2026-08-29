@@ -284,6 +284,7 @@ class _JobFormState extends State<JobForm> {
       workloadPercent: int.parse(_workloadPercentController.text),
       salary: double.tryParse(_salaryController.text),
       visible: _visible,
+      translations: widget.job?.translations ?? [],
     );
 
     if (widget.job == null) {
