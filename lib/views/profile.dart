@@ -135,7 +135,8 @@ class ProfileScreen extends StatelessWidget {
                         const LogoutButton(),
                       ],
                     ),
-                  ] else ...[
+                  ] else if (userProvider.currentUser!.role !=
+                      UserRole.admin) ...[
                     // Show message if viewing another user's profile
                     Center(
                       child: userAlreadyReviewed
