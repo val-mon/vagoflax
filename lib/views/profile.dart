@@ -54,9 +54,7 @@ class ProfileScreen extends StatelessWidget {
                       radius: 40,
                       backgroundColor: Colors.grey.shade200,
                       backgroundImage: user.hasProfilePicture
-                          ? NetworkImage(
-                              user.profilePictureUrl!,
-                            )
+                          ? NetworkImage(user.profilePictureUrl!)
                           : null,
                       child: !user.hasProfilePicture
                           ? const Icon(
@@ -78,18 +76,46 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: 14),
                   // firstname et lastname si étudiant, sinon companyname
                   if (user.role == UserRole.student) ...[
-                    _InfoRow(icon: Icons.person, title: 'First name', value: user.firstName ?? ''),
-                    _InfoRow(icon: Icons.person, title: 'Last name', value: user.lastName ?? ''),
+                    _InfoRow(
+                      icon: Icons.person,
+                      title: 'First name',
+                      value: user.firstName ?? '',
+                    ),
+                    _InfoRow(
+                      icon: Icons.person,
+                      title: 'Last name',
+                      value: user.lastName ?? '',
+                    ),
                   ] else if (user.hasProfilePicture &&
                       user.role == UserRole.employer) ...[
-                    _InfoRow(icon: Icons.business, title: 'Company Name', value: user.companyName ?? ''),
+                    _InfoRow(
+                      icon: Icons.business,
+                      title: 'Company Name',
+                      value: user.companyName ?? '',
+                    ),
                   ],
 
-                  _InfoRow(icon: Icons.email, title: 'Email', value: user.email),
+                  _InfoRow(
+                    icon: Icons.email,
+                    title: 'Email',
+                    value: user.email,
+                  ),
                   const SizedBox(height: 20),
-                  _InfoRow(icon: Icons.location_city, title: 'City', value: user.city),
-                  _InfoRow(icon: Icons.location_on, title: 'Canton', value: user.canton),
-                  _InfoRow(icon: Icons.description, title: 'Description', value: user.description),
+                  _InfoRow(
+                    icon: Icons.location_city,
+                    title: 'City',
+                    value: user.city,
+                  ),
+                  _InfoRow(
+                    icon: Icons.location_on,
+                    title: 'Canton',
+                    value: user.canton,
+                  ),
+                  _InfoRow(
+                    icon: Icons.description,
+                    title: 'Description',
+                    value: user.description,
+                  ),
                   const SizedBox(height: 12),
 
                   const _SectionTitle(title: 'Skills'),
@@ -101,11 +127,11 @@ class ProfileScreen extends StatelessWidget {
                           spacing: 8,
                           runSpacing: 4,
                           children: user.skills
-                              .map((s) => Chip(label: Text(s)))
+                              .map((s) => _InfoChip(icon: Icons.star, label: s))
                               .toList(),
                         ),
                   const SizedBox(height: 16),
-                  const _SectionTitle(title: 'Languages'),
+                  const _SectionTitle(title: 'History'),
                   const SizedBox(height: 14),
 
                   user.history.isEmpty
@@ -172,6 +198,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
 /// Displays a section title with a divider underneath.
 class _SectionTitle extends StatelessWidget {
   final String title;
@@ -243,7 +270,6 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-/// Displays a diploma or language as a small chip.
 class _InfoChip extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -271,4 +297,3 @@ class _InfoChip extends StatelessWidget {
     );
   }
 }
-

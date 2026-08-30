@@ -15,7 +15,6 @@ import '../services/transport.dart';
 
 import 'package:go_router/go_router.dart';
 
-
 /// Page displaying the details of a job.
 class JobDetails extends StatefulWidget {
   final Job? job;
@@ -583,7 +582,10 @@ class _JobDetailsState extends State<JobDetails> {
 
                 final connections = snapshot.data ?? [];
                 if (connections.isEmpty) {
-                  return const Text('No transport option found', style: TextStyle(fontSize: 15));
+                  return const Text(
+                    'No transport option found',
+                    style: TextStyle(fontSize: 15),
+                  );
                 }
 
                 return Column(
@@ -591,7 +593,9 @@ class _JobDetailsState extends State<JobDetails> {
                     return ListTile(
                       leading: const Icon(Icons.train_outlined),
                       title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
-                      subtitle: Text('${c.products.join(' • ')} | ${userProvider.currentUser?.city} → ${company?.city}'),
+                      subtitle: Text(
+                        '${c.products.join(' • ')} | ${userProvider.currentUser?.city} → ${company?.city}',
+                      ),
                     );
                   }).toList(),
                 );
@@ -935,4 +939,3 @@ class _InfoChip extends StatelessWidget {
     );
   }
 }
-
