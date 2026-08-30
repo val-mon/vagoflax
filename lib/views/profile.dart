@@ -54,9 +54,7 @@ class ProfileScreen extends StatelessWidget {
                       radius: 40,
                       backgroundColor: Colors.grey.shade200,
                       backgroundImage: user.hasProfilePicture
-                          ? NetworkImage(
-                              userProvider.currentUser!.profilePictureUrl!,
-                            )
+                          ? NetworkImage(user.profilePictureUrl!)
                           : null,
                       child: !user.hasProfilePicture
                           ? const Icon(
@@ -67,45 +65,75 @@ class ProfileScreen extends StatelessWidget {
                           : null,
                     ),
                   ),
+                  const _SectionTitle(title: 'Ratings'),
+                  const SizedBox(height: 14),
                   UserRatingBadge(
                     rating: user.averageRating,
                     count: user.reviewCount,
                   ),
                   const SizedBox(height: 24),
-
+                  const _SectionTitle(title: 'Personal Information'),
+                  const SizedBox(height: 14),
                   // firstname et lastname si étudiant, sinon companyname
                   if (user.role == UserRole.student) ...[
-                    _line('First name', user.firstName ?? ''),
-                    _line('Last name', user.lastName ?? ''),
+                    _InfoRow(
+                      icon: Icons.person,
+                      title: 'First name',
+                      value: user.firstName ?? '',
+                    ),
+                    _InfoRow(
+                      icon: Icons.person,
+                      title: 'Last name',
+                      value: user.lastName ?? '',
+                    ),
                   ] else if (user.hasProfilePicture &&
                       user.role == UserRole.employer) ...[
-                    _line('Company Name', user.companyName ?? ''),
+                    _InfoRow(
+                      icon: Icons.business,
+                      title: 'Company Name',
+                      value: user.companyName ?? '',
+                    ),
                   ],
 
-                  _line('Email', user.email),
+                  _InfoRow(
+                    icon: Icons.email,
+                    title: 'Email',
+                    value: user.email,
+                  ),
                   const SizedBox(height: 20),
-                  _line('City', user.city),
-                  _line('Canton', user.canton),
-                  _line('Description', user.description),
+                  _InfoRow(
+                    icon: Icons.location_city,
+                    title: 'City',
+                    value: user.city,
+                  ),
+                  _InfoRow(
+                    icon: Icons.location_on,
+                    title: 'Canton',
+                    value: user.canton,
+                  ),
+                  _InfoRow(
+                    icon: Icons.description,
+                    title: 'Description',
+                    value: user.description,
+                  ),
                   const SizedBox(height: 12),
 
-                  Text('Skills', style: Theme.of(context).textTheme.labelLarge),
-                  const SizedBox(height: 4),
+                  const _SectionTitle(title: 'Skills'),
+                  const SizedBox(height: 14),
+
                   user.skills.isEmpty
                       ? const Text('-')
                       : Wrap(
                           spacing: 8,
                           runSpacing: 4,
                           children: user.skills
-                              .map((s) => Chip(label: Text(s)))
+                              .map((s) => _InfoChip(icon: Icons.star, label: s))
                               .toList(),
                         ),
                   const SizedBox(height: 16),
-                  Text(
-                    'History',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 4),
+                  const _SectionTitle(title: 'History'),
+                  const SizedBox(height: 14),
+
                   user.history.isEmpty
                       ? const Text('-')
                       : Column(
@@ -169,18 +197,101 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _line(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$label : ',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+/// Displays a section title with a divider underneath.
+class _SectionTitle extends StatelessWidget {
+  final String title;
+
+  const _SectionTitle({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+        ),
+
+        const SizedBox(height: 8),
+
+        const Divider(thickness: 1, height: 1),
+      ],
+    );
+  }
+}
+
+/// Displays job information with an icon and a value.
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String value;
+
+  const _InfoRow({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 22),
+
+        const SizedBox(width: 12),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+              ),
+
+              const SizedBox(height: 2),
+
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
-          Expanded(child: Text(value.isEmpty ? '-' : value)),
+        ),
+      ],
+    );
+  }
+}
+
+class _InfoChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _InfoChip({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 17),
+
+          const SizedBox(width: 6),
+
+          Text(label, style: const TextStyle(fontSize: 14)),
         ],
       ),
     );

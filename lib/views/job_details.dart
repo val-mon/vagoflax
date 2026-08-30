@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/connection_model.dart';
 import 'package:vagoflax/models/enum/languages_model.dart';
 import 'package:vagoflax/models/enum/user_role_model.dart';
 import 'package:vagoflax/models/translation_model.dart';
@@ -10,6 +11,7 @@ import '../models/job_model.dart';
 import '../models/user_model.dart';
 import '../providers/job_provider.dart';
 import '../providers/user_provider.dart';
+import '../services/transport.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -568,27 +570,36 @@ class _JobDetailsState extends State<JobDetails> {
 
             const SizedBox(height: 14),
 
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(14),
+            FutureBuilder<List<Connection>>(
+              future: TransportService.getConnections(
+                userProvider.currentUser?.city ?? '',
+                company?.city ?? '',
               ),
-              child: const Row(
-                children: [
-                  Icon(Icons.train_outlined, size: 26),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                  SizedBox(width: 12),
+                final connections = snapshot.data ?? [];
+                if (connections.isEmpty) {
+                  return const Text(
+                    'No transport option found',
+                    style: TextStyle(fontSize: 15),
+                  );
+                }
 
-                  Expanded(
-                    child: Text(
-                      'Transport information coming soon',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ],
-              ),
+                return Column(
+                  children: connections.map((c) {
+                    return ListTile(
+                      leading: const Icon(Icons.train_outlined),
+                      title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
+                      subtitle: Text(
+                        '${c.products.join(' • ')} | ${userProvider.currentUser?.city} → ${company?.city}',
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
             ),
           ],
         ),
@@ -773,6 +784,12 @@ class _JobDetailsState extends State<JobDetails> {
     );
 
     return text[0].toUpperCase() + text.substring(1);
+  }
+
+  static String _hm(DateTime? dt) {
+    if (dt == null) return '--:--';
+    final t = dt.toLocal();
+    return '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
   }
 
   static String _formatSalary(double salary) {
