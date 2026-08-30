@@ -55,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                       backgroundColor: Colors.grey.shade200,
                       backgroundImage: user.hasProfilePicture
                           ? NetworkImage(
-                              userProvider.currentUser!.profilePictureUrl!,
+                              user.profilePictureUrl!,
                             )
                           : null,
                       child: !user.hasProfilePicture

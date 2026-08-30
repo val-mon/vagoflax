@@ -65,6 +65,7 @@ class JobApplicationsScreen extends StatelessWidget {
                     canton: "",
                     city: "",
                     description: "",
+                    profilePictureUrl: null,
                   ),
                 );
 
