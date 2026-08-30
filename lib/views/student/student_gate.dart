@@ -34,6 +34,7 @@ class _StudentGateState extends State<StudentGate> {
 
             return Align(
               alignment: Alignment.bottomCenter,
+              heightFactor: 1,
               child: SizedBox(
                 width: barWidth,
                 child: ClipRRect(
@@ -62,7 +63,7 @@ class _StudentGateState extends State<StudentGate> {
                       }),
                     ),
                     child: NavigationBar(
-                      height: 64,
+                      height: 56,
                       backgroundColor: Colors.white,
                       elevation: 4,
                       indicatorColor: Colors.transparent,
