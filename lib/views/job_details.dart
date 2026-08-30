@@ -93,7 +93,7 @@ class _JobDetailsState extends State<JobDetails> {
         translated = false;
         translationState = JobTranslation(
           title: currentJob.title,
-          description: currentJob.description,
+          description: currentJob.description ?? 'No description available',
           language: null,
         );
       });
@@ -124,7 +124,7 @@ class _JobDetailsState extends State<JobDetails> {
       final result = await OllamaService.translate(
         JobTranslation(
           title: currentJob.title,
-          description: currentJob.description,
+          description: currentJob.description ?? 'No description available',
           language: lang,
         ),
       );
@@ -387,7 +387,9 @@ class _JobDetailsState extends State<JobDetails> {
                                 translated = false;
                                 translationState = JobTranslation(
                                   title: currentJob.title,
-                                  description: currentJob.description,
+                                  description:
+                                      currentJob.description ??
+                                      'No description available',
                                   language: null,
                                 );
                               });
@@ -421,7 +423,9 @@ class _JobDetailsState extends State<JobDetails> {
 
             Text(
               !translated
-                  ? currentJob.description
+                  ? currentJob.description == ''
+                        ? 'No description available'
+                        : currentJob.description!
                   : translationState.description,
               style: const TextStyle(fontSize: 16, height: 1.5),
             ),
@@ -461,7 +465,7 @@ class _JobDetailsState extends State<JobDetails> {
             _InfoRow(
               icon: Icons.schedule_outlined,
               title: 'Workload',
-              value: '${currentJob.workloadPercent}%',
+              value: '${currentJob.workloadPercent ?? 'N/A'}%',
             ),
 
             const SizedBox(height: 12),
@@ -469,7 +473,7 @@ class _JobDetailsState extends State<JobDetails> {
             _InfoRow(
               icon: Icons.description_outlined,
               title: 'Contract',
-              value: _contractTime(currentJob.contractTime),
+              value: _contractTime(currentJob.contractTime?.toInt() ?? 0),
             ),
 
             // Posted time
@@ -544,7 +548,7 @@ class _JobDetailsState extends State<JobDetails> {
             _InfoRow(
               icon: Icons.beach_access_outlined,
               title: 'Holidays',
-              value: '${currentJob.holidays} days / year',
+              value: '${currentJob.holidays ?? 'N/A'} days / year',
             ),
 
             const SizedBox(height: 12),
@@ -552,7 +556,7 @@ class _JobDetailsState extends State<JobDetails> {
             _InfoRow(
               icon: Icons.child_friendly_outlined,
               title: 'Maternity leave',
-              value: '${currentJob.maternityLeave} weeks',
+              value: '${currentJob.maternityLeave ?? 'N/A'} weeks',
             ),
 
             const SizedBox(height: 12),
@@ -560,7 +564,7 @@ class _JobDetailsState extends State<JobDetails> {
             _InfoRow(
               icon: Icons.family_restroom_outlined,
               title: 'Paternity leave',
-              value: '${currentJob.paternityLeave} weeks',
+              value: '${currentJob.paternityLeave ?? 'N/A'} weeks',
             ),
 
             const SizedBox(height: 35),

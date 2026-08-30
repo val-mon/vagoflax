@@ -11,17 +11,17 @@ class Job {
   final String? id;
   final String? userUuid;
   final String title;
-  final String description;
+  final String? description;
   final List<Diplomas> diplomas;
-  final int contractTime;
+  final int? contractTime;
   final Role role;
   final Industry industry;
   final List<Perks> perks;
   final List<Languages> languages;
-  final int holidays;
-  final int maternityLeave;
-  final int paternityLeave;
-  final int workloadPercent;
+  final int? holidays;
+  final int? maternityLeave;
+  final int? paternityLeave;
+  final int? workloadPercent;
   final double? salary;
   final double? predictedSalary;
   final DateTime? createdAt;
@@ -32,17 +32,17 @@ class Job {
     this.id,
     this.userUuid,
     required this.title,
-    required this.description,
+    this.description,
     required this.diplomas,
-    required this.contractTime,
+    this.contractTime,
     required this.role,
     required this.industry,
     required this.perks,
     required this.languages,
-    required this.holidays,
-    required this.maternityLeave,
-    required this.paternityLeave,
-    required this.workloadPercent,
+    this.holidays,
+    this.maternityLeave,
+    this.paternityLeave,
+    this.workloadPercent,
     this.salary,
     this.predictedSalary,
     this.createdAt,
@@ -61,7 +61,7 @@ class Job {
           (d) => Diplomas.values.byName(d),
         ),
       ),
-      contractTime: data['contractTime'] ?? 0,
+      contractTime: data['contractTime'],
       role: Role.values.byName(data['role'] ?? ''),
       industry: Industry.values.byName(data['industry'] ?? ''),
       perks: List<Perks>.from(
@@ -74,10 +74,10 @@ class Job {
           (l) => Languages.values.byName(l),
         ),
       ),
-      holidays: data['holidays'] ?? 20,
-      maternityLeave: data['maternityLeave'] ?? 14,
-      paternityLeave: data['paternityLeave'] ?? 2,
-      workloadPercent: data['workloadPercent'] ?? 100,
+      holidays: data['holidays'],
+      maternityLeave: data['maternityLeave'],
+      paternityLeave: data['paternityLeave'],
+      workloadPercent: data['workloadPercent'],
       salary: (data['salary'] as num?)?.toDouble(),
       predictedSalary: (data['predictedSalary'] as num?)?.toDouble(),
       createdAt: data['createdAt'] != null

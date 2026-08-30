@@ -35,10 +35,11 @@ class _JobListScreenState extends State<JobListScreen> {
       //
       final query = searchQuery.trim().toLowerCase();
 
+      final description = job.description?.toLowerCase() ?? '';
       final matchesSearch =
           query.isEmpty ||
           job.title.toLowerCase().contains(query) ||
-          job.description.toLowerCase().contains(query);
+          description.toLowerCase().contains(query);
 
       //
       // Salary
