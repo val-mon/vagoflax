@@ -48,7 +48,7 @@ class _JobFormState extends State<JobForm> {
     if (job != null) {
       // Editing an existing job
       _titleController.text = job.title;
-      _descriptionController.text = job.description;
+      _descriptionController.text = job.description ?? '';
       _contractTimeController.text = job.contractTime.toString();
       _holidaysController.text = job.holidays.toString();
       _maternityLeaveController.text = job.maternityLeave.toString();
@@ -102,7 +102,6 @@ class _JobFormState extends State<JobForm> {
               controller: _descriptionController,
               decoration: const InputDecoration(labelText: 'Job Description'),
               maxLines: 5,
-              validator: _requiredValidator,
             ),
             const SizedBox(height: 16),
 
@@ -257,7 +256,7 @@ class _JobFormState extends State<JobForm> {
   }
 
   String? _intValidator(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Required';
+    if (value == null || value.trim().isEmpty) return null;
     if (int.tryParse(value) == null) return 'Enter a whole number';
     return null;
   }
@@ -273,15 +272,15 @@ class _JobFormState extends State<JobForm> {
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       diplomas: _selectedDiplomas,
-      contractTime: int.parse(_contractTimeController.text),
+      contractTime: int.tryParse(_contractTimeController.text),
       role: _selectedRole,
       industry: _selectedIndustry,
       perks: _selectedPerks,
       languages: _selectedLanguages,
-      holidays: int.parse(_holidaysController.text),
-      maternityLeave: int.parse(_maternityLeaveController.text),
-      paternityLeave: int.parse(_paternityLeaveController.text),
-      workloadPercent: int.parse(_workloadPercentController.text),
+      holidays: int.tryParse(_holidaysController.text),
+      maternityLeave: int.tryParse(_maternityLeaveController.text),
+      paternityLeave: int.tryParse(_paternityLeaveController.text),
+      workloadPercent: int.tryParse(_workloadPercentController.text),
       salary: double.tryParse(_salaryController.text),
       visible: _visible,
       translations: widget.job?.translations ?? [],

@@ -15,7 +15,9 @@ class JobStudentItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: ListTile(
         title: Text(job.title),
-        subtitle: Text(job.description),
+        subtitle: Text(
+          job.description == '' ? 'No description available' : job.description!,
+        ),
         onTap: () {
           context.push('/job-details', extra: job);
         },
