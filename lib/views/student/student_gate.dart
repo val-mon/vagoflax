@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:vagoflax/views/student/student_search.dart';
 import 'package:vagoflax/views/student/student_applications.dart';
 
-import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
-
 class StudentGate extends StatefulWidget {
   const StudentGate({super.key});
 
@@ -28,64 +26,64 @@ class _StudentGateState extends State<StudentGate> {
         minimum: const EdgeInsets.only(bottom: 8),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final screenWidth = constraints.maxWidth;
-
-            final barWidth = screenWidth < 600 ? 220.0 : 280.0;
+            final isTablet = constraints.maxWidth >= 600;
+            final barWidth = isTablet
+                ? 320.0
+                : constraints.maxWidth -
+                      32; // marge 16 de chaque côté sur phone
 
             return Align(
               alignment: Alignment.bottomCenter,
               child: SizedBox(
                 width: barWidth,
-                height: 80,
-                child: Transform.scale(
-                  scaleY: 0.9,
-                  alignment: Alignment.bottomCenter,
-                  child: CrystalNavigationBar(
-                    currentIndex: _selectedIndex,
-
-                    unselectedItemColor: Colors.white70,
-
-                    backgroundColor: Colors.black.withValues(alpha: 0.5),
-
-                    borderWidth: 1.5,
-
-                    outlineBorderColor: Colors.white.withValues(alpha: 0.8),
-
-                    borderRadius: 32,
-
-                    paddingR: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(28),
+                  child: NavigationBarTheme(
+                    data: NavigationBarThemeData(
+                      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+                        final selected = states.contains(WidgetState.selected);
+                        return TextStyle(
+                          fontSize: 12,
+                          fontWeight: selected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                          color: selected
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.grey,
+                        );
+                      }),
+                      iconTheme: WidgetStateProperty.resolveWith((states) {
+                        final selected = states.contains(WidgetState.selected);
+                        return IconThemeData(
+                          color: selected
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.grey,
+                        );
+                      }),
                     ),
-
-                    itemPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
+                    child: NavigationBar(
+                      height: 64,
+                      backgroundColor: Colors.white,
+                      elevation: 4,
+                      indicatorColor: Colors.transparent,
+                      labelBehavior:
+                          NavigationDestinationLabelBehavior.alwaysShow,
+                      selectedIndex: _selectedIndex,
+                      onDestinationSelected: (index) =>
+                          setState(() => _selectedIndex = index),
+                      destinations: const [
+                        NavigationDestination(
+                          icon: Icon(Icons.work_outline),
+                          selectedIcon: Icon(Icons.work),
+                          label: 'Jobs',
+                        ),
+                        NavigationDestination(
+                          icon: Icon(Icons.assignment_outlined),
+                          selectedIcon: Icon(Icons.assignment),
+                          label: 'Applications',
+                        ),
+                      ],
                     ),
-
-                    marginR: EdgeInsets.zero,
-
-                    onTap: (index) {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-
-                    items: [
-                      // jobs list
-                      CrystalNavigationBarItem(
-                        icon: Icons.work,
-                        unselectedIcon: Icons.work_outline,
-                        selectedColor: Colors.white,
-                      ),
-
-                      // applications list
-                      CrystalNavigationBarItem(
-                        icon: Icons.assignment,
-                        unselectedIcon: Icons.assignment_outlined,
-                        selectedColor: Colors.white,
-                      ),
-                    ],
                   ),
                 ),
               ),
