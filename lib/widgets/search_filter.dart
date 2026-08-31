@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class SearchFilter extends StatelessWidget {
   final ValueChanged<String> onSearch;
   final int activeFilterCount;
+  final VoidCallback onFilterTap;
 
   const SearchFilter({
     super.key,
     required this.onSearch,
+    required this.onFilterTap,
     this.activeFilterCount = 0,
   });
 
@@ -35,9 +37,7 @@ class SearchFilter extends StatelessWidget {
                 return IconButton.filledTonal(
                   tooltip: 'Filters',
                   icon: const Icon(Icons.tune),
-                  onPressed: () {
-                    Scaffold.of(context).openEndDrawer();
-                  },
+                  onPressed: onFilterTap,
                   style: IconButton.styleFrom(
                     backgroundColor: Colors.grey[200],
                     foregroundColor: Colors.black87,
