@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
@@ -9,6 +8,8 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vagoflax/models/enum/user_role.dart';
 import 'package:vagoflax/providers/user.dart';
+import 'package:vagoflax/models/history.dart';
+
 import 'package:vagoflax/services/cloudinary.dart';
 import 'package:vagoflax/models/user.dart' as usermodel;
 
@@ -205,24 +206,18 @@ class ApplicationState extends ChangeNotifier {
     required String canton,
     required String description,
     required List<String> skills,
-    required List<String> history,
+    required List<HistoryEntry> history,
     required File? profilePicture,
   }) async {
-    await FirebaseFirestore.instance.collection('users').doc(_userId).update({
-      'firstName': firstName,
-      'lastName': lastName,
-      'city': city,
-      'canton': canton,
-      'description': description,
-      'skills': skills,
-      'history': history,
-      if (profilePicture != null)
-        'profilePictureUrl':
-            await CloudinaryService.uploadProfilePicture(
-              profilePicture,
-              _userId,
-            ) ??
-            '',
-    });
+    await userProvider.updateUser(
+      firstName: firstName,
+      lastName: lastName,
+      city: city,
+      canton: canton,
+      description: description,
+      skills: skills,
+      history: history,
+      profilePicture: profilePicture,
+    );
   }
 }
