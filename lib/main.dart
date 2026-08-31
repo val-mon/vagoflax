@@ -43,10 +43,14 @@ class MyApp extends StatelessWidget {
                 ..updateUserProvider(userProvider),
         ),
         ChangeNotifierProvider(
-          create: (_) => JobProvider(FirestoreJobRepository()),
+          create: (_) => ApplicationProvider(FirestoreApplicationRepository()),
         ),
         ChangeNotifierProvider(
-          create: (_) => ApplicationProvider(FirestoreApplicationRepository()),
+          create: (_) => JobProvider(
+            FirestoreJobRepository(
+              applicationRepository: FirestoreApplicationRepository(),
+            ),
+          ),
         ),
       ],
       child: MaterialApp.router(
