@@ -1,0 +1,27 @@
+{
+    "best_epoch": 106,
+    "validation": {
+        "mae": 7502.53173828125,
+        "rmse": 9712.404296875,
+        "r2": 0.9844443798065186
+    },
+    "test": {
+        "mae": 7735.9716796875,
+        "rmse": 15103.5048828125,
+        "r2": 0.9644726514816284
+    },
+    "train_samples": 350,
+    "validation_samples": 75,
+    "test_samples": 75,
+    "parameters": {
+        "random_seed": 42,
+        "train_ratio": 0.7,
+        "validation_ratio": 0.15,
+        "test_ratio": 0.15,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "weight_decay": 0.01,
+        "max_epochs": 3000,
+        "patience": 500
+    }
+}
