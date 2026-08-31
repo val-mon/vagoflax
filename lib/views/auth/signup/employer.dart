@@ -56,7 +56,7 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
           title: const Text('Employer account setup'),
           centerTitle: true,
         ),
-        body: Padding(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
