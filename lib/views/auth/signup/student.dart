@@ -55,7 +55,7 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
           title: const Text('Student account setup'),
           centerTitle: true,
         ),
-        body: Padding(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
