@@ -9,4 +9,5 @@ abstract class ApplicationRepository {
     String newStatus,
   );
   Future<bool> hasApplied(String jobId, String studentUuid);
+  Future<void> deleteAllApplicationsForJob(String jobId);
 }

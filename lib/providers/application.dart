@@ -65,6 +65,14 @@ class ApplicationProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteAllApplicationsForJob(String jobId) async {
+    try {
+      await _repository.deleteAllApplicationsForJob(jobId);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   @override
   void dispose() {
     _subscription?.cancel();
