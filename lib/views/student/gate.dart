@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:vagoflax/views/student/student_search.dart';
-import 'package:vagoflax/views/student/student_applications.dart';
+import 'package:vagoflax/views/student/search.dart';
+import 'package:vagoflax/views/student/applications.dart';
 
 class StudentGate extends StatefulWidget {
   const StudentGate({super.key});

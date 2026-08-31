@@ -1,4 +1,4 @@
-import 'package:vagoflax/models/enum/languages_model.dart';
+import 'package:vagoflax/models/enum/languages.dart';
 
 class JobTranslation {
   final String title;

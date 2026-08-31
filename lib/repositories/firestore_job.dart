@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagoflax/models/translation_model.dart';
+import 'package:vagoflax/models/translation.dart';
 
-import '../models/job_model.dart';
-import 'job_repository.dart';
+import 'package:vagoflax/models/job.dart';
+import 'package:vagoflax/repositories/job.dart';
 
 class FirestoreJobRepository implements JobRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

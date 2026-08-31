@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/job_application_model.dart';
-import '../providers/application_provider.dart';
+import 'package:vagoflax/models/job_application.dart';
+import 'package:vagoflax/providers/application.dart';
 
 class ApplicationStatusDialog extends StatelessWidget {
   final JobApplication application;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vagoflax/models/enum/user_role_model.dart';
-import 'package:vagoflax/models/history_model.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/models/history.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:io';
 
-import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/providers/user.dart';
 
 class ProfileEditForm extends StatefulWidget {
   const ProfileEditForm({super.key});

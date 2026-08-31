@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:vagoflax/models/job_filters.dart';
-import 'package:vagoflax/models/job_model.dart';
+import 'package:vagoflax/models/job.dart';
 
-import 'package:vagoflax/models/enum/diplomas_model.dart';
-import 'package:vagoflax/models/enum/industry_model.dart';
-import 'package:vagoflax/models/enum/languages_model.dart';
-import 'package:vagoflax/models/enum/role_model.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/industry.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/role.dart';
 
 class JobFilterDrawer extends StatefulWidget {
   final List<Job> jobs;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
 import 'package:vagoflax/widgets/user_item.dart';
 import 'package:vagoflax/widgets/profile_button.dart';

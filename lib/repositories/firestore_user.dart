@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagoflax/models/user_model.dart';
-import 'package:vagoflax/repositories/user_repository.dart';
+import 'package:vagoflax/models/user.dart';
+import 'package:vagoflax/repositories/user.dart';
 
 class FirestoreUserRepository implements UserRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

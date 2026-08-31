@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:vagoflax/models/translation_model.dart';
+import 'package:vagoflax/models/translation.dart';
 
-import '../models/job_model.dart';
-import '../repositories/job_repository.dart';
+import 'package:vagoflax/models/job.dart';
+import 'package:vagoflax/repositories/job.dart';
 
 class JobProvider with ChangeNotifier {
   final JobRepository _jobRepository;

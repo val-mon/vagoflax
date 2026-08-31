@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:vagoflax/models/connection_model.dart';
+import 'package:vagoflax/models/connection.dart';
 
 class TransportService {
   static const _base = 'https://transport.opendata.ch/v1';

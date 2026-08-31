@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagoflax/models/translation_model.dart';
+import 'package:vagoflax/models/translation.dart';
 
-import 'enum/diplomas_model.dart';
-import 'enum/role_model.dart';
-import 'enum/perks_model.dart';
-import 'enum/languages_model.dart';
-import 'enum/industry_model.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/role.dart';
+import 'package:vagoflax/models/enum/perks.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/industry.dart';
 
 class Job {
   final String? id;

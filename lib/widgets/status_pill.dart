@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vagoflax/models/enum/status_model.dart';
+import 'package:vagoflax/models/enum/status.dart';
 
 class StatusPill extends StatelessWidget {
   final Status status;

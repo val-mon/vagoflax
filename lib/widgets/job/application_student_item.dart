@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vagoflax/models/job_application_model.dart';
+import 'package:vagoflax/models/job_application.dart';
 import 'package:vagoflax/widgets/status_pill.dart';
 
-import '../models/job_model.dart';
+import 'package:vagoflax/models/job.dart';
 
 import 'package:go_router/go_router.dart';
 

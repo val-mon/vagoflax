@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/models/enum/user_role_model.dart';
-import 'package:vagoflax/models/user_model.dart';
-import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/models/user.dart';
+import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/widgets/leave_review_sheet.dart';
 import 'package:vagoflax/widgets/logout_button.dart';
-import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/providers/auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vagoflax/widgets/user_rating_badge.dart';
 
