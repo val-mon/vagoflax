@@ -12,11 +12,12 @@ Made for the Mobile Development Summer School (208.1).
 2.  [What the app does](#what-the-app-does)
 3.  [Tech stack](#tech-stack)
 4.  [Architecture overview](#architecture-overview)
-5.  [How the layers work together](#how-the-layers-work-together)
-6.  [Project structure](#project-structure)
-7.  [Getting Started](#getting-started)
-8.  [Run tests](#run-tests)
-9.  [Repo policy](#repo-policy)
+5.  [Project structure](#project-structure)
+6.  [How the layers work together](#how-the-layers-work-together)
+7.  [State management with Provider](#state-management-with-provider)
+8.  [Getting Started](#getting-started)
+9.  [Run tests](#run-tests)
+10. [Repo policy](#repo-policy)
 
 ---
 
@@ -84,24 +85,6 @@ talks to Firebase or Cloudinary directly.
 │  External services: Firebase, Cloudinary, Ollama LLM  │
 └───────────────────────────────────────────────────────┘
 ```
-
----
-
-## How the layers work together
-
-A concrete example: **browsing and applying to job offers in real time.**
-
-1. `JobListScreen` (or `JobDetails`) reads `JobProvider` via `context.watch<JobProvider>()`.
-2. `JobProvider` listens to `JobRepository.watchJobs()` (or fetches updates from Firestore).
-3. `FirestoreJobRepository` queries the `jobs` collection via Firestore `.snapshots()`, mapping documents to `Job` models.
-4. Whenever an employer creates a job, toggles visibility, or updates details in Firestore, the stream emits a new `List<Job>`.
-5. `JobProvider` updates its internal state and calls `notifyListeners()`.
-6. The UI rebuilds automatically to display the updated listings.
-
-When an AI translation is requested or an application is submitted:
-- The UI triggers `OllamaService.translate()` or `ApplicationProvider.applyToJob()`.
-- The repository persists the new translation or application status in Firestore.
-- Changes flow back through the providers, ensuring real-time consistency across all screens without manual state synchronization.
 
 ---
 
@@ -176,6 +159,119 @@ lib/
     ├── user_item.dart
     └── user_rating_badge.dart
 ```
+
+---
+
+## How the layers work together
+
+A concrete example: **browsing and applying to job offers in real time.**
+
+1. `JobListScreen` (or `JobDetails`) reads `JobProvider` via `context.watch<JobProvider>()`.
+2. `JobProvider` listens to `JobRepository.watchJobs()` (or fetches updates from Firestore).
+3. `FirestoreJobRepository` queries the `jobs` collection via Firestore `.snapshots()`, mapping documents to `Job` models.
+4. Whenever an employer creates a job, toggles visibility, or updates details in Firestore, the stream emits a new `List<Job>`.
+5. `JobProvider` updates its internal state and calls `notifyListeners()`.
+6. The UI rebuilds automatically to display the updated listings.
+
+When an AI translation is requested or an application is submitted:
+- The UI triggers `OllamaService.translate()` or `ApplicationProvider.applyToJob()`.
+- The repository persists the new translation or application status in Firestore.
+- Changes flow back through the providers, ensuring real-time consistency across all screens without manual state synchronization.
+
+---
+
+## State management with Provider
+
+This project uses the **`provider`** package. The two key objects are
+`ChangeNotifier`s registered in `main.dart`:
+
+```dart
+MultiProvider(
+  providers: [
+    ChangeNotifierProvider(
+        create: (_) => UserProvider(FirestoreUserRepository()),
+    ),
+    ChangeNotifierProxyProvider<UserProvider, ApplicationState>(
+        create: (context) =>
+            ApplicationState(userProvider: context.read<UserProvider>()),
+        update: (_, userProvider, previousState) =>
+            (previousState ?? ApplicationState(userProvider: userProvider))
+            ..updateUserProvider(userProvider),
+    ),
+    ChangeNotifierProvider(
+        create: (_) => ApplicationProvider(FirestoreApplicationRepository()),
+    ),
+    ChangeNotifierProvider(
+        create: (_) => JobProvider(
+        FirestoreJobRepository(
+            applicationRepository: FirestoreApplicationRepository(),
+        ),
+        ),
+    ),
+    ],
+  ...
+)
+```
+
+- **`ChangeNotifierProvider`** exposes a `ChangeNotifier` to the widget tree.
+  When it calls `notifyListeners()`, listening widgets rebuild.
+- **`ChangeNotifierProxyProvider`** is used because `ApplicationState` *depends on*
+  `UserProvider`: it needs the current user's id for signup step 2.
+- **Dependency injection**: the providers receive their data sources through
+  their constructors (`AuthProvider(FirebaseAuthService())`,
+  `TaskProvider(FirestoreTaskRepository())`). This is what makes them testable.
+
+In widgets you typically:
+
+```dart
+final jobs = context.watch<JobProvider>().jobs;   // rebuild on change
+context.read<JobProvider>().deleteJob(jobId);     // call once, no rebuild
+```
+---
+
+## Data models & Firestore structure
+
+You can see all data models in the lib/models/ folder.
+
+In Firestore we have three distinct collections:
+- users
+When signing up, row for user data is creating in `Authentication`. The row's ID is saved and is reused for the user collection in `Firestore`.
+
+Also, users can be either students, employers or `admin`. The Firestore fields change slightly depending on the role :
+
+Role: `student`
+```
+users/:id
+
+firstName           string
+lastName            string
+email               string
+role                string
+description         string
+canton              string
+city                string
+profilePictureUrl   string
+faceRecognitionUrl  string
+skills              string[]
+history             HistoryEntry[] // see models
+reviews             Review[]  // see models
+```
+
+Role: `employer`
+```
+companyName         string
+email               string
+role                string
+description         string
+canton              string
+city                string
+profilePictureUrl   string
+faceRecognitionUrl  string
+companySize         int
+reviews             Review[]  // see models
+```
+
+Access is restricted by `firestore.rules`.
 
 ---
 
