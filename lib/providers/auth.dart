@@ -15,11 +15,15 @@ import 'package:vagoflax/services/cloudinary.dart';
 import 'package:vagoflax/models/user.dart' as usermodel;
 
 import 'package:vagoflax/utils/firebase_options.dart';
+import 'package:vagoflax/providers/job.dart';
+import 'package:vagoflax/providers/application.dart';
 
 class ApplicationState extends ChangeNotifier {
   final UserProvider userProvider;
+  final JobProvider jobProvider;
+  final ApplicationProvider applicationProvider;
 
-  ApplicationState({required this.userProvider}) {
+  ApplicationState({required this.userProvider, required this.jobProvider, required this.applicationProvider}) {
     init();
   }
 
@@ -70,6 +74,8 @@ class ApplicationState extends ChangeNotifier {
 
         try {
           await userProvider.loadUserData(user.uid);
+          jobProvider.restart();
+          applicationProvider.restart();
         } catch (e) {
           signOut();
         } finally {
