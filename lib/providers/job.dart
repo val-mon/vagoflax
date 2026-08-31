@@ -19,6 +19,11 @@ class JobProvider with ChangeNotifier {
     _subscribeToJobs();
   }
 
+  void restart() {
+    _jobsSubscription?.cancel();
+    _subscribeToJobs();
+  }
+
   // Subscribe to the job stream from the repository to get real-time updates and notify listeners when the job list changes.
   void _subscribeToJobs() {
     _isLoading = true;
@@ -32,6 +37,7 @@ class JobProvider with ChangeNotifier {
       },
       onError: (error, stackTrace) {
         _isLoading = false;
+        _jobs = [];
         notifyListeners();
         debugPrint('ERREUR STREAM JOBS : $error');
         debugPrint('Stacktrace: $stackTrace');

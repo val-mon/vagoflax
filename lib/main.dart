@@ -35,13 +35,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => UserProvider(FirestoreUserRepository()),
         ),
-        ChangeNotifierProxyProvider<UserProvider, ApplicationState>(
-          create: (context) =>
-              ApplicationState(userProvider: context.read<UserProvider>()),
-          update: (_, userProvider, previousState) =>
-              (previousState ?? ApplicationState(userProvider: userProvider))
-                ..updateUserProvider(userProvider),
-        ),
         ChangeNotifierProvider(
           create: (_) => ApplicationProvider(FirestoreApplicationRepository()),
         ),
@@ -51,6 +44,21 @@ class MyApp extends StatelessWidget {
               applicationRepository: FirestoreApplicationRepository(),
             ),
           ),
+        ),
+        ChangeNotifierProxyProvider<UserProvider, ApplicationState>(
+          create: (context) => ApplicationState(
+            userProvider: context.read<UserProvider>(),
+            jobProvider: context.read<JobProvider>(),
+            applicationProvider: context.read<ApplicationProvider>(),
+          ),
+          update: (_, userProvider, previousState) =>
+              (previousState ??
+                    ApplicationState(
+                      userProvider: userProvider,
+                      jobProvider: context.read<JobProvider>(),
+                      applicationProvider: context.read<ApplicationProvider>(),
+                    ))
+                ..updateUserProvider(userProvider),
         ),
       ],
       child: MaterialApp.router(

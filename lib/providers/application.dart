@@ -21,6 +21,11 @@ class ApplicationProvider extends ChangeNotifier {
     _listenToApplications();
   }
 
+  void restart() {
+    _subscription?.cancel();
+    _listenToApplications();
+  }
+
   void _listenToApplications() {
     _subscription = _repository.getApplications().listen(
       (applicationsList) {
