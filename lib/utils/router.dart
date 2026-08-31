@@ -8,10 +8,10 @@ import 'package:vagoflax/views/auth/auth_gate.dart';
 import 'package:vagoflax/views/employer/job_applications.dart';
 import 'package:vagoflax/views/job/details.dart';
 import 'package:vagoflax/views/auth/login/login.dart';
-import 'package:vagoflax/views/auth/signup/1_emailpw.dart';
-import 'package:vagoflax/views/auth/signup/2_type.dart';
-import 'package:vagoflax/views/auth/signup/3_employer.dart';
-import 'package:vagoflax/views/auth/signup/3_student.dart';
+import 'package:vagoflax/views/auth/signup/step_1_emailpw.dart';
+import 'package:vagoflax/views/auth/signup/step_2_type.dart';
+import 'package:vagoflax/views/auth/signup/step_3_employer.dart';
+import 'package:vagoflax/views/auth/signup/step_3_student.dart';
 import 'package:vagoflax/views/profile.dart';
 import 'package:vagoflax/widgets/profile_edit_form.dart';
 

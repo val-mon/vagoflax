@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vagoflax/widgets/job/form.dart';
 import 'package:vagoflax/models/job.dart';
+
 class AddJobScreen extends StatelessWidget {
   final Job? job;
   const AddJobScreen({super.key, this.job});
