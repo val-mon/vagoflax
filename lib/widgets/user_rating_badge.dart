@@ -35,11 +35,13 @@ class UserRatingBadge extends StatelessWidget {
           rating.toStringAsFixed(1),
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(width: 4),
-        Text(
-          '($count)',
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-        ),
+        if (count > 0) ...[
+          const SizedBox(width: 4),
+          Text(
+            '($count)',
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+          ),
+        ],
       ],
     );
   }

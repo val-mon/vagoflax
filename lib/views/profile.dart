@@ -9,11 +9,17 @@ import 'package:vagoflax/providers/app_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vagoflax/widgets/user_rating_badge.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, this.userId});
 
   final String? userId;
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool showAllReviews = false;
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
@@ -21,8 +27,8 @@ class ProfileScreen extends StatelessWidget {
     User user;
 
     // if userId is provided, we are viewing another user's profile, otherwise we are viewing our own profile
-    if (userId != null) {
-      final foundUser = userProvider.getUserFromId(userId!);
+    if (widget.userId != null) {
+      final foundUser = userProvider.getUserFromId(widget.userId!);
       if (foundUser == null) {
         return Scaffold(
           appBar: AppBar(title: const Text('Profile')),
@@ -71,6 +77,53 @@ class ProfileScreen extends StatelessWidget {
                     rating: user.averageRating,
                     count: user.reviewCount,
                   ),
+                  if (user.reviewCount > 0) ...[
+                    const SizedBox(height: 8),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            showAllReviews = !showAllReviews;
+                          });
+                        },
+                        child: Text(
+                          showAllReviews
+                              ? 'Hide Reviews'
+                              : 'Show All Reviews (${user.reviewCount})',
+                        ),
+                      ),
+                    ),
+                    if (showAllReviews)
+                      Column(
+                        children: [
+                          ...user.reviews.expand((review) {
+                            final reviewer = userProvider.getUserFromId(
+                              review.reviewerId,
+                            );
+                            final userName = reviewer == null
+                                ? "Unknown User"
+                                : reviewer.role == UserRole.employer
+                                ? reviewer.companyName ?? 'Unknown Company'
+                                : '${reviewer.firstName ?? 'Unknown'} ${reviewer.lastName ?? 'User'}';
+                            final userLocation = reviewer == null
+                                ? ""
+                                : ' • ${reviewer.city} ${reviewer.canton}';
+                            return [
+                              ListTile(
+                                title: Text(userName + userLocation),
+                                subtitle: Text(review.comment),
+                                trailing: UserRatingBadge(
+                                  rating: review.rating,
+                                  count: -1,
+                                ),
+                              ),
+
+                              const SizedBox(height: 8),
+                            ].toList();
+                          }),
+                        ],
+                      ),
+                  ],
                   const SizedBox(height: 24),
                   const _SectionTitle(title: 'Personal Information'),
                   const SizedBox(height: 14),
