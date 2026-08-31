@@ -65,10 +65,9 @@ class FirestoreApplicationRepository implements ApplicationRepository {
 
   @override
   Future<void> deleteAllApplicationsForJob(String jobId) {
-    return _applicationsRef()
-        .where('jobId', isEqualTo: jobId)
-        .get()
-        .then((querySnapshot) {
+    return _applicationsRef().where('jobId', isEqualTo: jobId).get().then((
+      querySnapshot,
+    ) {
       for (final doc in querySnapshot.docs) {
         doc.reference.delete();
       }
