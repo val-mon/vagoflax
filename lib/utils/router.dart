@@ -8,11 +8,11 @@ import 'package:vagoflax/views/auth/auth_gate.dart';
 import 'package:vagoflax/views/employer/employer_job_applications.dart';
 import 'package:vagoflax/views/job_details.dart';
 import 'package:vagoflax/views/auth/login/login.dart';
-import 'package:vagoflax/views/auth/signup/signup_1_emailpw.dart';
-import 'package:vagoflax/views/auth/signup/signup_2_faceregistration.dart';
-import 'package:vagoflax/views/auth/signup/signup_3_type.dart';
-import 'package:vagoflax/views/auth/signup/signup_4_employer.dart';
-import 'package:vagoflax/views/auth/signup/signup_4_student.dart';
+import 'package:vagoflax/views/auth/signup/emailpw.dart';
+import 'package:vagoflax/views/auth/signup/face.dart';
+import 'package:vagoflax/views/auth/signup/type.dart';
+import 'package:vagoflax/views/auth/signup/employer.dart';
+import 'package:vagoflax/views/auth/signup/student.dart';
 import 'package:vagoflax/views/profile.dart';
 import 'package:vagoflax/widgets/profile_edit_form.dart';
 

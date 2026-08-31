@@ -36,6 +36,7 @@ class ApplicationState extends ChangeNotifier {
   String? tempCity;
   File? tempProfilePicture;
   String? tempDescription;
+  List<double> tempFaceSignature = const [];
 
   // student specific fields
   String? tempFirstName;
@@ -112,11 +113,19 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void signUpStep2(String role) {
-    tempRole = role;
+  // step two keeps the face signature until the user document is created.
+  void signUpStep2(List<double> faceSignature) {
+    tempFaceSignature = faceSignature;
+    notifyListeners();
   }
 
-  Future<void> signUpStep3Student(
+  // step three stores the chosen role until the profile form is submitted.
+  void signUpStep3(String role) {
+    tempRole = role;
+    notifyListeners();
+  }
+
+  Future<void> signUpStep4Student(
     String firstname,
     String lastname,
     String description,
@@ -135,7 +144,7 @@ class ApplicationState extends ChangeNotifier {
     return finalizeSignUp();
   }
 
-  Future<void> signUpStep3Employer(
+  Future<void> signUpStep4Employer(
     String companyName,
     String description,
     String canton,
@@ -171,7 +180,7 @@ class ApplicationState extends ChangeNotifier {
       email: _userEmail ?? FirebaseAuth.instance.currentUser?.email ?? '',
       role: tempRole == 'student' ? UserRole.student : UserRole.employer,
       profilePictureUrl: profilePictureUrl,
-      faceRecognitionUrl: null,
+      faceSignature: tempFaceSignature,
       firstName: tempFirstName,
       lastName: tempLastName,
       description: tempDescription ?? '',
