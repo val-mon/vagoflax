@@ -280,9 +280,9 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                     return;
                   }
 
-                  // lancer app_state signUpStep3Employer and then navigate to next screen
+                  // lancer app_state signUpStep4Employer and then navigate to next screen
                   try {
-                    await context.read<ApplicationState>().signUpStep3Employer(
+                    await context.read<ApplicationState>().signUpStep4Employer(
                       name,
                       desc,
                       canton,

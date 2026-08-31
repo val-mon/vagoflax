@@ -6,7 +6,7 @@ import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/views/admin.dart';
 import 'package:vagoflax/views/student/gate.dart';
 import 'package:vagoflax/views/loading.dart';
-import 'package:vagoflax/views/auth/signup/step_2_type.dart';
+import 'package:vagoflax/views/auth/signup/type.dart';
 import 'package:vagoflax/views/auth/welcome.dart';
 import 'package:vagoflax/views/employer/job_offer.dart';
 

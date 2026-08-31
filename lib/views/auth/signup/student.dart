@@ -286,7 +286,7 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
 
                   // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
                   try {
-                    await context.read<ApplicationState>().signUpStep3Student(
+                    await context.read<ApplicationState>().signUpStep4Student(
                       firstName,
                       lastName,
                       desc,

@@ -66,7 +66,6 @@ class JobApplicationsScreen extends StatelessWidget {
                     canton: "",
                     city: "",
                     description: "",
-                    faceRecognitionUrl: "",
                   ),
                 );
 

@@ -6,6 +6,12 @@ import 'package:vagoflax/providers/auth.dart';
 class SignUpTypeScreen extends StatelessWidget {
   const SignUpTypeScreen({super.key});
 
+  // save the role in the app state, then go to the matching profile form
+  void _selectRole(BuildContext context, String role, String route) {
+    context.read<ApplicationState>().signUpStep3(role);
+    context.push(route);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,14 +56,8 @@ class SignUpTypeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: () {
-                // save role as student
-                Provider.of<ApplicationState>(
-                  context,
-                  listen: false,
-                ).signUpStep2('student');
-                context.push('/signup/student');
-              },
+              onPressed: () =>
+                  _selectRole(context, 'student', '/signup/student'),
               icon: const Icon(Icons.school, size: 28), // Graduation cap icon
               label: const Text(
                 'Student',
@@ -77,14 +77,8 @@ class SignUpTypeScreen extends StatelessWidget {
                 ),
                 elevation: 0,
               ),
-              onPressed: () {
-                // save role as employer
-                Provider.of<ApplicationState>(
-                  context,
-                  listen: false,
-                ).signUpStep2('employer');
-                context.push('/signup/employer');
-              },
+              onPressed: () =>
+                  _selectRole(context, 'employer', '/signup/employer'),
               icon: const Icon(Icons.business, size: 28), // Building icon
               label: const Text(
                 'Employer',

@@ -13,7 +13,7 @@ class User {
   final String? lastName;
   final String? companyName; // Company name for employers
   final String? profilePictureUrl;
-  final String? faceRecognitionUrl;
+  final List<double> faceSignature;
   final UserRole role;
   final List<String> skills;
   final List<Review> reviews;
@@ -29,7 +29,7 @@ class User {
     this.firstName,
     this.lastName,
     this.profilePictureUrl,
-    this.faceRecognitionUrl,
+    this.faceSignature = const [],
     required this.role,
     this.companySize,
     this.companyName = '',
@@ -51,7 +51,9 @@ class User {
       lastName: data['lastName'] ?? '',
       companyName: data['companyName'] ?? '',
       profilePictureUrl: data['profilePictureUrl'] ?? '',
-      faceRecognitionUrl: data['faceRecognitionUrl'] ?? '',
+      faceSignature: ((data['faceSignature'] as List<dynamic>?) ?? [])
+          .map((value) => (value as num).toDouble())
+          .toList(),
       role: UserRole.fromFirestore(data['role']),
       companySize: (data['companySize'] as num?)?.toInt(),
       skills: List<String>.from(data['skills'] ?? []),
@@ -95,7 +97,7 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'profilePictureUrl': profilePictureUrl,
-      'faceRecognitionUrl': faceRecognitionUrl,
+      'faceSignature': faceSignature,
       'role': role.toFirestore(),
       'skills': skills,
       'companySize': companySize,
@@ -149,6 +151,7 @@ class User {
             skills: skills ?? this.skills,
             history: history ?? this.history,
             profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+            faceSignature: faceSignature,
           )
         : User(
             id: id,
@@ -160,6 +163,7 @@ class User {
             canton: canton ?? this.canton,
             description: description ?? this.description,
             profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
+            faceSignature: faceSignature,
           );
   }
 
