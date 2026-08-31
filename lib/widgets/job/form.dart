@@ -49,11 +49,11 @@ class _JobFormState extends State<JobForm> {
       // Editing an existing job
       _titleController.text = job.title;
       _descriptionController.text = job.description ?? '';
-      _contractTimeController.text = job.contractTime.toString();
-      _holidaysController.text = job.holidays.toString();
-      _maternityLeaveController.text = job.maternityLeave.toString();
-      _paternityLeaveController.text = job.paternityLeave.toString();
-      _workloadPercentController.text = job.workloadPercent.toString();
+      _contractTimeController.text = job.contractTime == null ? '' : job.contractTime.toString();
+      _holidaysController.text = job.holidays == null ? '' : job.holidays.toString();
+      _maternityLeaveController.text = job.maternityLeave == null ? '' : job.maternityLeave.toString();
+      _paternityLeaveController.text = job.paternityLeave == null ? '' : job.paternityLeave.toString();
+      _workloadPercentController.text = job.workloadPercent == null ? '' : job.workloadPercent.toString();
       _salaryController.text = job.salary?.toString() ?? '';
       _selectedRole = job.role;
       _selectedIndustry = job.industry;

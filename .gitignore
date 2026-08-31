@@ -60,3 +60,11 @@ play-store-credentials.json
 .env
 /lib/build/ios/SourcePackages
 /lib/build/macos/SourcePackages
+
+# Flutter generated plugin registrants
+**/generated_plugin_registrant.cc
+**/generated_plugin_registrant.h
+**/generated_plugins.cmake
+**/GeneratedPluginRegistrant.swift
+**/GeneratedPluginRegistrant.h
+**/GeneratedPluginRegistrant.m
