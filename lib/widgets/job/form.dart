@@ -222,7 +222,7 @@ class _JobFormState extends State<JobForm> {
             const SizedBox(height: 24),
 
             ElevatedButton(
-              onPressed: () => _saveJob(context),
+              onPressed: () async => await _saveJob(context),
               child: Text(widget.job == null ? 'Create Job' : 'Update Job'),
             ),
           ],
@@ -271,7 +271,7 @@ class _JobFormState extends State<JobForm> {
     return null;
   }
 
-  void _saveJob(BuildContext context) {
+  Future<void> _saveJob(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     final jobProvider = Provider.of<JobProvider>(context, listen: false);
@@ -297,11 +297,13 @@ class _JobFormState extends State<JobForm> {
     );
 
     if (widget.job == null) {
-      jobProvider.addJob(job);
+      await jobProvider.addJob(job);
     } else {
-      jobProvider.updateJob(job);
+      await jobProvider.updateJob(job);
     }
 
-    context.pop();
+    if (context.mounted) {
+      context.pop();
+    }
   }
 }
