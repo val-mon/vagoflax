@@ -17,9 +17,11 @@ class JobEmployerItem extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: ListTile(
-        title: Text(job.title),
+        title: Text(job.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         subtitle: Text(
           job.description == '' ? 'No description available' : job.description!,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
