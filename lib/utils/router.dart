@@ -9,9 +9,10 @@ import 'package:vagoflax/views/employer/employer_job_applications.dart';
 import 'package:vagoflax/views/job_details.dart';
 import 'package:vagoflax/views/auth/login/login.dart';
 import 'package:vagoflax/views/auth/signup/signup_1_emailpw.dart';
-import 'package:vagoflax/views/auth/signup/signup_2_type.dart';
-import 'package:vagoflax/views/auth/signup/signup_3_employer.dart';
-import 'package:vagoflax/views/auth/signup/signup_3_student.dart';
+import 'package:vagoflax/views/auth/signup/signup_2_faceregistration.dart';
+import 'package:vagoflax/views/auth/signup/signup_3_type.dart';
+import 'package:vagoflax/views/auth/signup/signup_4_employer.dart';
+import 'package:vagoflax/views/auth/signup/signup_4_student.dart';
 import 'package:vagoflax/views/profile.dart';
 import 'package:vagoflax/widgets/profile_edit_form.dart';
 
@@ -47,6 +48,10 @@ final router = GoRouter(
       path: '/signup',
       pageBuilder: (context, state) =>
           buildSlidePage(state: state, child: const SignUpEmailPwScreen()),
+    ),
+    GoRoute(
+      path: '/signup/face',
+      builder: (context, state) => const FaceRegistrationScreen(),
     ),
     GoRoute(
       path: '/signup/role',

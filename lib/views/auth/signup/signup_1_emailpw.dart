@@ -208,7 +208,7 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                   _isLoading = false;
                 });
 
-                context.go('/signup/role');
+                context.go('/signup/face');
               },
               child: _isLoading
                   ? const SizedBox(

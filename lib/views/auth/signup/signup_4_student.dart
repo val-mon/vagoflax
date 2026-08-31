@@ -1,26 +1,25 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
-import 'dart:io';
-
-import 'package:image_picker/image_picker.dart';
-
-class SignUpEmployerScreen extends StatefulWidget {
-  const SignUpEmployerScreen({super.key});
+class SignUpStudentScreen extends StatefulWidget {
+  const SignUpStudentScreen({super.key});
 
   @override
-  State<SignUpEmployerScreen> createState() => _SignUpEmployerScreenState();
+  State<SignUpStudentScreen> createState() => _SignUpStudentScreenState();
 }
 
-class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
+class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
   bool _isLoading = false;
-  final _nameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _cantonController = TextEditingController();
   final _cityController = TextEditingController();
-  final _companySizeController = TextEditingController();
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
 
@@ -39,21 +38,21 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
   @override
   void dispose() {
     _selectedImage?.delete(); // Delete the temporary image file if it exists
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _descriptionController.dispose();
     _cantonController.dispose();
     _cityController.dispose();
-    _companySizeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: !_isLoading, // Prevent back navigation when loading
+      canPop: !_isLoading,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Employer account setup'),
+          title: const Text('Student account setup'),
           centerTitle: true,
         ),
         body: Padding(
@@ -109,29 +108,61 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
               ),
 
               const SizedBox(height: 32),
-              // name
-              TextField(
-                controller: _nameController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  label: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Company Name',
-                          style: TextStyle(color: Colors.black54),
+              // firstname
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _firstNameController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        label: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'First name',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              const TextSpan(
+                                text: ' *',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ],
+                          ),
                         ),
-                        const TextSpan(
-                          text: ' *',
-                          style: TextStyle(color: Colors.red),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      controller: _lastNameController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        label: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'Last name',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              const TextSpan(
+                                text: ' *',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ],
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
 
               const SizedBox(height: 16),
@@ -213,32 +244,6 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                 ),
               ),
 
-              const SizedBox(height: 16),
-
-              TextField(
-                controller: _companySizeController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  label: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Number of employees in your company',
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        const TextSpan(
-                          text: ' *',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-
               const SizedBox(height: 32),
 
               ElevatedButton(
@@ -257,18 +262,17 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                     _isLoading = true;
                   });
 
-                  final name = _nameController.text.trim();
+                  final firstName = _firstNameController.text.trim();
+                  final lastName = _lastNameController.text.trim();
                   final desc = _descriptionController.text.trim();
                   final canton = _cantonController.text.trim();
                   final city = _cityController.text.trim();
-                  final companySize =
-                      int.tryParse(_companySizeController.text.trim()) ?? 0;
 
-                  if (name.isEmpty ||
+                  if (firstName.isEmpty ||
+                      lastName.isEmpty ||
                       desc.isEmpty ||
                       canton.isEmpty ||
-                      city.isEmpty ||
-                      companySize == 0) {
+                      city.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Please fill in all fields.'),
@@ -280,31 +284,29 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                     return;
                   }
 
-                  // lancer app_state signUpStep3Employer and then navigate to next screen
+                  // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
                   try {
-                    await context.read<ApplicationState>().signUpStep3Employer(
-                      name,
+                    await context.read<ApplicationState>().signUpStep4Student(
+                      firstName,
+                      lastName,
                       desc,
                       canton,
                       city,
-                      companySize,
                       _selectedImage,
                     );
                     if (!context.mounted) return;
                     context.go('/');
-                    setState(() {
-                      _isLoading = false;
-                    });
                   } catch (e) {
-                    setState(() {
-                      _isLoading = false;
-                    });
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Error occurred while signing up.'),
+                        content: Text('An error occurred while signing up.'),
                       ),
                     );
+                  } finally {
+                    setState(() {
+                      _isLoading = false;
+                    });
                   }
                 },
                 child: _isLoading
