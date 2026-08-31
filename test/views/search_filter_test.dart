@@ -26,7 +26,11 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: SearchFilter(onSearch: (_) {}, onFilterTap: () {}),
+          body: SearchFilter(
+            onSearch: (_) {},
+            onFilterTap: () {},
+            activeFilterCount: 3,
+          ),
         ),
       ),
     );

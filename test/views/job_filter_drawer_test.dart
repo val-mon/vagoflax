@@ -35,6 +35,8 @@ void main() {
     );
 
     expect(find.text('Roles'), findsOneWidget);
+    await tester.tap(find.text('Roles'));
+    await tester.pumpAndSettle();
     expect(find.text('Intern'), findsOneWidget);
   });
 
