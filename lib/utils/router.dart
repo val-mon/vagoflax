@@ -9,7 +9,7 @@ import 'package:vagoflax/views/employer/employer_job_applications.dart';
 import 'package:vagoflax/views/job_details.dart';
 import 'package:vagoflax/views/auth/login/login.dart';
 import 'package:vagoflax/views/auth/signup/emailpw.dart';
-import 'package:vagoflax/views/auth/signup/face.dart';
+import 'package:vagoflax/views/auth/signup/face_recognition.dart';
 import 'package:vagoflax/views/auth/signup/type.dart';
 import 'package:vagoflax/views/auth/signup/employer.dart';
 import 'package:vagoflax/views/auth/signup/student.dart';
