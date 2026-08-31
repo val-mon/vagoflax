@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isStudent() {
+      return isSignedIn() && userDoc().role == 'student';
+    }
+
+    function isAdmin() {
+      return isSignedIn() && userDoc().role == 'admin';
+    }
+
+    function isEmployer() {
+      return isSignedIn() && userDoc().role == 'employer';
+    }
+
+    // Allow read access to users collection for signed-in users because a user can read their own profile and other users' profiles.
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Allow read access to jobs collection for signed-in users because a user can read job postings. Only employers can create, update, or delete job postings.
+    match /jobs/{jobId} {
+      allow read: if isSignedIn();
+      allow write, create, delete, update: if isEmployer() || isAdmin();
+    }
+
+    // Allow read access to applications for signed-in users because a user can read their own applications. Only students can create applications, and only employers can update them.
+    match /applications/{applicationId} {
+      allow read: if isSignedIn();
+      allow create: if isStudent() && request.resource.data.studentUuid == request.auth.uid;
+      allow update: if isEmployer() && get(/databases/$(database)/documents/jobs/$(resource.data.jobId)).data.userUuid == request.auth.uid;
+    }
+  }
+}
