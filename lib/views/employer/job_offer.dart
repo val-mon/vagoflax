@@ -12,8 +12,8 @@ class JobProviderOfferScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final jobProvider = Provider.of<JobProvider>(context, listen: true);
+    final jobProvider = context.watch<JobProvider>();
+    final userProvider = context.watch<UserProvider>();
     final jobs = jobProvider.jobs
         .where((job) => job.userUuid == userProvider.currentUser?.id)
         .toList();

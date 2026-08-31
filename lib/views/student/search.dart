@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
+import 'package:vagoflax/widgets/job/filter_drawer.dart';
 import 'package:vagoflax/widgets/search_filter.dart';
 import 'package:vagoflax/widgets/profile_button.dart';
 
@@ -8,7 +9,6 @@ import 'package:vagoflax/providers/job.dart';
 import 'package:vagoflax/widgets/job/student_item.dart';
 
 import 'package:vagoflax/models/job_filters.dart';
-import 'package:vagoflax/widgets/job/filter_drawer.dart';
 
 class JobListScreen extends StatefulWidget {
   const JobListScreen({super.key});
@@ -24,7 +24,7 @@ class _JobListScreenState extends State<JobListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final jobProvider = Provider.of<JobProvider>(context, listen: true);
+    final jobProvider = context.watch<JobProvider>();
 
     final jobs = jobProvider.jobs;
     final isLoading = jobProvider.isLoading;
@@ -98,17 +98,6 @@ class _JobListScreenState extends State<JobListScreen> {
         centerTitle: true,
         actions: [const ProfileButton()],
       ),
-      endDrawer: JobFilterDrawer(
-        jobs: jobs,
-        initialFilters: filters,
-        onApply: (newFilters) {
-          setState(() {
-            filters = newFilters;
-          });
-
-          Navigator.pop(context);
-        },
-      ),
 
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -120,6 +109,36 @@ class _JobListScreenState extends State<JobListScreen> {
                     setState(() {
                       searchQuery = value;
                     });
+                  },
+                  onFilterTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (ctx) => FractionallySizedBox(
+                        widthFactor: 1,
+                        heightFactor: 0.90,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          child: JobFilterDrawer(
+                            jobs: jobs,
+                            initialFilters: filters,
+                            onApply: (newFilters) {
+                              setState(() {
+                                filters = newFilters;
+                              });
+                              Navigator.pop(ctx);
+                            },
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
 
