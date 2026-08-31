@@ -38,6 +38,10 @@ class SearchFilter extends StatelessWidget {
                   onPressed: () {
                     Scaffold.of(context).openEndDrawer();
                   },
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.grey[200],
+                    foregroundColor: Colors.black87,
+                  ),
                 );
               },
             ),
