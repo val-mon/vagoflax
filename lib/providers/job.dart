@@ -37,7 +37,7 @@ class JobProvider with ChangeNotifier {
       },
       onError: (error, stackTrace) {
         _isLoading = false;
-        _jobs = []; 
+        _jobs = [];
         notifyListeners();
         debugPrint('ERREUR STREAM JOBS : $error');
         debugPrint('Stacktrace: $stackTrace');

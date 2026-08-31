@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => UserProvider(FirestoreUserRepository()),
         ),
-                ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (_) => ApplicationProvider(FirestoreApplicationRepository()),
         ),
         ChangeNotifierProvider(
@@ -46,10 +46,18 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProxyProvider<UserProvider, ApplicationState>(
-          create: (context) =>
-              ApplicationState(userProvider: context.read<UserProvider>(), jobProvider: context.read<JobProvider>(), applicationProvider: context.read<ApplicationProvider>()),
+          create: (context) => ApplicationState(
+            userProvider: context.read<UserProvider>(),
+            jobProvider: context.read<JobProvider>(),
+            applicationProvider: context.read<ApplicationProvider>(),
+          ),
           update: (_, userProvider, previousState) =>
-              (previousState ?? ApplicationState(userProvider: userProvider, jobProvider: context.read<JobProvider>(), applicationProvider: context.read<ApplicationProvider>()))
+              (previousState ??
+                    ApplicationState(
+                      userProvider: userProvider,
+                      jobProvider: context.read<JobProvider>(),
+                      applicationProvider: context.read<ApplicationProvider>(),
+                    ))
                 ..updateUserProvider(userProvider),
         ),
       ],

@@ -23,7 +23,11 @@ class ApplicationState extends ChangeNotifier {
   final JobProvider jobProvider;
   final ApplicationProvider applicationProvider;
 
-  ApplicationState({required this.userProvider, required this.jobProvider, required this.applicationProvider}) {
+  ApplicationState({
+    required this.userProvider,
+    required this.jobProvider,
+    required this.applicationProvider,
+  }) {
     init();
   }
 
