@@ -15,9 +15,10 @@ Made for the Mobile Development Summer School (208.1).
 5.  [Project structure](#project-structure)
 6.  [How the layers work together](#how-the-layers-work-together)
 7.  [State management with Provider](#state-management-with-provider)
-8.  [Getting Started](#getting-started)
-9.  [Run tests](#run-tests)
-10. [Repo policy](#repo-policy)
+8.  [Data models & Firestore structure](#data-models--firestore-structure)
+9.  [Getting Started](#getting-started)
+10. [Run tests](#run-tests)
+11. [Repo policy](#repo-policy)
 
 ---
 
@@ -218,8 +219,9 @@ MultiProvider(
 - **`ChangeNotifierProxyProvider`** is used because `ApplicationState` *depends on*
   `UserProvider`: it needs the current user's id for signup step 2.
 - **Dependency injection**: the providers receive their data sources through
-  their constructors (`AuthProvider(FirebaseAuthService())`,
-  `TaskProvider(FirestoreTaskRepository())`). This is what makes them testable.
+  their constructors (`UserProvider(FirestoreUserRepository())`,
+  `ApplicationProvider(FirestoreApplicationRepository())`,
+  `JobProvider(FirestoreJobRepository(...))`). This is what makes them testable.
 
 In widgets you typically:
 
@@ -234,44 +236,117 @@ context.read<JobProvider>().deleteJob(jobId);     // call once, no rebuild
 You can see all data models in the lib/models/ folder.
 
 In Firestore we have three distinct collections:
-- users
+
+### users
 When signing up, row for user data is creating in `Authentication`. The row's ID is saved and is reused for the user collection in `Firestore`.
+
+`users/$id`
 
 Also, users can be either students, employers or `admin`. The Firestore fields change slightly depending on the role :
 
 Role: `student`
 ```
-users/:id
-
 firstName           string
 lastName            string
 email               string
-role                string
+role                UserRole        // enum
 description         string
 canton              string
 city                string
-profilePictureUrl   string
-faceRecognitionUrl  string
+profilePictureUrl   string?
+faceRecognitionUrl  string?
 skills              string[]
-history             HistoryEntry[] // see models
-reviews             Review[]  // see models
+history             HistoryEntry[]  // see models
+reviews             Review[]        // see models
 ```
 
 Role: `employer`
 ```
 companyName         string
 email               string
-role                string
+role                UserRole        // enum
 description         string
 canton              string
 city                string
-profilePictureUrl   string
-faceRecognitionUrl  string
+profilePictureUrl   string?
+faceRecognitionUrl  string?
 companySize         int
-reviews             Review[]  // see models
+reviews             Review[]        // see models
+```
+
+Role: `admin`
+```
+email       string
+role        UserRole  // enum
+createdAt   timestamp
+```
+
+### jobs
+Jobs can only be posted by an employer.
+
+`jobs/$jobId`
+
+```
+userUuid            string
+title               string
+description         string?
+diplomas            Diplomas[]        // enum
+contractTime        int?
+role                Role              // enum
+industry            Industry          // enum
+perks               Perks[]           // enum
+languages           Languages[]       // enum
+holidays            int?
+maternityLeave      int?
+paternityLeave      int?
+workloadPercent     int?
+salary              double?
+predictedSalary     double?
+visible             bool
+translations        JobTranslation[]  // see models
+createdAt           timestamp
+```
+
+### applications
+Applications can only be submitted by a student and reviewed by the employer owning the related job.
+
+`applications/$jobId_$studentId`
+
+```
+jobId               string
+studentUuid         string
+status              string        // e.g. 'submitted', 'reviewed', 'accepted', 'rejected'
+lastUpdated         timestamp
+createdAt           timestamp
 ```
 
 Access is restricted by `firestore.rules`.
+
+### Models
+#### Review
+Used in `users/$id` -> `reviews[]`
+```
+authorId            string
+rating              double
+comment             string
+createdAt           timestamp
+```
+
+#### HistoryEntry
+Used in `users/$id` -> `history[]`
+```
+title               string
+organization        string
+startDate           string
+endDate             string?
+```
+#### JobTranslation
+Used in `jobs/$id` -> `translations[]`
+```
+title               string
+description         string
+language            Languages         // enum
+```
 
 ---
 
@@ -311,6 +386,15 @@ flutterfire configure
 ### Environment variables configuration
 
 Create a `.env` file at the root of your project following the structure of `.env.example`.
+
+```
+CLOUDINARY_APIKEY=your_cloudinary_api_key
+CLOUDINARY_APISECRET=your_cloudinary_api_secret
+CLOUDINARY_CLOUDNAME=cloudinary_cloud_name
+OLLAMA_APIKEY=ollama_api_key
+```
+
+For the translation to work, you must put your Ollama API key in the `.env` file. The app does requests to the official Ollama servers and doesn't run the LLM locally.
 
 ### Run the app
 
