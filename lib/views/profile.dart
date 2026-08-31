@@ -8,7 +8,6 @@ import 'package:vagoflax/widgets/logout_button.dart';
 import 'package:vagoflax/providers/app_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vagoflax/widgets/user_rating_badge.dart';
-import 'package:vagoflax/models/history_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key, this.userId});
@@ -119,38 +118,39 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  if (user.role == UserRole.student)...[
+                  if (user.role == UserRole.student) ...[
+                    const _SectionTitle(title: 'Skills'),
+                    const SizedBox(height: 14),
 
-                  const _SectionTitle(title: 'Skills'),
-                  const SizedBox(height: 14),
+                    user.skills.isEmpty
+                        ? const Text('-')
+                        : Wrap(
+                            spacing: 8,
+                            runSpacing: 4,
+                            children: user.skills
+                                .map(
+                                  (s) => _InfoChip(icon: Icons.star, label: s),
+                                )
+                                .toList(),
+                          ),
+                    const SizedBox(height: 16),
+                    const _SectionTitle(title: 'History'),
+                    const SizedBox(height: 14),
 
-                  user.skills.isEmpty
-                      ? const Text('-')
-                      : Wrap(
-                          spacing: 8,
-                          runSpacing: 4,
-                          children: user.skills
-                              .map((s) => _InfoChip(icon: Icons.star, label: s))
-                              .toList(),
-                        ),
-                  const SizedBox(height: 16),
-                  const _SectionTitle(title: 'History'),
-                  const SizedBox(height: 14),
-
-                  user.history.isEmpty
-                      ? const Text('-')
-                      : Column(
-                          children: user.history
-                              .map(
-                                (h) => _InfoRow(
-                                  icon: Icons.work,
-                                  title: h.jobTitle,
-                                  value:
-                                      '${h.company} (${h.startedAt.year} to ${h.endedAt.year})',
-                                ),
-                              )
-                              .toList(),
-                        ),
+                    user.history.isEmpty
+                        ? const Text('-')
+                        : Column(
+                            children: user.history
+                                .map(
+                                  (h) => _InfoRow(
+                                    icon: Icons.work,
+                                    title: h.jobTitle,
+                                    value:
+                                        '${h.company} (${h.startedAt.year} to ${h.endedAt.year})',
+                                  ),
+                                )
+                                .toList(),
+                          ),
                   ],
                   const SizedBox(height: 24),
                   if (user.id == userProvider.currentUser!.id) ...[

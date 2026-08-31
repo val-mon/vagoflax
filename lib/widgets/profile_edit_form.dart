@@ -289,38 +289,39 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       _skillController.clear();
     });
   }
-void _addHistory() {
-  final title = _historyTitleController.text.trim();
-  final company = _historyCompanyController.text.trim();
 
-  if (title.isEmpty ||
-      company.isEmpty ||
-      _historyStartedAt == null ||
-      _historyEndedAt == null) {
-    return;
+  void _addHistory() {
+    final title = _historyTitleController.text.trim();
+    final company = _historyCompanyController.text.trim();
+
+    if (title.isEmpty ||
+        company.isEmpty ||
+        _historyStartedAt == null ||
+        _historyEndedAt == null) {
+      return;
+    }
+
+    setState(() {
+      _history.add(
+        HistoryEntry(
+          jobTitle: title,
+          company: company,
+          startedAt: _historyStartedAt!,
+          endedAt: _historyEndedAt!,
+        ),
+      );
+
+      _historyTitleController.clear();
+      _historyCompanyController.clear();
+      _historyStartedAt = null;
+      _historyEndedAt = null;
+    });
   }
 
-  setState(() {
-    _history.add(
-      HistoryEntry(
-        jobTitle: title,
-        company: company,
-        startedAt: _historyStartedAt!,
-        endedAt: _historyEndedAt!,
-      ),
-    );
-
-    _historyTitleController.clear();
-    _historyCompanyController.clear();
-    _historyStartedAt = null;
-    _historyEndedAt = null;
-  });
-}
-
   String _formatDate(DateTime date) =>
-    '${date.day.toString().padLeft(2, '0')}/'
-    '${date.month.toString().padLeft(2, '0')}/'
-    '${date.year}';
+      '${date.day.toString().padLeft(2, '0')}/'
+      '${date.month.toString().padLeft(2, '0')}/'
+      '${date.year}';
 
   String? _required(String? v) =>
       (v == null || v.trim().isEmpty) ? 'This field is required' : null;
