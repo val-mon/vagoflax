@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/providers/auth.dart';
 import 'package:go_router/go_router.dart';
 
 class LogoutButton extends StatelessWidget {

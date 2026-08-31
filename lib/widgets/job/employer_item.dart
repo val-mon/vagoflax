@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../models/job_model.dart';
+import 'package:vagoflax/models/job.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/job_provider.dart';
+import 'package:vagoflax/providers/job.dart';
 
 class JobEmployerItem extends StatelessWidget {
   final Job job;

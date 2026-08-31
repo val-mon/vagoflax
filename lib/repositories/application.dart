@@ -1,4 +1,4 @@
-import 'package:vagoflax/models/job_application_model.dart';
+import 'package:vagoflax/models/job_application.dart';
 
 abstract class ApplicationRepository {
   Stream<List<JobApplication>> getApplications();

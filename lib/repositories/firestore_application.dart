@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/job_application_model.dart';
-import 'application_repository.dart';
+import 'package:vagoflax/models/job_application.dart';
+import 'package:vagoflax/repositories/application.dart';
 
 class FirestoreApplicationRepository implements ApplicationRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

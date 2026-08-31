@@ -1,6 +1,5 @@
-import 'package:vagoflax/models/translation_model.dart';
-
-import '../models/job_model.dart';
+import 'package:vagoflax/models/translation.dart';
+import 'package:vagoflax/models/job.dart';
 
 abstract class JobRepository {
   Stream<List<Job>> getJobs();

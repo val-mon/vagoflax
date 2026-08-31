@@ -1,4 +1,4 @@
-import 'package:vagoflax/models/user_model.dart';
+import 'package:vagoflax/models/user.dart';
 
 abstract class UserRepository {
   Stream<List<User>> getUsers();

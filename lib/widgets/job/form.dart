@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/providers/user.dart';
 
-import '../providers/job_provider.dart';
-import '../models/job_model.dart';
-import '../models/enum/diplomas_model.dart';
-import '../models/enum/role_model.dart';
-import '../models/enum/perks_model.dart';
-import '../models/enum/languages_model.dart';
-import '../models/enum/industry_model.dart';
+import 'package:vagoflax/models/job.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/role.dart';
+import 'package:vagoflax/models/enum/perks.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/industry.dart';
+import 'package:vagoflax/providers/job.dart';
 
 import 'package:go_router/go_router.dart';
 

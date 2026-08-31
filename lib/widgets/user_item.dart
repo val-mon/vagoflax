@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/user_model.dart';
-import '../models/enum/user_role_model.dart';
+import 'package:vagoflax/models/user.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
 
 class UserItem extends StatelessWidget {
   final User user;

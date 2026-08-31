@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import '../models/job_application_model.dart';
-import '../repositories/application_repository.dart';
+import 'package:vagoflax/models/job_application.dart';
+import 'package:vagoflax/repositories/application.dart';
 
 class ApplicationProvider extends ChangeNotifier {
   final ApplicationRepository _repository;

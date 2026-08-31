@@ -7,12 +7,12 @@ import 'package:firebase_auth/firebase_auth.dart'
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:vagoflax/models/enum/user_role_model.dart';
-import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/services/cloudinary.dart';
-import 'package:vagoflax/models/user_model.dart' as usermodel;
+import 'package:vagoflax/models/user.dart' as usermodel;
 
-import '../utils/firebase_options.dart';
+import 'package:vagoflax/utils/firebase_options.dart';
 
 class ApplicationState extends ChangeNotifier {
   final UserProvider userProvider;
