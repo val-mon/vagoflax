@@ -91,13 +91,29 @@ class _StatusOptionTile extends StatelessWidget {
           ? Icon(Icons.check, color: color, size: 20)
           : null,
       onTap: isCurrentStatus
-          ? null // On désactive le clic si c'est déjà le statut actuel
+          ? null
           : () async {
-              // 1. Fermer la popup
               Navigator.pop(context);
 
-              // 2. Mettre à jour dans Firestore via le Provider
               try {
+                if (newStatus == 'accepted') {
+                  // Show a dialog to inform the employer that the job is now hidden
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Job Hidden'),
+                      content: const Text(
+                        'The job has been hidden from the job board since you accepted a candidate. You can make it visible again in the job\'s settings.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
                 await context
                     .read<ApplicationProvider>()
                     .changeApplicationStatus(
