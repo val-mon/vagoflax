@@ -50,38 +50,48 @@ class Job {
     required this.translations,
   });
 
-factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
+  factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
     return Job(
       id: documentId,
       userUuid: data['userUuid']?.toString() ?? '',
       title: data['title']?.toString() ?? '',
       description: data['description']?.toString(),
       diplomas: (data['diplomas'] as List<dynamic>? ?? const [])
-          .map((d) => Diplomas.values.firstWhere(
-                (e) => e.name.toLowerCase() == d.toString().toLowerCase(),
-                orElse: () => Diplomas.values.first,
-              ))
+          .map(
+            (d) => Diplomas.values.firstWhere(
+              (e) => e.name.toLowerCase() == d.toString().toLowerCase(),
+              orElse: () => Diplomas.values.first,
+            ),
+          )
           .toList(),
       contractTime: (data['contractTime'] as num?)?.toInt(),
       role: Role.values.firstWhere(
-        (e) => e.name.toLowerCase() == (data['role'] ?? '').toString().toLowerCase(),
+        (e) =>
+            e.name.toLowerCase() ==
+            (data['role'] ?? '').toString().toLowerCase(),
         orElse: () => Role.values.first,
       ),
       industry: Industry.values.firstWhere(
-        (e) => e.name.toLowerCase() == (data['industry'] ?? '').toString().toLowerCase(),
+        (e) =>
+            e.name.toLowerCase() ==
+            (data['industry'] ?? '').toString().toLowerCase(),
         orElse: () => Industry.values.first,
       ),
       perks: (data['perks'] as List<dynamic>? ?? const [])
-          .map((p) => Perks.values.firstWhere(
-                (e) => e.name.toLowerCase() == p.toString().toLowerCase(),
-                orElse: () => Perks.values.first,
-              ))
+          .map(
+            (p) => Perks.values.firstWhere(
+              (e) => e.name.toLowerCase() == p.toString().toLowerCase(),
+              orElse: () => Perks.values.first,
+            ),
+          )
           .toList(),
       languages: (data['languages'] as List<dynamic>? ?? const [])
-          .map((l) => Languages.values.firstWhere(
-                (e) => e.name.toLowerCase() == l.toString().toLowerCase(),
-                orElse: () => Languages.values.first,
-              ))
+          .map(
+            (l) => Languages.values.firstWhere(
+              (e) => e.name.toLowerCase() == l.toString().toLowerCase(),
+              orElse: () => Languages.values.first,
+            ),
+          )
           .toList(),
       holidays: (data['holidays'] as num?)?.toInt(),
       maternityLeave: (data['maternityLeave'] as num?)?.toInt(),
@@ -92,8 +102,8 @@ factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
       createdAt: data['createdAt'] is Timestamp
           ? (data['createdAt'] as Timestamp).toDate()
           : (data['createdAt'] is String
-              ? DateTime.tryParse(data['createdAt'] as String)
-              : null),
+                ? DateTime.tryParse(data['createdAt'] as String)
+                : null),
       visible: (data['visible'] as bool?) ?? true,
       translations: (data['translations'] as List<dynamic>? ?? [])
           .map((t) => JobTranslation.from(Map<String, dynamic>.from(t as Map)))
