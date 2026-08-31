@@ -11,7 +11,6 @@ import 'package:vagoflax/models/enum/user_role.dart';
 import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/models/history.dart';
 
-
 import 'package:vagoflax/services/cloudinary.dart';
 import 'package:vagoflax/models/user.dart' as usermodel;
 
