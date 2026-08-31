@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vagoflax/models/job_model.dart';
+import 'package:vagoflax/models/job.dart';
 
-import 'package:vagoflax/views/about_screen.dart';
-import 'package:vagoflax/views/add_job_screen.dart';
-import 'package:vagoflax/views/auth_gate.dart';
-import 'package:vagoflax/views/job_details.dart';
-import 'package:vagoflax/views/login_screen.dart';
-import 'package:vagoflax/views/signup_1_emailpw_screen.dart';
-import 'package:vagoflax/views/signup_2_type_screen.dart';
-import 'package:vagoflax/views/signup_3_employer_screen.dart';
-import 'package:vagoflax/views/signup_3_student_screen.dart';
+import 'package:vagoflax/views/about_us.dart';
+import 'package:vagoflax/views/employer/add_job.dart';
+import 'package:vagoflax/views/auth/auth_gate.dart';
+import 'package:vagoflax/views/employer/job_applications.dart';
+import 'package:vagoflax/views/job/details.dart';
+import 'package:vagoflax/views/auth/login/login.dart';
+import 'package:vagoflax/views/auth/signup/emailpw.dart';
+import 'package:vagoflax/views/auth/signup/face_recognition.dart';
+import 'package:vagoflax/views/auth/signup/type.dart';
+import 'package:vagoflax/views/auth/signup/employer.dart';
+import 'package:vagoflax/views/auth/signup/student.dart';
+import 'package:vagoflax/views/profile.dart';
+import 'package:vagoflax/widgets/profile_edit_form.dart';
 
 CustomTransitionPage buildSlidePage({
   required GoRouterState state,
@@ -44,6 +48,10 @@ final router = GoRouter(
       path: '/signup',
       pageBuilder: (context, state) =>
           buildSlidePage(state: state, child: const SignUpEmailPwScreen()),
+    ),
+    GoRoute(
+      path: '/signup/face',
+      builder: (context, state) => const FaceRegistrationScreen(),
     ),
     GoRoute(
       path: '/signup/role',
@@ -82,6 +90,39 @@ final router = GoRouter(
         return buildSlidePage(
           state: state,
           child: JobDetails(job: job),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/job-applications',
+      pageBuilder: (context, state) {
+        final job = state.extra as Job?;
+        return buildSlidePage(
+          state: state,
+          child: JobApplicationsScreen(
+            jobId: job?.id ?? '',
+            jobTitle: job?.title ?? '',
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/profile',
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const ProfileScreen()),
+    ),
+    GoRoute(
+      path: '/profile/edit',
+      pageBuilder: (context, state) =>
+          buildSlidePage(state: state, child: const ProfileEditForm()),
+    ),
+    GoRoute(
+      path: '/profile/:id',
+      pageBuilder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return buildSlidePage(
+          state: state,
+          child: ProfileScreen(userId: id),
         );
       },
     ),

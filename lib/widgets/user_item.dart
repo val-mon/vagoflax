@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../models/user_model.dart';
-import '../models/enum/user_role_model.dart';
+import 'package:vagoflax/models/user.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
 
 class UserItem extends StatelessWidget {
   final User user;
@@ -9,6 +10,8 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasProfilePicture =
+        user.profilePictureUrl != null && user.profilePictureUrl!.isNotEmpty;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
@@ -20,10 +23,10 @@ class UserItem extends StatelessWidget {
         leading: CircleAvatar(
           radius: 30,
           backgroundColor: Colors.grey.shade200,
-          backgroundImage: user.profilePictureUrl.isNotEmpty
-              ? NetworkImage(user.profilePictureUrl)
+          backgroundImage: hasProfilePicture
+              ? NetworkImage(user.profilePictureUrl!)
               : null,
-          child: user.profilePictureUrl.isEmpty
+          child: !hasProfilePicture
               ? const Icon(Icons.person, size: 32, color: Colors.grey)
               : null,
         ),
@@ -31,8 +34,8 @@ class UserItem extends StatelessWidget {
         // User name
         title: Text(
           user.role == UserRole.student
-              ? "${user.firstName} ${user.lastName}"
-              : user.name,
+              ? "${user.firstName ?? 'Unknown'} ${user.lastName ?? 'User'}"
+              : user.companyName ?? "Company",
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
 
@@ -87,7 +90,7 @@ class UserItem extends StatelessWidget {
         ),
         trailing: const Icon(Icons.chevron_right, color: Colors.grey),
         onTap: () {
-          // context.push('/user_details', extra: user);
+          context.push('/profile/${user.id}');
         },
       ),
     );

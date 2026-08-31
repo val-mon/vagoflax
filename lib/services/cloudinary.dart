@@ -38,7 +38,7 @@ class CloudinaryService {
         return null;
       }
 
-      return response?.data?.url;
+      return response?.data?.secureUrl;
     } catch (e) {
       SnackBar(content: Text("Cloudinary upload error: ${e.toString()}"));
       return null;

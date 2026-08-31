@@ -54,6 +54,13 @@ ThemeData buildThemeData() {
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: Colors.black87,
     ),
+
+    iconTheme: const IconThemeData(color: Colors.black87),
+
+    drawerTheme: DrawerThemeData(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
   );
 }
 
