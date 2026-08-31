@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/providers/auth.dart';
 import 'package:vagoflax/services/face.dart';
 
 class FaceRegistrationScreen extends StatefulWidget {

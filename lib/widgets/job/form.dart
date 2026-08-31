@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/providers/user.dart';
 
-import '../providers/job_provider.dart';
-import '../models/job_model.dart';
-import '../models/enum/diplomas_model.dart';
-import '../models/enum/role_model.dart';
-import '../models/enum/perks_model.dart';
-import '../models/enum/languages_model.dart';
-import '../models/enum/industry_model.dart';
+import 'package:vagoflax/models/job.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/role.dart';
+import 'package:vagoflax/models/enum/perks.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/industry.dart';
+import 'package:vagoflax/providers/job.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -49,11 +49,21 @@ class _JobFormState extends State<JobForm> {
       // Editing an existing job
       _titleController.text = job.title;
       _descriptionController.text = job.description ?? '';
-      _contractTimeController.text = job.contractTime.toString();
-      _holidaysController.text = job.holidays.toString();
-      _maternityLeaveController.text = job.maternityLeave.toString();
-      _paternityLeaveController.text = job.paternityLeave.toString();
-      _workloadPercentController.text = job.workloadPercent.toString();
+      _contractTimeController.text = job.contractTime == null
+          ? ''
+          : job.contractTime.toString();
+      _holidaysController.text = job.holidays == null
+          ? ''
+          : job.holidays.toString();
+      _maternityLeaveController.text = job.maternityLeave == null
+          ? ''
+          : job.maternityLeave.toString();
+      _paternityLeaveController.text = job.paternityLeave == null
+          ? ''
+          : job.paternityLeave.toString();
+      _workloadPercentController.text = job.workloadPercent == null
+          ? ''
+          : job.workloadPercent.toString();
       _salaryController.text = job.salary?.toString() ?? '';
       _selectedRole = job.role;
       _selectedIndustry = job.industry;
@@ -212,7 +222,7 @@ class _JobFormState extends State<JobForm> {
             const SizedBox(height: 24),
 
             ElevatedButton(
-              onPressed: () => _saveJob(context),
+              onPressed: () async => await _saveJob(context),
               child: Text(widget.job == null ? 'Create Job' : 'Update Job'),
             ),
           ],
@@ -261,7 +271,7 @@ class _JobFormState extends State<JobForm> {
     return null;
   }
 
-  void _saveJob(BuildContext context) {
+  Future<void> _saveJob(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     final jobProvider = Provider.of<JobProvider>(context, listen: false);
@@ -287,11 +297,13 @@ class _JobFormState extends State<JobForm> {
     );
 
     if (widget.job == null) {
-      jobProvider.addJob(job);
+      await jobProvider.addJob(job);
     } else {
-      jobProvider.updateJob(job);
+      await jobProvider.updateJob(job);
     }
 
-    context.pop();
+    if (context.mounted) {
+      context.pop();
+    }
   }
 }

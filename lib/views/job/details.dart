@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/models/connection_model.dart';
-import 'package:vagoflax/models/enum/languages_model.dart';
-import 'package:vagoflax/models/enum/user_role_model.dart';
-import 'package:vagoflax/models/translation_model.dart';
-import 'package:vagoflax/providers/application_provider.dart';
+import 'package:vagoflax/models/connection.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/models/translation.dart';
+import 'package:vagoflax/providers/application.dart';
 import 'package:vagoflax/services/ollama.dart';
-
-import '../models/job_model.dart';
-import '../models/user_model.dart';
-import '../providers/job_provider.dart';
-import '../providers/user_provider.dart';
-import '../services/transport.dart';
+import 'package:vagoflax/services/transport.dart';
+import 'package:vagoflax/models/job.dart';
+import 'package:vagoflax/models/user.dart';
+import 'package:vagoflax/providers/job.dart';
+import 'package:vagoflax/providers/user.dart';
 
 import 'package:go_router/go_router.dart';
 

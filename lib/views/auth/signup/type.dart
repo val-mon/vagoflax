@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/app_state.dart';
+import 'package:vagoflax/providers/auth.dart';
 
 class SignUpTypeScreen extends StatelessWidget {
   const SignUpTypeScreen({super.key});

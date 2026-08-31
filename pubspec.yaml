@@ -55,3 +55,6 @@ flutter:
     - .env
     - assets/icon/icon.png
     - assets/model/mobile_face_net.tflite
+
+dependency_overrides:
+  app_links: ^6.3.3

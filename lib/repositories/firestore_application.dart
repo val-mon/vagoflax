@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/job_application_model.dart';
-import 'application_repository.dart';
+import 'package:vagoflax/models/job_application.dart';
+import 'package:vagoflax/repositories/application.dart';
 
 class FirestoreApplicationRepository implements ApplicationRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -44,6 +44,14 @@ class FirestoreApplicationRepository implements ApplicationRepository {
       'status': newStatus,
       'updatedAt': FieldValue.serverTimestamp(),
     });
+
+    if (newStatus == 'accepted') {
+      // if status is accepted, we automatically hide the job
+      final jobDoc = await _db.collection('jobs').doc(jobId).get();
+      if (jobDoc.exists) {
+        await _db.collection('jobs').doc(jobId).update({'visible': false});
+      }
+    }
   }
 
   @override
@@ -53,5 +61,16 @@ class FirestoreApplicationRepository implements ApplicationRepository {
     final docSnapshot = await _applicationsRef().doc(docId).get();
 
     return docSnapshot.exists;
+  }
+
+  @override
+  Future<void> deleteAllApplicationsForJob(String jobId) {
+    return _applicationsRef().where('jobId', isEqualTo: jobId).get().then((
+      querySnapshot,
+    ) {
+      for (final doc in querySnapshot.docs) {
+        doc.reference.delete();
+      }
+    });
   }
 }

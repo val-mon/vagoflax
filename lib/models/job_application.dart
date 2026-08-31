@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'enum/status_model.dart';
+import 'package:vagoflax/models/enum/status.dart';
 
 class JobApplication {
   final String? id;

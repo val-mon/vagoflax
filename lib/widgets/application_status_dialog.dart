@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/job_application_model.dart';
-import '../providers/application_provider.dart';
+import 'package:vagoflax/models/job_application.dart';
+import 'package:vagoflax/providers/application.dart';
 
 class ApplicationStatusDialog extends StatelessWidget {
   final JobApplication application;
@@ -91,13 +91,29 @@ class _StatusOptionTile extends StatelessWidget {
           ? Icon(Icons.check, color: color, size: 20)
           : null,
       onTap: isCurrentStatus
-          ? null // On désactive le clic si c'est déjà le statut actuel
+          ? null
           : () async {
-              // 1. Fermer la popup
               Navigator.pop(context);
 
-              // 2. Mettre à jour dans Firestore via le Provider
               try {
+                if (newStatus == 'accepted') {
+                  // Show a dialog to inform the employer that the job is now hidden
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Job Hidden'),
+                      content: const Text(
+                        'The job has been hidden from the job board since you accepted a candidate. You can make it visible again in the job\'s settings.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
                 await context
                     .read<ApplicationProvider>()
                     .changeApplicationStatus(

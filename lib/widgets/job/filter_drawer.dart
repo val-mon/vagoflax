@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:vagoflax/models/job_filters.dart';
-import 'package:vagoflax/models/job_model.dart';
+import 'package:vagoflax/models/job.dart';
 
-import 'package:vagoflax/models/enum/diplomas_model.dart';
-import 'package:vagoflax/models/enum/industry_model.dart';
-import 'package:vagoflax/models/enum/languages_model.dart';
-import 'package:vagoflax/models/enum/role_model.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/industry.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/role.dart';
 
 class JobFilterDrawer extends StatefulWidget {
   final List<Job> jobs;
@@ -65,11 +65,9 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
     }
 
     availableMinSalary = salaries.reduce((a, b) => a < b ? a : b);
-
     availableMaxSalary = salaries.reduce((a, b) => a > b ? a : b);
 
     final start = widget.initialFilters.minSalary ?? availableMinSalary!;
-
     final end = widget.initialFilters.maxSalary ?? availableMaxSalary!;
 
     salaryRange = RangeValues(start, end);
@@ -107,8 +105,6 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
           salaryRange!.start == availableMinSalary &&
           salaryRange!.end == availableMaxSalary;
 
-      // Si le slider est sur toute la plage disponible,
-      // on considère que le filtre salaire n'est pas actif.
       if (!isFullRange) {
         minSalary = salaryRange!.start;
         maxSalary = salaryRange!.end;
@@ -133,9 +129,6 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    // On affiche uniquement les valeurs réellement présentes
-    // dans les jobs actuellement disponibles.
-
     final List<Diplomas> availableDiplomas = widget.jobs
         .expand((job) => job.diplomas)
         .toSet()
@@ -161,10 +154,7 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
       child: SafeArea(
         child: Column(
           children: [
-            // --------------------------------------------------
             // Header
-            // --------------------------------------------------
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
@@ -180,61 +170,56 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ],
               ),
             ),
 
-            const Divider(),
+            const Divider(height: 1),
 
-            // --------------------------------------------------
-            // Filters
-            // --------------------------------------------------
+            // Filter sections
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 16,
+                ),
                 children: [
-                  // Salary
-                  _buildSalaryFilter(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: _buildSalaryFilter(),
+                  ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
-                  // Diplomas
-                  _buildFilterSection<Diplomas>(
+                  _buildDropdownSection<Diplomas>(
                     title: 'Diplomas',
+                    icon: Icons.school_outlined,
                     values: availableDiplomas,
                     selectedValues: selectedDiplomas,
                     labelBuilder: (diploma) => diploma.name,
                   ),
 
-                  const SizedBox(height: 24),
-
-                  // Roles
-                  _buildFilterSection<Role>(
+                  _buildDropdownSection<Role>(
                     title: 'Roles',
+                    icon: Icons.work_outline,
                     values: availableRoles,
                     selectedValues: selectedRoles,
                     labelBuilder: (role) => role.name,
                   ),
 
-                  const SizedBox(height: 24),
-
-                  // Industries
-                  _buildFilterSection<Industry>(
+                  _buildDropdownSection<Industry>(
                     title: 'Industries',
+                    icon: Icons.business_outlined,
                     values: availableIndustries,
                     selectedValues: selectedIndustries,
                     labelBuilder: (industry) => industry.name,
                   ),
 
-                  const SizedBox(height: 24),
-
-                  // Languages
-                  _buildFilterSection<Languages>(
+                  _buildDropdownSection<Languages>(
                     title: 'Languages',
+                    icon: Icons.language_outlined,
                     values: availableLanguages,
                     selectedValues: selectedLanguages,
                     labelBuilder: (language) => language.name,
@@ -243,11 +228,9 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
               ),
             ),
 
-            const Divider(),
+            const Divider(height: 1),
 
-            // --------------------------------------------------
             // Bottom actions
-            // --------------------------------------------------
             Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
@@ -273,6 +256,84 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
   }
 
   // ------------------------------------------------------------
+  // Dropdown filter section (ExpansionTile)
+  // ------------------------------------------------------------
+
+  Widget _buildDropdownSection<T>({
+    required String title,
+    required IconData icon,
+    required List<T> values,
+    required Set<T> selectedValues,
+    required String Function(T value) labelBuilder,
+  }) {
+    if (values.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final selectedCount = selectedValues.length;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.grey.shade300),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: ExpansionTile(
+        leading: Icon(icon, color: Colors.grey[700]),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (selectedCount > 0)
+              Container(
+                margin: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '$selectedCount',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+            const Icon(Icons.expand_more),
+          ],
+        ),
+        childrenPadding: const EdgeInsets.only(bottom: 8),
+        children: values.map((value) {
+          final isSelected = selectedValues.contains(value);
+
+          return CheckboxListTile(
+            dense: true,
+            title: Text(_formatEnumName(labelBuilder(value))),
+            value: isSelected,
+            controlAffinity: ListTileControlAffinity.leading,
+            onChanged: (bool? checked) {
+              setState(() {
+                if (checked == true) {
+                  selectedValues.add(value);
+                } else {
+                  selectedValues.remove(value);
+                }
+              });
+            },
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  // ------------------------------------------------------------
   // Salary widget
   // ------------------------------------------------------------
 
@@ -285,9 +346,9 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
         children: [
           Text(
             'Salary',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 4),
           Text(
             'No salary information available.',
             style: TextStyle(color: Colors.grey),
@@ -296,16 +357,15 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
       );
     }
 
-    // RangeSlider nécessite une différence entre min et max.
     if (availableMinSalary == availableMaxSalary) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Salary',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text('CHF ${availableMinSalary!.round()}'),
         ],
       );
@@ -314,19 +374,22 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Salary',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Salary',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'CHF ${salaryRange!.start.round()} - CHF ${salaryRange!.end.round()}',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
         ),
-
-        const SizedBox(height: 8),
-
-        Text(
-          'CHF ${salaryRange!.start.round()}'
-          ' - '
-          'CHF ${salaryRange!.end.round()}',
-        ),
-
         RangeSlider(
           min: availableMinSalary!,
           max: availableMaxSalary!,
@@ -340,55 +403,6 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
               salaryRange = values;
             });
           },
-        ),
-      ],
-    );
-  }
-
-  // ------------------------------------------------------------
-  // Generic filter section
-  // ------------------------------------------------------------
-
-  Widget _buildFilterSection<T>({
-    required String title,
-    required List<T> values,
-    required Set<T> selectedValues,
-    required String Function(T value) labelBuilder,
-  }) {
-    if (values.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-
-        const SizedBox(height: 8),
-
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: values.map((value) {
-            final selected = selectedValues.contains(value);
-
-            return FilterChip(
-              label: Text(_formatEnumName(labelBuilder(value))),
-              selected: selected,
-              onSelected: (isSelected) {
-                setState(() {
-                  if (isSelected) {
-                    selectedValues.add(value);
-                  } else {
-                    selectedValues.remove(value);
-                  }
-                });
-              },
-            );
-          }).toList(),
         ),
       ],
     );

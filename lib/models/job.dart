@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagoflax/models/translation_model.dart';
+import 'package:vagoflax/models/translation.dart';
 
-import 'enum/diplomas_model.dart';
-import 'enum/role_model.dart';
-import 'enum/perks_model.dart';
-import 'enum/languages_model.dart';
-import 'enum/industry_model.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/role.dart';
+import 'package:vagoflax/models/enum/perks.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/industry.dart';
 
 class Job {
   final String? id;
@@ -53,39 +53,60 @@ class Job {
   factory Job.fromFirestore(Map<String, dynamic> data, String documentId) {
     return Job(
       id: documentId,
-      userUuid: data['userUuid'] ?? '',
-      title: data['title'] ?? '',
-      description: data['description'] ?? '',
-      diplomas: List<Diplomas>.from(
-        (data['diplomas'] as List<dynamic>? ?? const []).map(
-          (d) => Diplomas.values.byName(d),
-        ),
+      userUuid: data['userUuid']?.toString() ?? '',
+      title: data['title']?.toString() ?? '',
+      description: data['description']?.toString(),
+      diplomas: (data['diplomas'] as List<dynamic>? ?? const [])
+          .map(
+            (d) => Diplomas.values.firstWhere(
+              (e) => e.name.toLowerCase() == d.toString().toLowerCase(),
+              orElse: () => Diplomas.values.first,
+            ),
+          )
+          .toList(),
+      contractTime: (data['contractTime'] as num?)?.toInt(),
+      role: Role.values.firstWhere(
+        (e) =>
+            e.name.toLowerCase() ==
+            (data['role'] ?? '').toString().toLowerCase(),
+        orElse: () => Role.values.first,
       ),
-      contractTime: data['contractTime'],
-      role: Role.values.byName(data['role'] ?? ''),
-      industry: Industry.values.byName(data['industry'] ?? ''),
-      perks: List<Perks>.from(
-        (data['perks'] as List<dynamic>? ?? const []).map(
-          (p) => Perks.values.byName(p),
-        ),
+      industry: Industry.values.firstWhere(
+        (e) =>
+            e.name.toLowerCase() ==
+            (data['industry'] ?? '').toString().toLowerCase(),
+        orElse: () => Industry.values.first,
       ),
-      languages: List<Languages>.from(
-        (data['languages'] as List<dynamic>? ?? const []).map(
-          (l) => Languages.values.byName(l),
-        ),
-      ),
-      holidays: data['holidays'],
-      maternityLeave: data['maternityLeave'],
-      paternityLeave: data['paternityLeave'],
-      workloadPercent: data['workloadPercent'],
+      perks: (data['perks'] as List<dynamic>? ?? const [])
+          .map(
+            (p) => Perks.values.firstWhere(
+              (e) => e.name.toLowerCase() == p.toString().toLowerCase(),
+              orElse: () => Perks.values.first,
+            ),
+          )
+          .toList(),
+      languages: (data['languages'] as List<dynamic>? ?? const [])
+          .map(
+            (l) => Languages.values.firstWhere(
+              (e) => e.name.toLowerCase() == l.toString().toLowerCase(),
+              orElse: () => Languages.values.first,
+            ),
+          )
+          .toList(),
+      holidays: (data['holidays'] as num?)?.toInt(),
+      maternityLeave: (data['maternityLeave'] as num?)?.toInt(),
+      paternityLeave: (data['paternityLeave'] as num?)?.toInt(),
+      workloadPercent: (data['workloadPercent'] as num?)?.toInt(),
       salary: (data['salary'] as num?)?.toDouble(),
       predictedSalary: (data['predictedSalary'] as num?)?.toDouble(),
-      createdAt: data['createdAt'] != null
+      createdAt: data['createdAt'] is Timestamp
           ? (data['createdAt'] as Timestamp).toDate()
-          : null,
+          : (data['createdAt'] is String
+                ? DateTime.tryParse(data['createdAt'] as String)
+                : null),
       visible: (data['visible'] as bool?) ?? true,
       translations: (data['translations'] as List<dynamic>? ?? [])
-          .map((t) => JobTranslation.from(t as Map<String, dynamic>))
+          .map((t) => JobTranslation.from(Map<String, dynamic>.from(t as Map)))
           .toList(),
     );
   }

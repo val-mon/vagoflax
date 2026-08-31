@@ -1,11 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagoflax/models/translation_model.dart';
+import 'package:vagoflax/models/translation.dart';
 
-import '../models/job_model.dart';
-import 'job_repository.dart';
+import 'package:vagoflax/models/job.dart';
+import 'package:vagoflax/repositories/application.dart';
+import 'package:vagoflax/repositories/job.dart';
 
 class FirestoreJobRepository implements JobRepository {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db;
+  final ApplicationRepository applicationRepository;
+
+  FirestoreJobRepository({
+    required this.applicationRepository,
+    FirebaseFirestore? db,
+  }) : _db = db ?? FirebaseFirestore.instance;
 
   CollectionReference<Map<String, dynamic>> _jobsRef() =>
       _db.collection('jobs');
@@ -46,6 +53,9 @@ class FirestoreJobRepository implements JobRepository {
     }
 
     await _jobsRef().doc(job.id).delete();
+
+    // when deleting jobs, also delete all applications related to that job
+    applicationRepository.deleteAllApplicationsForJob(job.id!);
   }
 
   @override

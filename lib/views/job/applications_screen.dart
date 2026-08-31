@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/models/enum/user_role_model.dart';
-import 'package:vagoflax/models/user_model.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/models/user.dart';
 import 'package:vagoflax/widgets/application_status_dialog.dart';
 import 'package:vagoflax/widgets/status_pill.dart';
 
-import '../../providers/application_provider.dart';
-import '../../providers/user_provider.dart';
+import 'package:vagoflax/providers/application.dart';
+import 'package:vagoflax/providers/user.dart';
 
 class JobApplicationsScreen extends StatelessWidget {
   final String jobId;
@@ -61,17 +61,13 @@ class JobApplicationsScreen extends StatelessWidget {
                     id: "-1",
                     email: '',
                     role: UserRole.student,
+                    profilePictureUrl: '',
                     createdAt: DateTime.now(),
                     canton: "",
                     city: "",
                     description: "",
-                    profilePictureUrl: null,
                   ),
                 );
-
-                final hasProfilePicture =
-                    student.profilePictureUrl != null &&
-                    student.profilePictureUrl!.isNotEmpty;
 
                 if (student.id == "-1") {
                   return const Text("Error displaying student information");
@@ -88,10 +84,10 @@ class JobApplicationsScreen extends StatelessWidget {
                     leading: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.grey.shade300,
-                      backgroundImage: hasProfilePicture
+                      backgroundImage: student.hasProfilePicture
                           ? NetworkImage(student.profilePictureUrl!)
                           : null,
-                      child: !hasProfilePicture
+                      child: !student.hasProfilePicture
                           ? const Icon(Icons.person, color: Colors.grey)
                           : null,
                     ),
@@ -109,15 +105,11 @@ class JobApplicationsScreen extends StatelessWidget {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // user profile
                         IconButton(
                           icon: const Icon(Icons.person_search),
                           tooltip: 'View Profile',
                           onPressed: () {
-                            context.push(
-                              '/profile/${student.id}',
-                              extra: student,
-                            );
+                            context.push('/profile', extra: student);
                           },
                         ),
                         IconButton(

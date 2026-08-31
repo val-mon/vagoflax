@@ -1,4 +1,4 @@
-import 'package:vagoflax/models/job_application_model.dart';
+import 'package:vagoflax/models/job_application.dart';
 
 abstract class ApplicationRepository {
   Stream<List<JobApplication>> getApplications();
@@ -9,4 +9,5 @@ abstract class ApplicationRepository {
     String newStatus,
   );
   Future<bool> hasApplied(String jobId, String studentUuid);
+  Future<void> deleteAllApplicationsForJob(String jobId);
 }

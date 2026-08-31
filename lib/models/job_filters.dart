@@ -1,7 +1,7 @@
-import 'package:vagoflax/models/enum/diplomas_model.dart';
-import 'package:vagoflax/models/enum/industry_model.dart';
-import 'package:vagoflax/models/enum/languages_model.dart';
-import 'package:vagoflax/models/enum/role_model.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/industry.dart';
+import 'package:vagoflax/models/enum/languages.dart';
+import 'package:vagoflax/models/enum/role.dart';
 
 class JobFilters {
   final double? minSalary;

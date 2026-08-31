@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:vagoflax/models/enum/user_role_model.dart';
-import 'package:vagoflax/models/history_model.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/models/history.dart';
 import 'package:vagoflax/services/cloudinary.dart';
 
-import '../models/user_model.dart';
-import '../repositories/user_repository.dart';
+import 'package:vagoflax/models/user.dart';
+import 'package:vagoflax/repositories/user.dart';
 
 class UserProvider with ChangeNotifier {
   final UserRepository _userRepository;

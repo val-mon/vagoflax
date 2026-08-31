@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagoflax/models/history_model.dart';
-import 'package:vagoflax/models/review_model.dart';
-import 'package:vagoflax/models/enum/user_role_model.dart';
+import 'package:vagoflax/models/history.dart';
+import 'package:vagoflax/models/review.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
 
 class User {
   final String id;

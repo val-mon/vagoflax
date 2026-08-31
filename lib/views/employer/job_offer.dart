@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:vagoflax/providers/user_provider.dart';
+import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/widgets/profile_button.dart';
 
-import '../../providers/job_provider.dart';
-import '../../widgets/job_employer_item.dart';
+import 'package:vagoflax/providers/job.dart';
+import 'package:vagoflax/widgets/job/employer_item.dart';
 
 class JobProviderOfferScreen extends StatelessWidget {
   const JobProviderOfferScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final jobProvider = Provider.of<JobProvider>(context, listen: true);
+    final jobProvider = context.watch<JobProvider>();
+    final userProvider = context.watch<UserProvider>();
     final jobs = jobProvider.jobs
         .where((job) => job.userUuid == userProvider.currentUser?.id)
         .toList();

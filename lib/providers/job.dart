@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:vagoflax/models/translation_model.dart';
+import 'package:vagoflax/models/translation.dart';
 
-import '../models/job_model.dart';
-import '../repositories/job_repository.dart';
+import 'package:vagoflax/models/job.dart';
+import 'package:vagoflax/repositories/job.dart';
 
 class JobProvider with ChangeNotifier {
   final JobRepository _jobRepository;
@@ -21,20 +21,20 @@ class JobProvider with ChangeNotifier {
 
   // Subscribe to the job stream from the repository to get real-time updates and notify listeners when the job list changes.
   void _subscribeToJobs() {
-    // Notify listeners that the job list is loading before starting the subscription.
     _isLoading = true;
     notifyListeners();
 
-    // Subscribe to the job stream from the repository and update the job list when new data is received.
     _jobsSubscription = _jobRepository.getJobs().listen(
       (jobs) {
         _jobs = jobs;
         _isLoading = false;
         notifyListeners();
       },
-      onError: (error) {
+      onError: (error, stackTrace) {
         _isLoading = false;
         notifyListeners();
+        debugPrint('ERREUR STREAM JOBS : $error');
+        debugPrint('Stacktrace: $stackTrace');
       },
     );
   }

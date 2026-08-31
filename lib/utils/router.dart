@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vagoflax/models/job_model.dart';
+import 'package:vagoflax/models/job.dart';
 
 import 'package:vagoflax/views/about_us.dart';
 import 'package:vagoflax/views/employer/add_job.dart';
 import 'package:vagoflax/views/auth/auth_gate.dart';
-import 'package:vagoflax/views/employer/employer_job_applications.dart';
-import 'package:vagoflax/views/job_details.dart';
+import 'package:vagoflax/views/employer/job_applications.dart';
+import 'package:vagoflax/views/job/details.dart';
 import 'package:vagoflax/views/auth/login/login.dart';
 import 'package:vagoflax/views/auth/signup/emailpw.dart';
 import 'package:vagoflax/views/auth/signup/face_recognition.dart';
