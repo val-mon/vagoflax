@@ -28,8 +28,12 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final _cantonController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _skillController = TextEditingController();
-  final _historyController = TextEditingController();
   final _companySizeController = TextEditingController();
+
+  final _historyTitleController = TextEditingController();
+  final _historyCompanyController = TextEditingController();
+  DateTime? _historyStartedAt;
+  DateTime? _historyEndedAt;
 
   final List<String> _skills = [];
   final List<HistoryEntry> _history = [];
@@ -54,6 +58,10 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _cantonController.text = state?.canton ?? '';
     _descriptionController.text = state?.description ?? '';
     _companySizeController.text = state?.companySize?.toString() ?? '';
+    _historyTitleController.text = '';
+    _historyCompanyController.text = '';
+    _historyStartedAt = null;
+    _historyEndedAt = null;
     _skills.addAll(state?.skills ?? []);
     _history.addAll(state?.history ?? []);
   }
@@ -67,8 +75,11 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _cantonController.dispose();
     _descriptionController.dispose();
     _companySizeController.dispose();
-    _historyController.dispose();
     _skillController.dispose();
+    _historyTitleController.dispose();
+    _historyCompanyController.dispose();
+    _historyStartedAt = null;
+    _historyEndedAt = null;
     super.dispose();
   }
 
@@ -176,29 +187,77 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                   runSpacing: 4,
                   children: _history.map((s) {
                     return Chip(
-                      label: Text(
-                        s.jobTitle,
-                      ), // TODO: FIX HISTORY RENDERING (AND EDIT AS WELL)
+                      label: Text(s.jobTitle),
                       onDeleted: () => setState(() => _history.remove(s)),
                     );
                   }).toList(),
                 ),
+                TextField(
+                  controller: _historyTitleController,
+                  decoration: const InputDecoration(labelText: 'Job title'),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _historyCompanyController,
+                  decoration: const InputDecoration(labelText: 'Company'),
+                ),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: _historyController,
-                        decoration: const InputDecoration(
-                          labelText: 'Add a history item',
+                      child: OutlinedButton(
+                        onPressed: () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate: _historyStartedAt ?? DateTime.now(),
+                            firstDate: DateTime(1980),
+                            lastDate: DateTime(2100),
+                          );
+                          if (date != null) {
+                            setState(() => _historyStartedAt = date);
+                          }
+                        },
+                        child: Text(
+                          _historyStartedAt == null
+                              ? 'Start date'
+                              : _formatDate(_historyStartedAt!),
                         ),
-                        onSubmitted: (_) => _addHistory(),
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: _addHistory,
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate:
+                                _historyEndedAt ??
+                                _historyStartedAt ??
+                                DateTime.now(),
+                            firstDate: DateTime(1980),
+                            lastDate: DateTime(2100),
+                          );
+                          if (date != null) {
+                            setState(() => _historyEndedAt = date);
+                          }
+                        },
+                        child: Text(
+                          _historyEndedAt == null
+                              ? 'End date'
+                              : _formatDate(_historyEndedAt!),
+                        ),
+                      ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton.icon(
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add history item'),
+                    onPressed: _addHistory,
+                  ),
                 ),
               ] else ...[
                 TextFormField(
@@ -230,32 +289,38 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       _skillController.clear();
     });
   }
+void _addHistory() {
+  final title = _historyTitleController.text.trim();
+  final company = _historyCompanyController.text.trim();
 
-  void _addHistory() {
-    final text = _historyController.text.trim();
-    if (text.isEmpty ||
-        _history.contains(
-          HistoryEntry(
-            jobTitle: text,
-            company: text,
-            startedAt: DateTime.now(),
-            endedAt: DateTime.now(),
-          ),
-        )) {
-      return; // TODO: FIX THIS
-    }
-    setState(() {
-      _history.add(
-        HistoryEntry(
-          jobTitle: text,
-          company: text,
-          startedAt: DateTime.now(),
-          endedAt: DateTime.now(),
-        ),
-      ); // Placeholder dates
-      _historyController.clear();
-    });
+  if (title.isEmpty ||
+      company.isEmpty ||
+      _historyStartedAt == null ||
+      _historyEndedAt == null) {
+    return;
   }
+
+  setState(() {
+    _history.add(
+      HistoryEntry(
+        jobTitle: title,
+        company: company,
+        startedAt: _historyStartedAt!,
+        endedAt: _historyEndedAt!,
+      ),
+    );
+
+    _historyTitleController.clear();
+    _historyCompanyController.clear();
+    _historyStartedAt = null;
+    _historyEndedAt = null;
+  });
+}
+
+  String _formatDate(DateTime date) =>
+    '${date.day.toString().padLeft(2, '0')}/'
+    '${date.month.toString().padLeft(2, '0')}/'
+    '${date.year}';
 
   String? _required(String? v) =>
       (v == null || v.trim().isEmpty) ? 'This field is required' : null;
