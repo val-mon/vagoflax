@@ -29,6 +29,12 @@ service cloud.firestore {
       allow write: if isSignedIn() && request.auth.uid == userId;
     }
 
+    // Face login has to identify someone *before* they are authenticated
+    match /faceIndex/{userId} {
+      allow read: if true;
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+
     // Allow read access to jobs collection for signed-in users because a user can read job postings. Only employers can create, update, or delete job postings.
     match /jobs/{jobId} {
       allow read: if isSignedIn();

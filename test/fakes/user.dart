@@ -1,18 +1,25 @@
 import 'dart:async';
 
+import 'package:vagoflax/models/face_entry.dart';
 import 'package:vagoflax/models/user.dart';
 import 'package:vagoflax/models/enum/user_role.dart';
 import 'package:vagoflax/repositories/user.dart';
 
 class FakeUserRepository implements UserRepository {
   final _controller = StreamController<List<User>>.broadcast();
+  final _faceController = StreamController<List<FaceEntry>>.broadcast();
   User? added;
   User? updated;
 
   void emit(List<User> users) => _controller.add(users);
 
+  void emitFaceIndex(List<FaceEntry> entries) => _faceController.add(entries);
+
   @override
   Stream<List<User>> getUsers() => _controller.stream;
+
+  @override
+  Stream<List<FaceEntry>> getFaceIndex() => _faceController.stream;
 
   @override
   Future<void> addUser(User user) async => added = user;
