@@ -62,10 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
 
-      if (signature == null) {
-        throw Exception('No face detected. Please try again.');
-      }
-
       final knownFaces = context.read<UserProvider>().faceIndex;
       final matched = FaceRecognitionService.instance.findClosestMatch(
         signature,
