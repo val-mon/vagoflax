@@ -78,6 +78,7 @@ class ApplicationState extends ChangeNotifier {
 
         try {
           await userProvider.loadUserData(user.uid);
+          userProvider.restart();
           jobProvider.restart();
           applicationProvider.restart();
         } catch (e) {
@@ -92,6 +93,7 @@ class ApplicationState extends ChangeNotifier {
         _userId = "";
         _accountLoading = false;
         userProvider.currentUser = null;
+        userProvider.restart();
         notifyListeners();
       }
     });
