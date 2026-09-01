@@ -359,6 +359,7 @@ language            Languages         // enum
 - A device or emulator
 - A **Firebase** project
 - A free **Cloudinary** account (for image uploads)
+- A free **Ollama** account (for AI translation)
 
 ### Clone the repo
 
@@ -366,6 +367,13 @@ language            Languages         // enum
 git clone https://github.com/val-mon/vagoflax
 cd vagoflax
 ```
+
+### Install dependencies
+
+```bash
+flutter pub get
+```
+
 
 ### Firebase configuration
 
@@ -382,6 +390,16 @@ dart pub global activate flutterfire_cli
 ```bash
 flutterfire configure
 ```
+
+Then, in the Firebase console:
+
+- enable **Authentication → Email/Password**
+- create a **Cloud Firestore** database
+- deploy the security rules:
+
+  ```bash
+  firebase deploy --only firestore:rules
+  ```
 
 ### Environment variables configuration
 
@@ -406,7 +424,9 @@ make run
 
 ## Run tests
 
-[tbd]
+```bash
+flutter test
+```
 
 ---
 
@@ -440,6 +460,7 @@ TYPE (SCOPE): Description
 example:
 feat (HomePage): Add login button
 ```
+
 #### Types
 - `feat:` - new feature
 - `fix:` - fix a bug
