@@ -410,6 +410,12 @@ make run
 
 ---
 
+## Database mock data
+
+You can setup your Firebase with mock data by using the `make mock_data` script. It requires the `serviceAccountKey.json` that you can acquire in the Firebase console.
+
+---
+
 ## Repo policy
 
 ### Branches
