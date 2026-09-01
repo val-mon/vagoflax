@@ -24,12 +24,15 @@ class JobApplicationStudentItem extends StatelessWidget {
       child: ListTile(
         title: Text(job.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         subtitle: Column(
-          children: [Text(
-          job.description == '' ? 'No description available' : job.description!,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 4),
+          children: [
+            Text(
+              job.description == ''
+                  ? 'No description available'
+                  : job.description!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
             Row(
               children: [
                 const Icon(Icons.lock_clock, size: 16, color: Colors.grey),

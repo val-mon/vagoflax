@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/models/enum/user_role.dart';
 import 'package:vagoflax/models/user.dart';
+import 'package:vagoflax/utils/date.dart';
 import 'package:vagoflax/widgets/application_status_dialog.dart';
 import 'package:vagoflax/widgets/status_pill.dart';
 
@@ -27,6 +28,37 @@ class JobApplicationsScreen extends StatelessWidget {
     final jobApplications = applicationProvider.applications
         .where((app) => app.jobId == jobId)
         .toList();
+
+    // sort job applications by student applier name
+    jobApplications.sort((a, b) {
+      final studentA = users.firstWhere(
+        (u) => u.id == a.studentUuid,
+        orElse: () => User(
+          id: "-1",
+          email: '',
+          role: UserRole.student,
+          createdAt: DateTime.now(),
+          canton: "",
+          city: "",
+          description: "",
+          profilePictureUrl: null,
+        ),
+      );
+      final studentB = users.firstWhere(
+        (u) => u.id == b.studentUuid,
+        orElse: () => User(
+          id: "-1",
+          email: '',
+          role: UserRole.student,
+          createdAt: DateTime.now(),
+          canton: "",
+          city: "",
+          description: "",
+          profilePictureUrl: null,
+        ),
+      );
+      return (studentA.firstName ?? '').compareTo(studentB.firstName ?? '');
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -112,25 +144,39 @@ class JobApplicationsScreen extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => ApplicationStatusDialog(
-                                application: application,
+                    subtitle: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // application date
+                        Text(
+                          application.createdAt != null
+                              ? "Applied on ${DateFormat.formatDate(application.createdAt!)}"
+                              : 'No application date available',
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                        const SizedBox(height: 4),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => ApplicationStatusDialog(
+                                    application: application,
+                                  ),
+                                );
+                              },
+                              child: StatusPill(
+                                status: application.status,
+                                icon: Icons.edit,
                               ),
-                            );
-                          },
-                          child: StatusPill(
-                            status: application.status,
-                            icon: Icons.edit,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                     trailing: const Icon(
                       Icons.chevron_right_rounded,
