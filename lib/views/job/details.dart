@@ -154,6 +154,7 @@ class _JobDetailsState extends State<JobDetails> {
           ),
         ),
       );
+      debugPrint('Error translating job: $e');
     }
   }
 
