@@ -1,0 +1,501 @@
+Diploma,MinYearsExperience,Role,Contract,Industry,Canton,Perks,CompanySize,Languages,Holidays,MaternityLeaveWeeks,PaternityLeaveWeeks,WorkloadPercent,SalaryCHF
+PhD,7 to 20,Manager,Permanent,Education,ZH,Car,Small (50-200),"English, German",25,14.0,2.0,100,314500
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,SO,"Stock options, Meal vouchers",Large (1000+),"French, German",25,16.0,3.0,100,143600
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,SO,"Stock options, Car",Medium (200-1000),"English, German",25,14.0,3.0,100,84300
+Bachelor,0 to 2,Junior,1 year,Healthcare,BE,AG (train pass),Small (50-200),"English, German",25,14.0,3.0,90,45300
+PhD,2 to 6,Mid-level,Permanent,Finance,FR,Stock options,Medium (200-1000),"French, German",26,16.0,6.0,90,130200
+Master,0 to 2,Junior,Permanent,Manufacturing,SG,None,Startup (<50),German,25,,,80,34200
+Bachelor,2 to 6,Mid-level,2 years,Education,SZ,Car,Small (50-200),German,23,16.0,2.0,90,55900
+Master,2 to 6,Mid-level,Permanent,IT,ZH,None,Small (50-200),"English, German",25,,,100,136700
+Master,2 to 6,Mid-level,Permanent,Healthcare,SO,,Startup (<50),German,25,14.0,2.0,90,61600
+Master,0 to 2,Junior,Permanent,Education,VD,None,Medium (200-1000),French,24,16.0,2.0,100,77900
+PhD,2 to 6,Mid-level,2 years,Education,ZH,None,Startup (<50),"English, German",25,,,70,57600
+Bachelor,0 to 2,Junior,Permanent,IT,VD,,Startup (<50),"French, English",25,16.0,4.0,100,60000
+Apprenticeship,0 to 2,Junior,2 years,Energy,BE,"Housing support, Car",Startup (<50),German,30,,,70,25000
+Master,2 to 6,Mid-level,Permanent,Hospitality,TI,None,Medium (200-1000),Italian,25,,,100,71600
+Bachelor,4 to 10,Senior,Permanent,IT,ZH,None,Small (50-200),German,25,14.0,8.0,100,148600
+PhD,2 to 6,Mid-level,2 years,Public Sector,SO,None,Medium (200-1000),,30,,,70,66100
+Bachelor,2 to 6,Mid-level,2 years,Consulting,ZH,Stock options,Medium (200-1000),"French, English, German",25,20.0,2.0,70,82200
+Bachelor,0 to 2,Junior,2 years,Education,ZH,Stock options,Large (1000+),"French, English, German",23,18.0,2.0,90,73400
+PhD,4 to 10,Senior,Permanent,Energy,TG,None,Medium (200-1000),,24,14.0,2.0,100,188500
+Bachelor,2 to 6,Mid-level,2 years,Education,BE,Housing support,Small (50-200),German,24,14.0,4.0,80,49700
+PhD,2 to 6,Mid-level,2 years,Energy,BE,None,Startup (<50),"English, German",23,22.0,5.0,80,60500
+Bachelor,0 to 2,Junior,2 years,Energy,VS,Car,Large (1000+),"French, English, German",25,14.0,2.0,70,51800
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,VD,None,Medium (200-1000),"French, English",23,16.0,2.0,70,68000
+Master,0 to 2,Junior,2 years,Public Sector,AG,Car,Large (1000+),German,26,14.0,2.0,50,41300
+PhD,2 to 6,Mid-level,Permanent,Pharma,VD,None,Small (50-200),"French, English",25,14.0,2.0,70,110600
+Master,4 to 10,Senior,Permanent,Energy,NE,AG (train pass),Startup (<50),"French, English",24,16.0,2.0,100,111600
+Bachelor,0 to 0,Intern,1 year,Retail,BE,"Stock options, AG (train pass)",Startup (<50),"English, German",24,16.0,4.0,80,25000
+Bachelor,2 to 6,Mid-level,2 years,Education,ZH,"Stock options, Housing support",Large (1000+),"French, English, German",25,16.0,2.0,100,111500
+Bachelor,0 to 0,Intern,1 year,Energy,VS,Housing support,Medium (200-1000),"French, German",20,14.0,8.0,70,25000
+Bachelor,2 to 6,Mid-level,2 years,Healthcare,NE,None,Startup (<50),French,23,14.0,4.0,80,38200
+Bachelor,0 to 2,Junior,Permanent,Manufacturing,JU,None,Small (50-200),French,26,16.0,2.0,60,25000
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,VD,None,Small (50-200),"French, English",25,14.0,2.0,100,80200
+Bachelor,2 to 6,Mid-level,Permanent,Consulting,ZH,"Meal vouchers, Housing support",Large (1000+),"English, German",23,,,90,140200
+Bachelor,4 to 10,Senior,Permanent,IT,VD,"AG (train pass), Stock options",Large (1000+),French,25,14.0,2.0,80,167400
+Bachelor,4 to 10,Senior,Permanent,Hospitality,TI,"Housing support, AG (train pass)",Medium (200-1000),"Italian, English",24,22.0,2.0,100,91100
+Bachelor,0 to 2,Junior,2 years,Construction,BS,None,Large (1000+),German,30,14.0,3.0,70,46500
+Bachelor,0 to 2,Junior,Permanent,IT,ZH,None,Small (50-200),German,20,,,100,74900
+PhD,7 to 20,Manager,Permanent,Hospitality,AG,None,Startup (<50),German,25,14.0,2.0,80,140900
+Master,0 to 0,Intern,1 year,IT,TI,None,Startup (<50),"Italian, English",26,,,70,25000
+PhD,4 to 10,Senior,Permanent,Public Sector,LU,None,Medium (200-1000),"French, German",23,,,70,131400
+Master,2 to 6,Mid-level,2 years,Manufacturing,SZ,"Car, AG (train pass)",Small (50-200),German,20,16.0,3.0,90,67000
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,GE,None,Startup (<50),French,23,14.0,2.0,100,65300
+Bachelor,4 to 10,Senior,Permanent,Education,ZH,None,Small (50-200),"English, German",25,,,70,88900
+Bachelor,4 to 10,Senior,Permanent,Finance,BS,"Housing support, Stock options",Large (1000+),,23,16.0,4.0,100,221900
+Master,0 to 2,Junior,Permanent,Manufacturing,TI,Housing support,Small (50-200),"Italian, German",24,16.0,2.0,70,38800
+Bachelor,2 to 6,Mid-level,Permanent,Healthcare,AG,AG (train pass),Startup (<50),,22,,,90,63700
+PhD,6 to 15,Lead,Permanent,Public Sector,SG,"Stock options, Car",Small (50-200),"English, German",25,14.0,2.0,100,201100
+Master,0 to 2,Junior,Permanent,Consulting,GE,Meal vouchers,Medium (200-1000),"French, English",26,,,80,87000
+Bachelor,0 to 2,Junior,Permanent,Hospitality,LU,None,Small (50-200),"English, German",25,,,100,43100
+Bachelor,0 to 2,Junior,1 year,Energy,AG,Housing support,Medium (200-1000),German,30,18.0,2.0,90,55200
+Bachelor,2 to 6,Mid-level,Permanent,IT,ZH,"Housing support, Meal vouchers",Small (50-200),"English, German",30,,,100,112300
+Bachelor,2 to 6,Mid-level,2 years,Finance,SZ,,Startup (<50),German,25,22.0,2.0,100,71500
+Bachelor,0 to 2,Junior,1 year,Consulting,BE,AG (train pass),Startup (<50),German,25,,,90,40100
+PhD,2 to 6,Mid-level,Permanent,Education,ZH,Meal vouchers,Startup (<50),"English, German",30,14.0,5.0,80,72900
+Bachelor,0 to 2,Junior,Permanent,Consulting,BL,,Startup (<50),,25,,,80,38600
+Master,0 to 0,Intern,1 year,Pharma,VD,"Meal vouchers, Car",Medium (200-1000),French,25,14.0,3.0,100,58300
+Master,0 to 2,Junior,1 year,IT,ZH,None,Startup (<50),German,25,,,50,30800
+Master,6 to 15,Lead,Permanent,Construction,BE,None,Small (50-200),"French, English, German",23,,,100,168300
+Master,6 to 15,Lead,Permanent,Manufacturing,BL,Meal vouchers,Large (1000+),"French, German",25,14.0,2.0,100,251100
+Apprenticeship,0 to 2,Junior,1 year,Pharma,ZH,Housing support,Small (50-200),"English, German",28,16.0,3.0,100,60900
+Master,4 to 10,Senior,Permanent,IT,ZH,,Small (50-200),"English, German",27,14.0,3.0,100,181900
+Bachelor,4 to 10,Senior,Permanent,Retail,LU,None,Startup (<50),"French, German",26,16.0,4.0,90,71600
+Master,6 to 15,Lead,Permanent,Manufacturing,ZH,None,Medium (200-1000),"English, German",28,24.0,2.0,60,135900
+Bachelor,2 to 6,Mid-level,2 years,Manufacturing,JU,None,Startup (<50),"French, German",24,22.0,3.0,100,40100
+Master,2 to 6,Mid-level,2 years,Finance,LU,"Stock options, Car",Medium (200-1000),"English, German",22,14.0,2.0,80,101900
+Master,7 to 20,Manager,Permanent,Healthcare,BE,"AG (train pass), Stock options",Small (50-200),"French, English, German",25,16.0,2.0,80,217700
+Bachelor,0 to 0,Intern,6 months,Manufacturing,LU,"AG (train pass), Car",Startup (<50),"English, German",35,,,90,25000
+Master,4 to 10,Senior,Permanent,Healthcare,VS,None,Medium (200-1000),"French, English, German",26,,,100,151800
+PhD,4 to 10,Senior,Permanent,Energy,NW,None,Medium (200-1000),"English, German",22,,,80,153500
+Master,2 to 6,Mid-level,2 years,Energy,AG,Stock options,Small (50-200),,24,,,100,83400
+Master,6 to 15,Lead,Permanent,Education,TI,None,Small (50-200),Italian,20,,,100,134700
+Bachelor,4 to 10,Senior,Permanent,Healthcare,AG,Meal vouchers,Small (50-200),"English, German",23,14.0,2.0,100,117400
+Bachelor,2 to 6,Mid-level,2 years,Energy,VS,None,Medium (200-1000),"French, German",24,14.0,4.0,80,66400
+Master,4 to 10,Senior,Permanent,Finance,ZH,None,Startup (<50),"English, German",28,,,100,158900
+Master,4 to 10,Senior,Permanent,Healthcare,BE,Stock options,Medium (200-1000),"French, German",25,,,100,162200
+PhD,2 to 6,Mid-level,2 years,Finance,AG,None,Large (1000+),German,23,14.0,3.0,100,163300
+Bachelor,4 to 10,Senior,Permanent,Consulting,BE,None,Small (50-200),"English, German",20,14.0,4.0,70,92800
+Bachelor,2 to 6,Mid-level,2 years,Energy,AG,"Housing support, Stock options",Startup (<50),,24,22.0,2.0,90,56300
+Bachelor,0 to 2,Junior,Permanent,Manufacturing,SG,"Housing support, AG (train pass)",Startup (<50),"English, German",25,14.0,3.0,90,39400
+Master,2 to 6,Mid-level,Permanent,Education,VS,Car,Small (50-200),"French, German",25,20.0,2.0,100,79200
+Bachelor,2 to 6,Mid-level,2 years,Education,ZH,Housing support,Small (50-200),"English, German",25,16.0,4.0,80,54800
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,NE,"Meal vouchers, Stock options",Medium (200-1000),"French, English",26,14.0,2.0,90,81800
+Bachelor,0 to 2,Junior,Permanent,Finance,BS,"Stock options, AG (train pass)",Large (1000+),German,25,14.0,2.0,70,81500
+Apprenticeship,0 to 2,Junior,1 year,Pharma,BL,Housing support,Medium (200-1000),"French, German",25,14.0,2.0,70,46500
+Bachelor,0 to 2,Junior,1 year,Healthcare,BS,"Stock options, Car",Medium (200-1000),"French, English, German",22,,,100,68800
+PhD,2 to 6,Mid-level,2 years,Consulting,GE,"Stock options, Car",Large (1000+),"French, English",26,14.0,2.0,100,176000
+Bachelor,4 to 10,Senior,Permanent,Construction,VS,"Stock options, Meal vouchers",Small (50-200),"French, German",25,14.0,8.0,80,66800
+Apprenticeship,0 to 2,Junior,2 years,Public Sector,ZH,"Meal vouchers, Housing support",Small (50-200),"English, German",24,18.0,3.0,100,49700
+Bachelor,0 to 2,Junior,1 year,Healthcare,BS,,Startup (<50),"English, German",27,16.0,2.0,70,29000
+Bachelor,0 to 0,Intern,1 year,Public Sector,BE,AG (train pass),Small (50-200),"English, German",26,16.0,3.0,100,26900
+Master,4 to 10,Senior,Permanent,Manufacturing,FR,Stock options,Large (1000+),"French, English, German",22,,,100,172000
+Bachelor,2 to 6,Mid-level,Permanent,Retail,ZH,"Car, Meal vouchers",Large (1000+),"English, German",23,16.0,2.0,100,120200
+Bachelor,4 to 10,Senior,Permanent,Education,AR,Stock options,Small (50-200),German,25,22.0,2.0,70,54800
+Bachelor,0 to 2,Junior,1 year,IT,GE,Car,Large (1000+),"French, English",30,14.0,2.0,50,45600
+Master,2 to 6,Mid-level,2 years,Manufacturing,AG,None,Small (50-200),German,28,,,90,67200
+Bachelor,0 to 2,Junior,Permanent,IT,LU,"Housing support, Car",Medium (200-1000),German,28,,,50,38800
+PhD,4 to 10,Senior,Permanent,Healthcare,FR,Stock options,Large (1000+),"French, English, German",30,14.0,4.0,100,191800
+Master,2 to 6,Mid-level,2 years,Healthcare,LU,,Small (50-200),German,22,14.0,3.0,80,59000
+Bachelor,0 to 2,Junior,2 years,Energy,VS,None,Small (50-200),"French, German",20,,,100,45400
+Master,2 to 6,Mid-level,2 years,Manufacturing,BE,"AG (train pass), Housing support",Medium (200-1000),"French, German",25,,,100,97400
+Bachelor,0 to 2,Junior,2 years,Finance,ZH,"Housing support, Meal vouchers",Startup (<50),German,27,14.0,3.0,50,29600
+Master,6 to 15,Lead,Permanent,Manufacturing,GR,"Housing support, Stock options",Large (1000+),"Italian, German",20,20.0,2.0,90,215400
+Bachelor,0 to 0,Intern,6 months,Manufacturing,AG,Stock options,Small (50-200),German,25,16.0,2.0,80,25000
+Bachelor,2 to 6,Mid-level,Permanent,Energy,AG,"Meal vouchers, Car",Medium (200-1000),"English, German",25,16.0,2.0,80,91700
+Bachelor,0 to 2,Junior,Permanent,Finance,SO,"Housing support, AG (train pass)",Startup (<50),,25,14.0,2.0,100,57200
+Bachelor,2 to 6,Mid-level,Permanent,Construction,BL,"Housing support, Meal vouchers",Large (1000+),German,25,,,80,76000
+Master,2 to 6,Mid-level,Permanent,Consulting,ZH,"Meal vouchers, Car",Medium (200-1000),German,23,14.0,2.0,60,89100
+Apprenticeship,0 to 2,Junior,Permanent,Construction,ZH,Stock options,Startup (<50),"English, German",24,14.0,2.0,90,38800
+Bachelor,4 to 10,Senior,Permanent,IT,ZH,Stock options,Large (1000+),"English, German",30,16.0,2.0,100,219700
+PhD,7 to 20,Manager,Permanent,Healthcare,BS,None,Large (1000+),"English, German",25,14.0,2.0,100,446100
+PhD,7 to 20,Manager,Permanent,Energy,BS,None,Small (50-200),German,22,,,100,315700
+Master,2 to 6,Mid-level,Permanent,Education,VD,"Housing support, AG (train pass)",Medium (200-1000),French,30,16.0,2.0,100,99500
+Master,7 to 20,Manager,Permanent,Pharma,VD,Stock options,Startup (<50),French,25,16.0,2.0,100,280300
+Master,0 to 2,Junior,2 years,Consulting,GE,Stock options,Large (1000+),"French, English",28,20.0,2.0,80,77400
+PhD,2 to 6,Mid-level,2 years,Finance,LU,"Meal vouchers, Stock options",Large (1000+),,25,,,100,166500
+Master,4 to 10,Senior,Permanent,Manufacturing,TI,None,Small (50-200),Italian,25,16.0,3.0,100,104700
+Master,2 to 6,Mid-level,Permanent,Manufacturing,LU,,Startup (<50),German,20,16.0,3.0,90,57800
+Apprenticeship,0 to 2,Junior,1 year,Pharma,AG,None,Small (50-200),German,28,14.0,3.0,90,43500
+Master,2 to 6,Mid-level,2 years,Manufacturing,ZH,Meal vouchers,Small (50-200),"English, German",25,16.0,2.0,80,71400
+Master,6 to 15,Lead,Permanent,Construction,VS,AG (train pass),Startup (<50),"French, English, German",24,,,80,97400
+Apprenticeship,0 to 2,Junior,2 years,Finance,ZH,Stock options,Large (1000+),German,20,22.0,6.0,80,63700
+Master,7 to 20,Manager,Permanent,Pharma,BL,"AG (train pass), Stock options",Startup (<50),German,25,14.0,2.0,80,217900
+Master,4 to 10,Senior,Permanent,Retail,SO,Housing support,Large (1000+),"English, German",25,14.0,2.0,100,156900
+Master,7 to 20,Manager,Permanent,Manufacturing,AG,None,Small (50-200),German,22,,,100,226300
+Bachelor,0 to 2,Junior,2 years,Retail,SG,Housing support,Startup (<50),"French, German",25,,,70,25000
+Master,4 to 10,Senior,Permanent,Education,AG,"AG (train pass), Car",Medium (200-1000),German,25,16.0,2.0,90,130200
+Master,0 to 2,Junior,2 years,Manufacturing,LU,Stock options,Medium (200-1000),German,25,16.0,2.0,60,40200
+Master,0 to 0,Intern,1 year,Manufacturing,AR,Meal vouchers,Startup (<50),,20,14.0,2.0,60,25000
+Master,2 to 6,Mid-level,2 years,Retail,BE,AG (train pass),Large (1000+),"French, German",28,14.0,3.0,80,72400
+Master,2 to 6,Mid-level,Permanent,Consulting,ZH,None,Medium (200-1000),"English, German",28,14.0,2.0,90,137800
+PhD,7 to 20,Manager,Permanent,Healthcare,VS,None,Startup (<50),"French, English, German",25,16.0,3.0,100,205500
+Bachelor,0 to 0,Intern,6 months,Manufacturing,VD,"Stock options, Housing support",Small (50-200),"French, English",25,14.0,2.0,100,29200
+Master,2 to 6,Mid-level,2 years,Healthcare,BL,"Car, Housing support",Small (50-200),"English, German",25,16.0,4.0,80,69800
+Bachelor,0 to 2,Junior,2 years,IT,VD,Meal vouchers,Startup (<50),French,30,20.0,2.0,80,39700
+Master,0 to 0,Intern,6 months,Manufacturing,FR,None,Small (50-200),"French, German",28,24.0,2.0,90,25000
+Apprenticeship,0 to 2,Junior,Permanent,Pharma,BS,Stock options,Medium (200-1000),"English, German",25,14.0,2.0,100,85500
+Bachelor,2 to 6,Mid-level,Permanent,IT,VD,None,Small (50-200),French,20,14.0,2.0,80,82500
+Master,0 to 2,Junior,2 years,IT,ZH,Car,Medium (200-1000),"English, German",25,16.0,2.0,70,69500
+Master,4 to 10,Senior,Permanent,Healthcare,BE,,Startup (<50),,25,14.0,2.0,70,80200
+Master,0 to 2,Junior,Permanent,Public Sector,BL,"Car, Meal vouchers",Large (1000+),,28,,,80,78600
+PhD,4 to 10,Senior,Permanent,Public Sector,BE,AG (train pass),Medium (200-1000),"English, German",23,20.0,4.0,80,147300
+PhD,2 to 6,Mid-level,Permanent,IT,ZG,Car,Small (50-200),"French, German",22,,,80,124300
+PhD,2 to 6,Mid-level,2 years,Consulting,TG,None,Medium (200-1000),"English, German",30,,,60,71500
+Master,0 to 2,Junior,Permanent,IT,AG,Car,Large (1000+),"English, German",26,24.0,4.0,60,65700
+Master,2 to 6,Mid-level,Permanent,Pharma,BL,Meal vouchers,Medium (200-1000),German,20,,,70,106500
+Bachelor,0 to 2,Junior,1 year,Hospitality,LU,Car,Small (50-200),"French, English, German",25,14.0,3.0,70,31000
+Master,0 to 0,Intern,1 year,Manufacturing,VD,,Startup (<50),"French, English",28,18.0,2.0,90,28500
+Master,2 to 6,Mid-level,2 years,Education,SO,"Stock options, Car",Startup (<50),German,24,16.0,2.0,100,55500
+Master,2 to 6,Mid-level,Permanent,Education,SO,Housing support,Medium (200-1000),"English, German",23,22.0,3.0,80,76200
+Bachelor,0 to 2,Junior,2 years,Education,BE,None,Startup (<50),"English, German",25,,,100,28400
+Bachelor,0 to 2,Junior,1 year,IT,BE,"AG (train pass), Stock options",Medium (200-1000),"French, English, German",25,14.0,2.0,70,54800
+Bachelor,0 to 0,Intern,1 year,Finance,AG,"AG (train pass), Meal vouchers",Medium (200-1000),German,28,14.0,2.0,80,36400
+Master,0 to 0,Intern,1 year,Manufacturing,VS,Car,Startup (<50),"French, English, German",23,14.0,2.0,90,25600
+Master,2 to 6,Mid-level,Permanent,Construction,VS,None,Large (1000+),"French, German",24,16.0,2.0,100,106800
+Master,4 to 10,Senior,Permanent,IT,SH,None,Startup (<50),"English, German",25,16.0,5.0,80,98600
+PhD,2 to 6,Mid-level,Permanent,Education,VD,None,Small (50-200),"French, English",30,14.0,2.0,100,105200
+Master,4 to 10,Senior,Permanent,Hospitality,VS,Housing support,Small (50-200),"French, English, German",30,14.0,2.0,80,80300
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,GR,None,Medium (200-1000),"Italian, German",23,14.0,3.0,70,88500
+Bachelor,0 to 2,Junior,2 years,Manufacturing,VD,Car,Small (50-200),"French, English, German",25,14.0,2.0,100,58400
+Master,0 to 2,Junior,2 years,Education,ZH,"Housing support, AG (train pass)",Medium (200-1000),German,28,,,70,56700
+Master,7 to 20,Manager,Permanent,Manufacturing,TI,,Medium (200-1000),Italian,24,,,80,190800
+Apprenticeship,0 to 2,Junior,2 years,Education,ZH,Stock options,Small (50-200),"French, English, German",25,,,60,26400
+Bachelor,2 to 6,Mid-level,Permanent,Retail,TI,Housing support,Startup (<50),"Italian, English",26,14.0,2.0,90,40500
+Bachelor,2 to 6,Mid-level,Permanent,Energy,OW,Meal vouchers,Large (1000+),German,27,14.0,3.0,80,90400
+Master,0 to 2,Junior,Permanent,Retail,BE,"Meal vouchers, Housing support",Medium (200-1000),"French, German",25,14.0,2.0,50,37500
+Apprenticeship,0 to 2,Junior,Permanent,Retail,AG,Car,Small (50-200),"English, German",22,14.0,2.0,60,30800
+Master,4 to 10,Senior,Permanent,Education,BE,AG (train pass),Medium (200-1000),,30,14.0,2.0,80,114800
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,TI,None,Medium (200-1000),Italian,22,14.0,3.0,80,60700
+Master,4 to 10,Senior,Permanent,Construction,SG,Meal vouchers,Large (1000+),German,23,14.0,2.0,100,159500
+Master,4 to 10,Senior,Permanent,Manufacturing,SG,"Housing support, Car",Startup (<50),German,23,18.0,2.0,70,68100
+Master,4 to 10,Senior,Permanent,Energy,FR,None,Startup (<50),"French, English, German",25,,,100,107000
+Apprenticeship,0 to 2,Junior,1 year,Public Sector,GE,"Meal vouchers, AG (train pass)",Medium (200-1000),"French, English",32,20.0,2.0,60,30400
+Master,7 to 20,Manager,Permanent,Pharma,TI,None,Large (1000+),Italian,25,,,100,384900
+Bachelor,4 to 10,Senior,Permanent,Education,BE,"Car, Stock options",Medium (200-1000),"English, German",30,,,70,89200
+Apprenticeship,0 to 2,Junior,Permanent,Education,FR,"AG (train pass), Car",Large (1000+),"French, German",24,,,90,52200
+Master,4 to 10,Senior,Permanent,Hospitality,VS,"AG (train pass), Meal vouchers",Small (50-200),"French, German",25,14.0,2.0,100,99700
+Master,0 to 2,Junior,2 years,Finance,ZH,None,Medium (200-1000),"English, German",32,,,100,95100
+Bachelor,2 to 6,Mid-level,Permanent,Healthcare,BE,Housing support,Small (50-200),"English, German",22,14.0,4.0,100,82200
+Apprenticeship,0 to 2,Junior,1 year,Manufacturing,AR,"Car, AG (train pass)",Small (50-200),"French, German",25,18.0,2.0,100,38900
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,SO,"Meal vouchers, Housing support",Large (1000+),"French, German",25,16.0,2.0,100,102800
+Bachelor,2 to 6,Mid-level,2 years,IT,SG,Stock options,Startup (<50),German,25,14.0,2.0,90,53700
+Master,2 to 6,Mid-level,2 years,Retail,GR,"AG (train pass), Stock options",Startup (<50),"Italian, English, German",26,14.0,2.0,80,44300
+Bachelor,0 to 0,Intern,6 months,Consulting,ZH,None,Startup (<50),"French, German",25,14.0,2.0,70,25000
+Bachelor,4 to 10,Senior,Permanent,Healthcare,BE,"Meal vouchers, Stock options",Startup (<50),"English, German",27,,,70,65100
+Master,0 to 2,Junior,1 year,Education,BE,Meal vouchers,Medium (200-1000),"English, German",28,,,70,47300
+Bachelor,0 to 0,Intern,6 months,Construction,VS,"Car, Meal vouchers",Medium (200-1000),"French, English, German",23,,,100,30400
+Master,2 to 6,Mid-level,Permanent,Finance,LU,None,Medium (200-1000),German,24,,,90,123100
+Master,2 to 6,Mid-level,Permanent,Manufacturing,TI,"Car, Meal vouchers",Large (1000+),,22,14.0,5.0,90,94500
+Apprenticeship,0 to 2,Junior,1 year,IT,GE,None,Large (1000+),"French, German",28,16.0,2.0,50,37100
+PhD,6 to 15,Lead,Permanent,Energy,ZH,None,Small (50-200),"English, German",30,18.0,2.0,60,144400
+Master,4 to 10,Senior,Permanent,Retail,AR,"Meal vouchers, AG (train pass)",Medium (200-1000),"English, German",25,,,80,104100
+Apprenticeship,0 to 2,Junior,Permanent,Public Sector,GE,Car,Startup (<50),"French, English",25,,,80,37600
+Bachelor,2 to 6,Mid-level,Permanent,Education,BE,"Meal vouchers, Car",Startup (<50),"English, German",24,20.0,2.0,90,50500
+Master,0 to 2,Junior,2 years,Consulting,SO,"AG (train pass), Housing support",Small (50-200),,25,14.0,4.0,80,53000
+Master,0 to 2,Junior,1 year,Pharma,ZH,Meal vouchers,Medium (200-1000),German,20,14.0,2.0,60,66200
+Bachelor,0 to 2,Junior,2 years,Education,ZH,Stock options,Medium (200-1000),"French, English, German",20,,,80,53200
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,ZH,AG (train pass),Small (50-200),"English, German",28,16.0,4.0,80,97800
+Bachelor,0 to 2,Junior,1 year,Healthcare,ZH,None,Large (1000+),German,23,14.0,2.0,60,46100
+Bachelor,4 to 10,Senior,Permanent,Healthcare,FR,"Stock options, Housing support",Startup (<50),"French, English, German",27,14.0,2.0,90,89700
+Bachelor,2 to 6,Mid-level,Permanent,Finance,ZH,None,Startup (<50),"French, English, German",25,,,100,109200
+Master,4 to 10,Senior,Permanent,Manufacturing,AG,None,Medium (200-1000),"French, English, German",25,,,90,146800
+Master,0 to 0,Intern,6 months,Education,BE,Meal vouchers,Large (1000+),"English, German",24,,,80,33100
+Master,6 to 15,Lead,Permanent,Construction,BS,"Housing support, Meal vouchers",Medium (200-1000),"French, English, German",30,,,100,224600
+Master,4 to 10,Senior,Permanent,Construction,BL,Housing support,Small (50-200),"English, German",23,20.0,3.0,100,117800
+Master,0 to 2,Junior,Permanent,Public Sector,BE,"Stock options, AG (train pass)",Medium (200-1000),,23,,,50,37800
+Master,4 to 10,Senior,Permanent,Healthcare,SG,"Meal vouchers, Housing support",Large (1000+),"English, German",30,16.0,2.0,70,126700
+Master,0 to 0,Intern,6 months,Retail,BE,None,Medium (200-1000),German,25,14.0,5.0,50,25000
+Master,2 to 6,Mid-level,2 years,Consulting,BL,"Housing support, Stock options",Large (1000+),"English, German",23,16.0,2.0,70,97600
+PhD,7 to 20,Manager,Permanent,Manufacturing,LU,None,Medium (200-1000),"English, German",25,,,100,324100
+Master,4 to 10,Senior,Permanent,Education,BE,,Startup (<50),"French, German",25,,,70,68300
+PhD,6 to 15,Lead,Permanent,Retail,TG,"Meal vouchers, Car",Startup (<50),German,25,,,80,106000
+Master,0 to 2,Junior,1 year,IT,NE,"Stock options, AG (train pass)",Medium (200-1000),"French, English",26,,,100,78500
+Master,2 to 6,Mid-level,2 years,Education,BE,Housing support,Startup (<50),,25,14.0,2.0,100,65400
+Bachelor,4 to 10,Senior,Permanent,IT,GE,None,Large (1000+),"French, English",25,24.0,2.0,80,170100
+Bachelor,0 to 2,Junior,2 years,Public Sector,BE,"Stock options, Meal vouchers",Small (50-200),"English, German",28,,,70,31800
+Master,4 to 10,Senior,Permanent,Healthcare,BE,Stock options,Startup (<50),German,24,,,80,79100
+Bachelor,2 to 6,Mid-level,Permanent,Energy,ZH,Housing support,Large (1000+),German,30,,,90,113300
+Bachelor,2 to 6,Mid-level,Permanent,Retail,SG,Stock options,Small (50-200),,25,,,80,50400
+Apprenticeship,0 to 2,Junior,1 year,Manufacturing,BL,None,Startup (<50),German,23,16.0,2.0,80,26500
+Bachelor,0 to 2,Junior,2 years,Education,ZH,"Meal vouchers, Stock options",Small (50-200),"English, German",30,24.0,2.0,80,34900
+Master,0 to 2,Junior,2 years,Energy,AG,"Meal vouchers, Car",Medium (200-1000),"English, German",24,14.0,2.0,70,59700
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,VD,None,Large (1000+),,25,,,90,155500
+Master,4 to 10,Senior,Permanent,Public Sector,BE,Meal vouchers,Large (1000+),German,30,,,80,138200
+Bachelor,0 to 2,Junior,2 years,Manufacturing,AG,Meal vouchers,Startup (<50),"French, English, German",24,20.0,2.0,60,25000
+Master,0 to 2,Junior,1 year,Finance,SO,Stock options,Small (50-200),"English, German",22,,,80,56900
+Bachelor,0 to 0,Intern,6 months,Manufacturing,FR,"Car, AG (train pass)",Large (1000+),"French, German",25,14.0,2.0,50,25000
+Bachelor,4 to 10,Senior,Permanent,Healthcare,BE,Car,Medium (200-1000),"English, German",23,,,100,141700
+Master,4 to 10,Senior,Permanent,Pharma,NE,None,Large (1000+),"French, English",24,14.0,3.0,80,186100
+Master,2 to 6,Mid-level,Permanent,Consulting,GE,,Medium (200-1000),"French, English",30,14.0,5.0,80,118800
+Bachelor,2 to 6,Mid-level,Permanent,Pharma,AG,Meal vouchers,Large (1000+),"English, German",28,,,90,129700
+Master,0 to 2,Junior,Permanent,Education,FR,,Startup (<50),"French, German",20,,,90,42500
+Bachelor,2 to 6,Mid-level,2 years,Public Sector,BE,None,Startup (<50),German,24,,,80,45800
+Master,0 to 2,Junior,Permanent,Energy,GE,None,Medium (200-1000),French,24,16.0,4.0,70,65700
+Bachelor,2 to 6,Mid-level,2 years,Construction,VS,None,Medium (200-1000),"French, English, German",28,18.0,3.0,90,60900
+Bachelor,2 to 6,Mid-level,2 years,Education,ZH,None,Large (1000+),German,27,22.0,2.0,90,83100
+Master,6 to 15,Lead,Permanent,Consulting,BE,Housing support,Small (50-200),,25,14.0,5.0,90,182500
+Bachelor,4 to 10,Senior,Permanent,Hospitality,ZH,"Stock options, AG (train pass)",Large (1000+),German,25,14.0,2.0,80,124100
+Master,7 to 20,Manager,Permanent,Public Sector,VD,,Startup (<50),French,28,,,100,200300
+Bachelor,0 to 2,Junior,1 year,Hospitality,AG,"Car, AG (train pass)",Small (50-200),"English, German",25,14.0,2.0,80,35700
+Bachelor,2 to 6,Mid-level,Permanent,Energy,BL,Housing support,Large (1000+),"English, German",23,18.0,2.0,90,108000
+Master,2 to 6,Mid-level,Permanent,IT,ZG,,Startup (<50),"English, German",28,22.0,2.0,100,105200
+Bachelor,0 to 2,Junior,2 years,Manufacturing,BE,,Large (1000+),German,24,14.0,2.0,50,33200
+Master,2 to 6,Mid-level,Permanent,Consulting,GE,"Stock options, AG (train pass)",Large (1000+),"French, English",25,,,80,149800
+PhD,4 to 10,Senior,Permanent,Retail,LU,"Car, Housing support",Startup (<50),"English, German",24,22.0,5.0,80,78600
+Bachelor,4 to 10,Senior,Permanent,Healthcare,BE,Meal vouchers,Large (1000+),"English, German",24,18.0,2.0,70,119400
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,AG,AG (train pass),Large (1000+),"French, German",35,14.0,2.0,90,133600
+Apprenticeship,0 to 2,Junior,2 years,Energy,AG,None,Medium (200-1000),"English, German",24,14.0,3.0,50,28000
+Master,0 to 2,Junior,Permanent,Consulting,UR,None,Small (50-200),German,32,,,100,57800
+Apprenticeship,0 to 2,Junior,Permanent,Public Sector,ZH,"Housing support, Stock options",Small (50-200),German,28,14.0,5.0,60,32500
+Master,2 to 6,Mid-level,2 years,Pharma,ZH,None,Large (1000+),"English, German",20,16.0,2.0,80,145700
+Master,0 to 0,Intern,1 year,Consulting,VD,Car,Medium (200-1000),"French, German",30,14.0,2.0,60,26500
+Master,10 to 30,Director,Permanent,Finance,TI,Car,Medium (200-1000),Italian,20,,,100,473200
+Master,4 to 10,Senior,Permanent,Public Sector,BE,"AG (train pass), Meal vouchers",Small (50-200),"English, German",25,14.0,2.0,80,113300
+Master,2 to 6,Mid-level,Permanent,Pharma,ZH,"Housing support, Meal vouchers",Large (1000+),German,25,,,90,188500
+Bachelor,2 to 6,Mid-level,2 years,Hospitality,FR,None,Startup (<50),"French, German",25,16.0,2.0,80,30800
+Master,2 to 6,Mid-level,Permanent,Public Sector,GE,None,Large (1000+),"French, English, German",25,14.0,4.0,80,121400
+Apprenticeship,0 to 2,Junior,Permanent,Energy,SG,"Housing support, AG (train pass)",Startup (<50),"English, German",24,22.0,2.0,100,42900
+Bachelor,4 to 10,Senior,Permanent,Consulting,ZG,"Meal vouchers, Housing support",Large (1000+),"French, German",25,16.0,2.0,90,198800
+Master,6 to 15,Lead,Permanent,IT,ZH,None,Medium (200-1000),"English, German",25,16.0,2.0,90,271200
+Bachelor,2 to 6,Mid-level,2 years,IT,TI,Housing support,Small (50-200),"Italian, English, German",25,22.0,4.0,70,54400
+Master,7 to 20,Manager,Permanent,Education,VD,"Housing support, Stock options",Large (1000+),"French, English",25,,,100,348200
+PhD,2 to 6,Mid-level,Permanent,IT,SG,"Stock options, Car",Large (1000+),German,23,16.0,2.0,60,98000
+Master,0 to 2,Junior,Permanent,Pharma,BS,None,Small (50-200),"English, German",23,16.0,2.0,90,77800
+Master,4 to 10,Senior,Permanent,Healthcare,LU,AG (train pass),Startup (<50),"English, German",20,14.0,3.0,80,85200
+PhD,7 to 20,Manager,Permanent,Manufacturing,LU,None,Small (50-200),German,25,16.0,2.0,100,255400
+Master,2 to 6,Mid-level,Permanent,Healthcare,LU,AG (train pass),Medium (200-1000),"French, German",25,14.0,2.0,90,97200
+Master,2 to 6,Mid-level,2 years,Public Sector,ZH,None,Medium (200-1000),"French, English, German",25,14.0,2.0,90,114500
+Bachelor,2 to 6,Mid-level,2 years,IT,VD,AG (train pass),Large (1000+),French,25,18.0,2.0,70,83100
+Bachelor,0 to 0,Intern,6 months,Retail,ZH,None,Large (1000+),"French, English, German",25,14.0,4.0,90,37200
+Bachelor,4 to 10,Senior,Permanent,Education,AR,Car,Medium (200-1000),"French, German",25,14.0,2.0,80,87500
+Bachelor,0 to 0,Intern,6 months,Construction,VS,None,Large (1000+),"French, English, German",23,14.0,2.0,70,25000
+Master,4 to 10,Senior,Permanent,Education,AG,None,Small (50-200),German,20,14.0,4.0,80,96900
+Master,2 to 6,Mid-level,2 years,Public Sector,BE,Meal vouchers,Medium (200-1000),"French, English, German",24,14.0,3.0,100,99200
+PhD,2 to 6,Mid-level,Permanent,Finance,ZH,"Stock options, AG (train pass)",Medium (200-1000),German,25,14.0,4.0,100,186700
+Bachelor,0 to 0,Intern,6 months,IT,NE,Meal vouchers,Large (1000+),French,24,14.0,2.0,80,31900
+Bachelor,0 to 0,Intern,1 year,Hospitality,FR,Car,Large (1000+),"French, German",23,14.0,2.0,70,27200
+Master,0 to 2,Junior,1 year,Education,BE,"Meal vouchers, Stock options",Small (50-200),"English, German",28,14.0,5.0,100,48300
+Master,0 to 2,Junior,2 years,Manufacturing,TI,Car,Large (1000+),"Italian, English",22,14.0,2.0,70,48100
+Master,4 to 10,Senior,Permanent,Hospitality,BE,"Housing support, Stock options",Large (1000+),"English, German",24,14.0,4.0,80,128300
+Master,6 to 15,Lead,Permanent,IT,VD,Stock options,Small (50-200),,25,,,90,205000
+Bachelor,4 to 10,Senior,Permanent,Education,GE,,Small (50-200),"French, English, German",24,14.0,3.0,90,111700
+Master,2 to 6,Mid-level,Permanent,Pharma,BE,Car,Startup (<50),"French, English, German",25,24.0,2.0,100,104100
+Bachelor,2 to 6,Mid-level,2 years,IT,VD,None,Large (1000+),"French, German",23,,,70,86100
+PhD,4 to 10,Senior,Permanent,Finance,ZH,Meal vouchers,Large (1000+),"French, English, German",26,14.0,2.0,80,277600
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,SO,,Large (1000+),"English, German",25,,,100,150000
+Master,2 to 6,Mid-level,Permanent,Consulting,GE,"Stock options, Meal vouchers",Medium (200-1000),French,28,14.0,2.0,90,128400
+Bachelor,4 to 10,Senior,Permanent,IT,SG,"AG (train pass), Car",Small (50-200),"English, German",28,,,90,119100
+PhD,2 to 6,Mid-level,Permanent,Public Sector,SG,Housing support,Medium (200-1000),German,25,16.0,2.0,100,127800
+Master,0 to 2,Junior,2 years,Finance,ZH,None,Small (50-200),"English, German",23,14.0,2.0,90,78400
+Master,0 to 0,Intern,6 months,Education,BE,"Meal vouchers, Car",Medium (200-1000),German,27,,,80,25000
+Master,4 to 10,Senior,Permanent,Pharma,VD,Car,Startup (<50),French,27,,,60,92600
+Apprenticeship,0 to 2,Junior,1 year,Consulting,ZH,"Meal vouchers, AG (train pass)",Medium (200-1000),German,26,14.0,2.0,80,50600
+Master,4 to 10,Senior,Permanent,Construction,BE,AG (train pass),Large (1000+),"English, German",32,16.0,2.0,90,146700
+Apprenticeship,0 to 2,Junior,1 year,Finance,BL,"Stock options, Housing support",Large (1000+),"English, German",24,16.0,2.0,70,48000
+Bachelor,2 to 6,Mid-level,Permanent,Pharma,BE,Car,Startup (<50),"French, German",20,,,80,69600
+PhD,7 to 20,Manager,Permanent,Hospitality,VD,Stock options,Medium (200-1000),"French, English",25,,,100,310600
+Bachelor,2 to 6,Mid-level,2 years,IT,ZH,"Housing support, Meal vouchers",Small (50-200),"French, German",28,18.0,2.0,90,90000
+PhD,6 to 15,Lead,Permanent,Pharma,LU,None,Medium (200-1000),"English, German",30,14.0,2.0,90,281700
+PhD,2 to 6,Mid-level,Permanent,Public Sector,BE,"Car, Stock options",Startup (<50),German,30,14.0,2.0,80,66700
+Master,2 to 6,Mid-level,Permanent,IT,ZH,Meal vouchers,Startup (<50),German,25,18.0,2.0,60,62100
+Bachelor,0 to 0,Intern,1 year,Finance,ZH,Housing support,Large (1000+),"French, English, German",25,14.0,5.0,70,51000
+Master,6 to 15,Lead,Permanent,IT,ZH,Car,Startup (<50),,25,,,90,181100
+Master,0 to 2,Junior,Permanent,IT,GE,Car,Small (50-200),"French, English",25,14.0,2.0,90,89600
+PhD,4 to 10,Senior,Permanent,Hospitality,ZH,"Meal vouchers, Stock options",Medium (200-1000),German,25,,,90,164600
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,SG,,Large (1000+),German,24,20.0,2.0,80,114200
+Master,7 to 20,Manager,Permanent,Hospitality,GR,"Stock options, Housing support",Small (50-200),"Italian, English, German",27,22.0,2.0,90,178300
+Bachelor,0 to 0,Intern,1 year,Manufacturing,TG,"Car, Housing support",Medium (200-1000),,25,,,80,27100
+Master,2 to 6,Mid-level,2 years,Construction,FR,"Car, Meal vouchers",Startup (<50),"French, German",20,14.0,2.0,70,35900
+Master,2 to 6,Mid-level,2 years,Manufacturing,TI,Meal vouchers,Large (1000+),"Italian, English",22,16.0,2.0,90,81000
+Bachelor,2 to 6,Mid-level,2 years,Healthcare,TG,,Small (50-200),"French, English, German",24,,,90,63000
+Master,7 to 20,Manager,Permanent,Healthcare,TG,Meal vouchers,Startup (<50),"English, German",23,14.0,2.0,90,177300
+Bachelor,0 to 2,Junior,1 year,Public Sector,GE,None,Large (1000+),French,25,18.0,8.0,100,73000
+Bachelor,0 to 0,Intern,6 months,Consulting,ZH,Meal vouchers,Medium (200-1000),"English, German",27,,,70,29300
+Master,0 to 2,Junior,Permanent,Energy,LU,"Car, Housing support",Small (50-200),"English, German",32,14.0,2.0,100,70600
+Master,2 to 6,Mid-level,2 years,IT,AI,None,Medium (200-1000),German,23,,,90,92500
+Master,0 to 2,Junior,Permanent,Retail,SG,,Startup (<50),"English, German",26,,,100,45600
+Master,6 to 15,Lead,Permanent,Finance,SH,"Meal vouchers, Housing support",Small (50-200),German,23,14.0,2.0,80,177100
+Bachelor,4 to 10,Senior,Permanent,Hospitality,SO,Stock options,Small (50-200),German,28,,,90,66400
+Bachelor,0 to 2,Junior,Permanent,Consulting,ZH,Meal vouchers,Large (1000+),"English, German",25,16.0,4.0,100,110800
+Master,0 to 2,Junior,Permanent,Education,VD,,Startup (<50),French,28,,,100,47900
+Bachelor,0 to 2,Junior,1 year,Education,ZH,Meal vouchers,Medium (200-1000),German,25,16.0,2.0,50,31300
+PhD,2 to 6,Mid-level,2 years,Hospitality,SG,Meal vouchers,Large (1000+),"English, German",25,16.0,3.0,80,78100
+Bachelor,2 to 6,Mid-level,Permanent,Education,VD,None,Large (1000+),French,27,14.0,2.0,100,100100
+Master,0 to 2,Junior,1 year,Finance,SZ,None,Large (1000+),German,25,14.0,5.0,80,79400
+Bachelor,0 to 2,Junior,1 year,Pharma,GR,None,Medium (200-1000),"French, Italian, German",25,,,90,75500
+Master,2 to 6,Mid-level,2 years,Pharma,FR,Car,Medium (200-1000),"French, English, German",24,18.0,5.0,90,109300
+Master,0 to 2,Junior,1 year,Retail,ZH,None,Medium (200-1000),"French, English, German",30,,,100,66700
+Bachelor,0 to 2,Junior,Permanent,Consulting,ZH,"Car, Stock options",Small (50-200),,30,14.0,3.0,80,64900
+Apprenticeship,0 to 2,Junior,Permanent,Manufacturing,TI,"Stock options, AG (train pass)",Large (1000+),"Italian, English",23,,,80,44600
+Master,7 to 20,Manager,Permanent,Pharma,ZH,None,Medium (200-1000),German,25,14.0,2.0,80,359900
+Bachelor,4 to 10,Senior,Permanent,Healthcare,VD,"Meal vouchers, Car",Startup (<50),"French, English",25,16.0,2.0,90,91900
+Apprenticeship,0 to 2,Junior,1 year,Manufacturing,SG,Housing support,Medium (200-1000),"English, German",27,,,80,39400
+Master,0 to 2,Junior,1 year,Consulting,GE,None,Startup (<50),French,28,16.0,3.0,80,46300
+PhD,4 to 10,Senior,Permanent,Healthcare,ZH,Car,Large (1000+),German,20,14.0,2.0,100,247200
+PhD,7 to 20,Manager,Permanent,Pharma,ZH,"AG (train pass), Meal vouchers",Small (50-200),"English, German",25,18.0,2.0,100,456500
+Master,7 to 20,Manager,Permanent,IT,SH,Housing support,Large (1000+),"English, German",25,,,90,351500
+Master,6 to 15,Lead,Permanent,Education,ZH,None,Small (50-200),German,25,16.0,2.0,90,169700
+PhD,6 to 15,Lead,Permanent,Manufacturing,VD,"Car, Stock options",Medium (200-1000),"French, German",32,,,90,227200
+Bachelor,2 to 6,Mid-level,Permanent,Pharma,AG,"Housing support, Car",Startup (<50),German,22,14.0,2.0,100,88200
+Master,2 to 6,Mid-level,2 years,Consulting,ZH,"Meal vouchers, Car",Small (50-200),German,24,14.0,3.0,70,81300
+PhD,4 to 10,Senior,Permanent,Construction,LU,"AG (train pass), Car",Startup (<50),"French, English, German",28,14.0,2.0,100,116000
+Apprenticeship,0 to 2,Junior,2 years,Consulting,GE,"Stock options, Housing support",Medium (200-1000),French,30,14.0,4.0,100,59600
+Bachelor,0 to 0,Intern,6 months,Manufacturing,SO,"AG (train pass), Stock options",Medium (200-1000),"English, German",28,14.0,4.0,90,25000
+Bachelor,4 to 10,Senior,Permanent,Consulting,ZH,"Meal vouchers, AG (train pass)",Large (1000+),"English, German",25,,,100,220400
+Bachelor,2 to 6,Mid-level,2 years,Education,BE,None,Medium (200-1000),"English, German",24,14.0,2.0,100,76100
+Bachelor,2 to 6,Mid-level,Permanent,Healthcare,BE,Stock options,Small (50-200),German,25,14.0,6.0,90,68000
+Master,2 to 6,Mid-level,Permanent,Healthcare,ZH,AG (train pass),Medium (200-1000),"French, German",26,14.0,2.0,80,111500
+PhD,2 to 6,Mid-level,2 years,Construction,LU,"Housing support, Stock options",Small (50-200),"English, German",20,14.0,3.0,100,82200
+Master,0 to 0,Intern,1 year,Consulting,GE,"Stock options, Meal vouchers",Startup (<50),"French, English",22,18.0,4.0,60,25000
+PhD,4 to 10,Senior,Permanent,Manufacturing,BE,AG (train pass),Large (1000+),German,20,16.0,2.0,90,180700
+Master,0 to 0,Intern,6 months,Consulting,SZ,,Medium (200-1000),"English, German",23,,,100,46500
+PhD,7 to 20,Manager,Permanent,Hospitality,NW,Meal vouchers,Small (50-200),German,25,,,100,214500
+Bachelor,2 to 6,Mid-level,2 years,Construction,NW,,Small (50-200),German,25,,,80,51200
+Bachelor,0 to 2,Junior,2 years,Energy,ZH,,Startup (<50),"French, German",20,,,80,41200
+Master,0 to 2,Junior,Permanent,Manufacturing,GL,Stock options,Medium (200-1000),"English, German",28,22.0,2.0,70,48600
+Master,2 to 6,Mid-level,Permanent,Finance,BL,"Car, Stock options",Medium (200-1000),German,25,14.0,4.0,90,136400
+Master,2 to 6,Mid-level,2 years,Construction,ZH,None,Medium (200-1000),"English, German",23,,,80,82500
+Master,4 to 10,Senior,Permanent,IT,VD,None,Large (1000+),"French, English",20,16.0,2.0,90,214000
+PhD,2 to 6,Mid-level,Permanent,IT,SH,None,Medium (200-1000),,20,14.0,2.0,90,132400
+Master,0 to 2,Junior,Permanent,Education,BE,None,Large (1000+),,27,16.0,2.0,80,68200
+Master,6 to 15,Lead,Permanent,Energy,AG,"AG (train pass), Stock options",Medium (200-1000),German,24,,,90,210900
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,BL,"Stock options, Meal vouchers",Large (1000+),German,30,16.0,2.0,100,104100
+Bachelor,4 to 10,Senior,Permanent,Pharma,TG,"Housing support, Meal vouchers",Large (1000+),German,28,22.0,2.0,80,149500
+Bachelor,0 to 2,Junior,2 years,Manufacturing,SH,None,Small (50-200),"French, English, German",26,14.0,2.0,80,35300
+Bachelor,2 to 6,Mid-level,Permanent,IT,GE,None,Medium (200-1000),French,22,,,80,96200
+Master,4 to 10,Senior,Permanent,IT,BE,"Stock options, Meal vouchers",Small (50-200),"English, German",25,16.0,2.0,80,132200
+Bachelor,0 to 0,Intern,1 year,Education,VD,AG (train pass),Large (1000+),"French, German",25,,,90,36700
+Bachelor,2 to 6,Mid-level,Permanent,Consulting,ZH,"Car, Stock options",Medium (200-1000),"English, German",28,14.0,2.0,100,135600
+Master,4 to 10,Senior,Permanent,Construction,NW,None,Medium (200-1000),"French, German",20,16.0,2.0,90,131700
+Master,0 to 2,Junior,1 year,Consulting,BS,"AG (train pass), Housing support",Startup (<50),German,25,20.0,2.0,100,53900
+Bachelor,0 to 2,Junior,Permanent,Retail,SO,Housing support,Medium (200-1000),German,28,18.0,2.0,70,31500
+Master,0 to 2,Junior,1 year,IT,VD,"Stock options, Meal vouchers",Small (50-200),French,25,,,50,34200
+PhD,2 to 6,Mid-level,2 years,Energy,AG,"Meal vouchers, Car",Medium (200-1000),"English, German",25,,,100,116200
+Master,4 to 10,Senior,Permanent,Hospitality,ZH,"Stock options, Meal vouchers",Small (50-200),"English, German",23,16.0,2.0,90,113100
+Master,0 to 0,Intern,1 year,Healthcare,SO,Stock options,Medium (200-1000),German,25,16.0,2.0,50,25000
+Master,4 to 10,Senior,Permanent,Manufacturing,LU,None,Medium (200-1000),German,25,14.0,2.0,90,123700
+Master,2 to 6,Mid-level,Permanent,Hospitality,ZH,AG (train pass),Small (50-200),German,27,14.0,4.0,70,63100
+Apprenticeship,0 to 2,Junior,Permanent,Hospitality,TG,None,Large (1000+),,28,,,80,36900
+Bachelor,0 to 2,Junior,1 year,Public Sector,ZH,Stock options,Large (1000+),German,25,18.0,2.0,90,71900
+Master,0 to 2,Junior,1 year,Consulting,ZH,Housing support,Medium (200-1000),German,25,16.0,2.0,50,42800
+Apprenticeship,0 to 2,Junior,2 years,Public Sector,BE,"Car, AG (train pass)",Large (1000+),,27,14.0,2.0,80,41100
+PhD,2 to 6,Mid-level,2 years,Consulting,GR,None,Small (50-200),,25,,,70,70200
+PhD,2 to 6,Mid-level,Permanent,Energy,GR,"Car, AG (train pass)",Small (50-200),"Italian, German",24,14.0,2.0,90,99900
+Bachelor,2 to 6,Mid-level,2 years,Public Sector,BE,Housing support,Large (1000+),"English, German",28,14.0,2.0,100,94600
+Bachelor,2 to 6,Mid-level,2 years,Consulting,ZH,Car,Large (1000+),German,28,,,70,91800
+PhD,2 to 6,Mid-level,2 years,IT,ZH,,Medium (200-1000),German,30,,,90,129200
+Bachelor,0 to 2,Junior,2 years,Hospitality,BL,"AG (train pass), Stock options",Large (1000+),,22,14.0,4.0,80,49600
+Bachelor,0 to 2,Junior,Permanent,Healthcare,BE,Housing support,Large (1000+),"English, German",30,18.0,2.0,60,45700
+PhD,2 to 6,Mid-level,2 years,Finance,ZH,AG (train pass),Startup (<50),"English, German",28,,,90,97200
+Master,2 to 6,Mid-level,2 years,IT,AG,"Car, Stock options",Medium (200-1000),German,30,,,80,89600
+Bachelor,0 to 0,Intern,6 months,Manufacturing,BL,Stock options,Small (50-200),,25,14.0,5.0,70,25000
+Master,7 to 20,Manager,Permanent,Pharma,BL,None,Large (1000+),German,20,,,100,449300
+Apprenticeship,0 to 2,Junior,1 year,Pharma,VD,Meal vouchers,Startup (<50),"French, English",26,14.0,2.0,100,48900
+PhD,4 to 10,Senior,Permanent,Manufacturing,SZ,None,Startup (<50),German,22,20.0,4.0,100,107600
+Master,2 to 6,Mid-level,2 years,Manufacturing,BS,Stock options,Medium (200-1000),"English, German",25,14.0,2.0,90,97900
+Master,0 to 2,Junior,Permanent,Manufacturing,AG,Housing support,Large (1000+),"English, German",24,16.0,2.0,50,43700
+Master,7 to 20,Manager,Permanent,Hospitality,BE,None,Small (50-200),"French, German",26,,,90,183000
+Master,0 to 0,Intern,6 months,Manufacturing,VD,"AG (train pass), Housing support",Medium (200-1000),"French, English, German",27,14.0,3.0,100,44000
+Master,2 to 6,Mid-level,2 years,Education,BE,None,Startup (<50),German,26,14.0,2.0,100,54800
+Bachelor,4 to 10,Senior,Permanent,Energy,BE,"AG (train pass), Car",Startup (<50),German,26,16.0,2.0,60,53600
+Apprenticeship,0 to 2,Junior,1 year,Healthcare,BE,None,Startup (<50),,24,,,50,25000
+Bachelor,0 to 0,Intern,1 year,Retail,AG,Stock options,Small (50-200),"English, German",30,,,90,26900
+Bachelor,2 to 6,Mid-level,Permanent,Education,AG,Stock options,Small (50-200),"English, German",28,18.0,2.0,80,59300
+PhD,6 to 15,Lead,Permanent,Finance,ZH,None,Startup (<50),"French, German",25,14.0,6.0,90,229600
+Bachelor,4 to 10,Senior,Permanent,Finance,AG,None,Large (1000+),"French, English, German",25,24.0,2.0,80,170500
+Bachelor,4 to 10,Senior,Permanent,Public Sector,ZH,None,Large (1000+),"English, German",20,14.0,2.0,100,190200
+Master,0 to 0,Intern,6 months,Energy,AG,Stock options,Startup (<50),German,28,14.0,6.0,80,25000
+Apprenticeship,0 to 2,Junior,2 years,Healthcare,SG,"Stock options, Housing support",Large (1000+),"English, German",28,16.0,3.0,80,42200
+Master,0 to 2,Junior,2 years,Public Sector,BS,Housing support,Medium (200-1000),"French, German",23,14.0,3.0,80,63500
+Bachelor,2 to 6,Mid-level,Permanent,Public Sector,BE,Meal vouchers,Startup (<50),"French, English, German",23,16.0,2.0,90,67200
+Bachelor,4 to 10,Senior,Permanent,Public Sector,GE,"Meal vouchers, Stock options",Large (1000+),"French, English, German",28,22.0,2.0,90,167400
+Apprenticeship,0 to 2,Junior,Permanent,IT,BS,"AG (train pass), Car",Small (50-200),"English, German",25,14.0,2.0,80,56600
+Master,0 to 2,Junior,Permanent,Pharma,VD,Meal vouchers,Large (1000+),"French, English",25,18.0,2.0,50,68600
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,AG,Housing support,Startup (<50),"French, German",25,14.0,2.0,100,64600
+Master,2 to 6,Mid-level,2 years,Manufacturing,VS,Car,Large (1000+),"French, German",25,14.0,2.0,90,83000
+Master,6 to 15,Lead,Permanent,Healthcare,ZH,Stock options,Medium (200-1000),German,26,14.0,2.0,80,201300
+Master,0 to 0,Intern,1 year,Public Sector,ZH,"Car, AG (train pass)",Small (50-200),German,25,,,80,32900
+Bachelor,2 to 6,Mid-level,Permanent,Consulting,ZG,Stock options,Medium (200-1000),German,23,18.0,4.0,80,98800
+Bachelor,4 to 10,Senior,Permanent,IT,ZH,"Stock options, Meal vouchers",Medium (200-1000),German,25,,,100,189100
+Apprenticeship,0 to 2,Junior,2 years,Pharma,ZH,Housing support,Medium (200-1000),"English, German",28,,,50,38900
+Bachelor,4 to 10,Senior,Permanent,Public Sector,BE,AG (train pass),Large (1000+),"French, English, German",24,18.0,3.0,80,137100
+PhD,4 to 10,Senior,Permanent,Hospitality,FR,"Car, Housing support",Small (50-200),"French, German",25,14.0,2.0,60,70900
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,TI,"Meal vouchers, Stock options",Startup (<50),"Italian, English",25,14.0,4.0,80,48700
+Master,2 to 6,Mid-level,2 years,Retail,SG,"Housing support, Meal vouchers",Startup (<50),German,27,,,100,49300
+Master,6 to 15,Lead,Permanent,Retail,FR,Meal vouchers,Startup (<50),"French, English, German",23,,,90,106400
+Apprenticeship,0 to 2,Junior,2 years,Consulting,BE,Meal vouchers,Small (50-200),German,20,14.0,2.0,80,37400
+Apprenticeship,0 to 2,Junior,Permanent,IT,ZH,Meal vouchers,Medium (200-1000),German,25,14.0,2.0,70,56900
+Bachelor,2 to 6,Mid-level,Permanent,Energy,ZG,,Small (50-200),"English, German",25,14.0,6.0,80,77000
+Master,10 to 30,Director,Permanent,Education,JU,,Startup (<50),"French, English",22,16.0,5.0,100,213100
+Bachelor,0 to 2,Junior,Permanent,Energy,SG,"Car, Stock options",Large (1000+),"French, English, German",23,14.0,2.0,90,67900
+Master,2 to 6,Mid-level,2 years,Manufacturing,SO,Housing support,Startup (<50),"English, German",28,14.0,2.0,70,38700
+Master,2 to 6,Mid-level,Permanent,IT,ZH,None,Large (1000+),German,25,14.0,3.0,100,178400
+Master,2 to 6,Mid-level,2 years,Healthcare,BS,Meal vouchers,Medium (200-1000),,28,14.0,2.0,80,76300
+PhD,2 to 6,Mid-level,Permanent,Manufacturing,AG,Meal vouchers,Large (1000+),German,24,,,100,139000
+Bachelor,2 to 6,Mid-level,2 years,Construction,ZH,"Stock options, Car",Large (1000+),German,27,18.0,2.0,90,92800
+Bachelor,2 to 6,Mid-level,Permanent,Healthcare,BE,None,Startup (<50),German,24,16.0,2.0,80,46100
+Master,2 to 6,Mid-level,Permanent,Energy,FR,,Small (50-200),"French, English, German",28,16.0,8.0,100,85500
+Master,0 to 2,Junior,Permanent,Healthcare,ZH,"Housing support, Car",Small (50-200),"French, English, German",23,18.0,2.0,70,58400
+Master,2 to 6,Mid-level,2 years,Energy,AG,"AG (train pass), Housing support",Large (1000+),"English, German",25,14.0,2.0,80,99800
+Bachelor,2 to 6,Mid-level,Permanent,Retail,LU,Stock options,Startup (<50),"English, German",25,18.0,4.0,80,45300
+Bachelor,2 to 6,Mid-level,Permanent,Hospitality,ZH,AG (train pass),Startup (<50),"English, German",28,,,100,55200
+Apprenticeship,0 to 2,Junior,Permanent,Manufacturing,TI,"AG (train pass), Stock options",Startup (<50),"French, Italian",23,14.0,2.0,100,30000
+Master,7 to 20,Manager,Permanent,Energy,VD,None,Medium (200-1000),"French, English",23,16.0,3.0,100,339500
+Master,0 to 0,Intern,1 year,Consulting,SG,"Stock options, Housing support",Large (1000+),German,27,20.0,2.0,60,31600
+Master,0 to 0,Intern,1 year,IT,ZG,"AG (train pass), Meal vouchers",Small (50-200),"French, English, German",25,14.0,4.0,50,25300
+PhD,6 to 15,Lead,Permanent,Manufacturing,TG,"Stock options, Meal vouchers",Large (1000+),"French, German",25,16.0,4.0,80,208800
+Master,2 to 6,Mid-level,2 years,Energy,AG,"AG (train pass), Housing support",Large (1000+),German,30,,,90,104400
+Bachelor,2 to 6,Mid-level,2 years,Energy,ZH,None,Small (50-200),"English, German",24,16.0,6.0,90,72000
+Master,2 to 6,Mid-level,Permanent,Manufacturing,TG,None,Small (50-200),"French, German",20,,,90,77600
+Master,2 to 6,Mid-level,2 years,Hospitality,VS,Meal vouchers,Medium (200-1000),"French, English, German",25,18.0,2.0,80,53500
+Master,2 to 6,Mid-level,2 years,Retail,TI,Stock options,Medium (200-1000),"Italian, English",24,14.0,3.0,80,57400
+Bachelor,0 to 2,Junior,1 year,Energy,VS,None,Large (1000+),"French, German",26,,,80,47000
+Bachelor,2 to 6,Mid-level,Permanent,Retail,SG,Stock options,Startup (<50),"English, German",25,,,80,39600
+Bachelor,2 to 6,Mid-level,Permanent,IT,ZH,"Housing support, Meal vouchers",Medium (200-1000),German,24,22.0,3.0,90,113600
+Master,0 to 2,Junior,Permanent,Manufacturing,SZ,"Housing support, Car",Medium (200-1000),German,25,,,70,50600
+Bachelor,0 to 2,Junior,1 year,Education,ZH,Car,Small (50-200),,20,,,80,43000
+PhD,6 to 15,Lead,Permanent,Finance,LU,AG (train pass),Small (50-200),"English, German",23,16.0,2.0,80,218000
+Master,2 to 6,Mid-level,Permanent,Healthcare,BE,"AG (train pass), Stock options",Small (50-200),German,23,14.0,3.0,100,90000
+Master,0 to 2,Junior,2 years,Construction,BE,Meal vouchers,Small (50-200),"English, German",30,,,90,38100
+Apprenticeship,0 to 2,Junior,Permanent,Public Sector,SG,,Small (50-200),"French, English, German",25,,,80,43800
+Bachelor,2 to 6,Mid-level,Permanent,Public Sector,GE,Stock options,Large (1000+),,25,,,100,130300
+Apprenticeship,0 to 2,Junior,2 years,Manufacturing,NE,"Stock options, Housing support",Medium (200-1000),,25,20.0,4.0,80,33900
+Bachelor,2 to 6,Mid-level,2 years,Energy,SG,None,Startup (<50),"French, English, German",26,14.0,3.0,90,57200
+Master,0 to 2,Junior,1 year,Consulting,SG,Stock options,Small (50-200),German,25,,,60,42300
+Bachelor,2 to 6,Mid-level,2 years,Public Sector,LU,Stock options,Startup (<50),German,24,14.0,2.0,100,57700
+PhD,2 to 6,Mid-level,Permanent,Retail,TI,Stock options,Small (50-200),Italian,23,,,100,76400
+Bachelor,4 to 10,Senior,Permanent,Healthcare,VD,Stock options,Startup (<50),,25,14.0,4.0,80,84000
+Master,2 to 6,Mid-level,Permanent,Pharma,BS,"Stock options, Housing support",Medium (200-1000),,25,,,90,153400
+Bachelor,0 to 0,Intern,1 year,Retail,ZH,Stock options,Medium (200-1000),German,27,14.0,4.0,90,28200
+Bachelor,2 to 6,Mid-level,Permanent,Healthcare,TG,None,Startup (<50),"English, German",20,14.0,3.0,100,61300
+Bachelor,0 to 0,Intern,6 months,Retail,TI,None,Large (1000+),"Italian, German",25,14.0,3.0,100,25000
+Bachelor,2 to 6,Mid-level,2 years,Pharma,SG,Housing support,Large (1000+),"English, German",22,14.0,3.0,90,116400
+Bachelor,4 to 10,Senior,Permanent,Construction,ZH,"Stock options, Meal vouchers",Small (50-200),"English, German",30,,,100,125300
+Bachelor,4 to 10,Senior,Permanent,Finance,GE,"AG (train pass), Housing support",Startup (<50),French,20,18.0,2.0,90,117700
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,ZG,"Housing support, Meal vouchers",Medium (200-1000),German,24,18.0,3.0,100,109100
+Bachelor,2 to 6,Mid-level,Permanent,Manufacturing,AG,AG (train pass),Small (50-200),"English, German",35,14.0,2.0,90,64600
+Bachelor,2 to 6,Mid-level,2 years,Construction,BE,"Meal vouchers, Car",Small (50-200),"English, German",28,14.0,2.0,100,64500
+Master,2 to 6,Mid-level,2 years,Education,ZH,None,Medium (200-1000),"French, English, German",25,16.0,2.0,90,102900
+Master,2 to 6,Mid-level,Permanent,Hospitality,VS,Meal vouchers,Large (1000+),"French, English, German",25,,,100,99200
+Master,7 to 20,Manager,Permanent,Manufacturing,SG,None,Small (50-200),"French, German",25,,,100,224800
+Apprenticeship,0 to 2,Junior,2 years,Healthcare,LU,None,Small (50-200),German,24,,,90,31900
+Master,0 to 0,Intern,6 months,IT,SG,"AG (train pass), Housing support",Small (50-200),German,24,,,100,40500
+PhD,2 to 6,Mid-level,2 years,Healthcare,SH,"Meal vouchers, Car",Small (50-200),German,20,,,100,88000
+Apprenticeship,0 to 2,Junior,1 year,Construction,BE,Meal vouchers,Startup (<50),"French, English, German",25,,,90,26900
+Master,0 to 0,Intern,6 months,Construction,OW,Car,Medium (200-1000),"French, German",24,,,60,25000
+Master,2 to 6,Mid-level,2 years,Retail,SG,None,Medium (200-1000),German,24,14.0,6.0,100,75000
+Master,2 to 6,Mid-level,Permanent,Consulting,ZH,None,Large (1000+),German,25,14.0,2.0,90,146700
+PhD,4 to 10,Senior,Permanent,Finance,ZH,None,Small (50-200),"English, German",23,18.0,3.0,70,165000
+Bachelor,4 to 10,Senior,Permanent,Healthcare,VD,None,Startup (<50),French,28,,,100,93000
+Master,0 to 0,Intern,1 year,Education,TG,Meal vouchers,Medium (200-1000),"English, German",25,14.0,3.0,100,43400
+Master,6 to 15,Lead,Permanent,Energy,ZH,"Car, Housing support",Startup (<50),"English, German",23,14.0,2.0,100,187900
+Bachelor,0 to 0,Intern,1 year,IT,ZH,Housing support,Medium (200-1000),"French, German",25,14.0,4.0,100,46500
+PhD,2 to 6,Mid-level,2 years,Healthcare,SO,Car,Startup (<50),"English, German",26,14.0,3.0,100,67200
+Apprenticeship,0 to 2,Junior,2 years,IT,ZH,Car,Large (1000+),"French, English, German",25,,,80,72400
+Master,2 to 6,Mid-level,Permanent,Manufacturing,TG,AG (train pass),Large (1000+),German,23,,,90,103000
+Master,0 to 0,Intern,6 months,Hospitality,SO,,Startup (<50),"French, English, German",28,,,60,25000
+Apprenticeship,0 to 2,Junior,Permanent,Finance,ZH,Car,Medium (200-1000),"French, German",25,14.0,2.0,80,67600
+Bachelor,4 to 10,Senior,Permanent,Manufacturing,TG,"Stock options, AG (train pass)",Large (1000+),German,24,16.0,2.0,80,122200
+Bachelor,2 to 6,Mid-level,2 years,Consulting,ZH,Meal vouchers,Medium (200-1000),German,28,16.0,2.0,90,103000
+PhD,6 to 15,Lead,Permanent,Retail,TG,"Car, Housing support",Large (1000+),"French, English, German",25,16.0,4.0,100,246000

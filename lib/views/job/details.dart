@@ -475,6 +475,18 @@ class _JobDetailsState extends State<JobDetails> {
               value: _contractTime(currentJob.contractTime?.toInt() ?? 0),
             ),
 
+            const SizedBox(height: 12),
+
+            _InfoRow(
+              icon: Icons.timeline_outlined,
+              title: 'Required experience',
+              value:
+                  currentJob.minYearsExperience != null &&
+                      currentJob.maxYearsExperience != null
+                  ? '${currentJob.minYearsExperience}–${currentJob.maxYearsExperience} years'
+                  : 'Not specified',
+            ),
+
             // Posted time
             if (currentJob.createdAt == null)
               const SizedBox.shrink()

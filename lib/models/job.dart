@@ -13,6 +13,8 @@ class Job {
   final String title;
   final String? description;
   final List<Diplomas> diplomas;
+  final int? minYearsExperience;
+  final int? maxYearsExperience;
   final int? contractTime;
   final Role role;
   final Industry industry;
@@ -34,6 +36,8 @@ class Job {
     required this.title,
     this.description,
     required this.diplomas,
+    this.minYearsExperience,
+    this.maxYearsExperience,
     this.contractTime,
     required this.role,
     required this.industry,
@@ -64,7 +68,9 @@ class Job {
             ),
           )
           .toList(),
-      contractTime: (data['contractTime'] as num?)?.toInt(),
+      minYearsExperience: (data['minYearsExperience'] as num?)?.toInt() ?? 0,
+      maxYearsExperience: (data['maxYearsExperience'] as num?)?.toInt() ?? 0,
+      contractTime: (data['contractTime'] as num?)?.toInt() ?? 0,
       role: Role.values.firstWhere(
         (e) =>
             e.name.toLowerCase() ==
@@ -117,6 +123,8 @@ class Job {
       'title': title,
       'description': description,
       'diplomas': diplomas.map((d) => d.name).toList(),
+      'minYearsExperience': minYearsExperience,
+      'maxYearsExperience': maxYearsExperience,
       'contractTime': contractTime,
       'role': role.name,
       'industry': industry.name,
@@ -140,6 +148,32 @@ class Job {
           .toList(),
       'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : null,
     };
+  }
+
+  Job withPredictedSalary(double value) {
+    return Job(
+      id: id,
+      userUuid: userUuid,
+      title: title,
+      description: description,
+      diplomas: diplomas,
+      minYearsExperience: minYearsExperience,
+      maxYearsExperience: maxYearsExperience,
+      contractTime: contractTime,
+      role: role,
+      industry: industry,
+      perks: perks,
+      languages: languages,
+      holidays: holidays,
+      maternityLeave: maternityLeave,
+      paternityLeave: paternityLeave,
+      workloadPercent: workloadPercent,
+      salary: salary,
+      predictedSalary: value,
+      createdAt: createdAt,
+      visible: visible,
+      translations: translations,
+    );
   }
 
   /// can return an error if the translation is not found, so make sure to handle that in the calling code.
