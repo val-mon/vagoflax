@@ -83,8 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Navigator.pop(ctx);
 
               try {
-                await FirebaseAuth.instance.sendPasswordResetEmail(
-                  email: email,
+                await context.read<ApplicationState>().sendPasswordResetEmail(
+                  email,
                 );
                 if (!mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
