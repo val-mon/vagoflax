@@ -17,15 +17,14 @@ DROP_COLUMNS = [
 ]
 
 ONE_HOT_COLUMNS = [
-    "Diploma",
     "Role",
     "Industry",
-    "CitySize",
     "Canton",
     "CompanySize",
 ]
 
 MULTI_HOT_COLUMNS = [
+    "Diploma",
     "Perks",
     "Languages",
 ]
@@ -204,14 +203,13 @@ class JobOfferPreprocessor:
         - IsPermanent
 
     One-hot features:
-        - Diploma
         - Role
         - Industry
-        - CitySize
         - Canton
         - CompanySize
 
     Multi-hot features:
+        - Diploma
         - Perks
         - Languages
     """

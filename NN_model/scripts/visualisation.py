@@ -12,7 +12,6 @@ col_names = {
     "Role": "Role",
     "Contract": "Contract Type",
     "Industry": "Industry",
-    "CitySize": "City Size",
     "Canton": "Canton",
     "Perks": "Perks",
     "CompanySize": "Company Size",
@@ -77,16 +76,6 @@ def save_industries(df):
         filename='industries.png'
     )
 
-def save_city_sizes(df):
-    save_fig(
-        df=df,
-        column_name='CitySize',
-        title='Distribution of City Sizes',
-        xlabel='City Size',
-        ylabel='Number of Job Offers',
-        filename='city_sizes.png'
-    )
-
 def save_cantons(df):
     save_fig(
         df=df,
@@ -134,10 +123,8 @@ if __name__ == "__main__":
     save_roles(df)
     save_contract_types(df)
     save_industries(df)
-    save_city_sizes(df)
     save_cantons(df)
     save_perks(df)
     save_company_sizes(df)
     save_languages(df)
-
 

@@ -1,4 +1,5 @@
 import 'package:flutter_litert/flutter_litert.dart';
+import 'package:vagoflax/models/salary_prediction_model.dart';
 
 import 'salary_preprocessor.dart';
 

@@ -9,6 +9,8 @@ import 'package:vagoflax/models/enum/perks.dart';
 import 'package:vagoflax/models/enum/languages.dart';
 import 'package:vagoflax/models/enum/industry.dart';
 import 'package:vagoflax/providers/job.dart';
+import 'package:vagoflax/models/salary_prediction_model.dart';
+import 'package:vagoflax/services/salary_prediction.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -23,9 +25,12 @@ class JobForm extends StatefulWidget {
 
 class _JobFormState extends State<JobForm> {
   final _formKey = GlobalKey<FormState>();
+  final _salaryPredictionService = SalaryPredictionService();
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _minYearsExperienceController = TextEditingController();
+  final _maxYearsExperienceController = TextEditingController();
   final _contractTimeController = TextEditingController();
   final _holidaysController = TextEditingController();
   final _maternityLeaveController = TextEditingController();
@@ -49,6 +54,10 @@ class _JobFormState extends State<JobForm> {
       // Editing an existing job
       _titleController.text = job.title;
       _descriptionController.text = job.description ?? '';
+      _minYearsExperienceController.text =
+          job.minYearsExperience?.toString() ?? '';
+      _maxYearsExperienceController.text =
+          job.maxYearsExperience?.toString() ?? '';
       _contractTimeController.text = job.contractTime == null
           ? ''
           : job.contractTime.toString();
@@ -84,12 +93,15 @@ class _JobFormState extends State<JobForm> {
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _minYearsExperienceController.dispose();
+    _maxYearsExperienceController.dispose();
     _contractTimeController.dispose();
     _holidaysController.dispose();
     _maternityLeaveController.dispose();
     _paternityLeaveController.dispose();
     _workloadPercentController.dispose();
     _salaryController.dispose();
+    _salaryPredictionService.dispose();
     super.dispose();
   }
 
@@ -159,19 +171,38 @@ class _JobFormState extends State<JobForm> {
             const SizedBox(height: 16),
 
             TextFormField(
+              controller: _minYearsExperienceController,
+              decoration: const InputDecoration(
+                labelText: 'Minimum years of experience',
+              ),
+              keyboardType: TextInputType.number,
+              validator: _requiredNonNegativeIntValidator,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _maxYearsExperienceController,
+              decoration: const InputDecoration(
+                labelText: 'Maximum years of experience',
+              ),
+              keyboardType: TextInputType.number,
+              validator: _maxExperienceValidator,
+            ),
+            const SizedBox(height: 16),
+
+            TextFormField(
               controller: _contractTimeController,
               decoration: const InputDecoration(
                 labelText: 'Contract time (months)',
               ),
               keyboardType: TextInputType.number,
-              validator: _intValidator,
+              validator: _requiredNonNegativeIntValidator,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _holidaysController,
               decoration: const InputDecoration(labelText: 'Holidays (days)'),
               keyboardType: TextInputType.number,
-              validator: _intValidator,
+              validator: _requiredNonNegativeIntValidator,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -196,7 +227,7 @@ class _JobFormState extends State<JobForm> {
               controller: _workloadPercentController,
               decoration: const InputDecoration(labelText: 'Workload (%)'),
               keyboardType: TextInputType.number,
-              validator: _intValidator,
+              validator: _workloadValidator,
             ),
             const SizedBox(height: 16),
 
@@ -271,17 +302,55 @@ class _JobFormState extends State<JobForm> {
     return null;
   }
 
+  String? _requiredNonNegativeIntValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'This field is required';
+    }
+
+    final parsed = int.tryParse(value);
+    if (parsed == null) return 'Enter a whole number';
+    if (parsed < 0) return 'Enter a positive value';
+    return null;
+  }
+
+  String? _maxExperienceValidator(String? value) {
+    final validationError = _requiredNonNegativeIntValidator(value);
+    if (validationError != null) return validationError;
+
+    final minimum = int.tryParse(_minYearsExperienceController.text);
+    final maximum = int.parse(value!);
+    if (minimum != null && maximum < minimum) {
+      return 'Maximum must be greater than or equal to minimum';
+    }
+
+    return null;
+  }
+
+  String? _workloadValidator(String? value) {
+    final validationError = _requiredNonNegativeIntValidator(value);
+    if (validationError != null) return validationError;
+
+    final workload = int.parse(value!);
+    if (workload == 0 || workload > 100) {
+      return 'Enter a value between 1 and 100';
+    }
+
+    return null;
+  }
+
   Future<void> _saveJob(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     final jobProvider = Provider.of<JobProvider>(context, listen: false);
 
-    final job = Job(
+    final draftJob = Job(
       id: widget.job?.id,
       userUuid: context.read<UserProvider>().currentUser?.id,
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       diplomas: _selectedDiplomas,
+      minYearsExperience: int.parse(_minYearsExperienceController.text),
+      maxYearsExperience: int.parse(_maxYearsExperienceController.text),
       contractTime: int.tryParse(_contractTimeController.text),
       role: _selectedRole,
       industry: _selectedIndustry,
@@ -295,6 +364,32 @@ class _JobFormState extends State<JobForm> {
       visible: _visible,
       translations: widget.job?.translations ?? [],
     );
+
+    final employer = context.read<UserProvider>().currentUser;
+    if (employer == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Unable to load the employer profile.')),
+      );
+      return;
+    }
+
+    late final Job job;
+    try {
+      final predictionInput = SalaryPredictionInput.fromJobAndEmployer(
+        job: draftJob,
+        employer: employer,
+      );
+      final predictedSalary = await _salaryPredictionService.predict(
+        predictionInput,
+      );
+      job = draftJob.withPredictedSalary(predictedSalary);
+    } catch (error) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Salary prediction failed: $error')),
+      );
+      return;
+    }
 
     if (widget.job == null) {
       await jobProvider.addJob(job);

@@ -1,42 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-
-class SalaryPredictionInput {
-  final double minYearsExperience;
-  final double maxYearsExperience;
-  final double contractMonths;
-  final bool isPermanent;
-  final double holidays;
-  final double workloadPercent;
-
-  final String diploma;
-  final String role;
-  final String industry;
-  final String citySize;
-  final String canton;
-  final String companySize;
-
-  final List<String> perks;
-  final List<String> languages;
-
-  const SalaryPredictionInput({
-    required this.minYearsExperience,
-    required this.maxYearsExperience,
-    required this.contractMonths,
-    required this.isPermanent,
-    required this.holidays,
-    required this.workloadPercent,
-    required this.diploma,
-    required this.role,
-    required this.industry,
-    required this.citySize,
-    required this.canton,
-    required this.companySize,
-    required this.perks,
-    required this.languages,
-  });
-}
+import 'package:vagoflax/models/salary_prediction_model.dart';
 
 class SalaryPreprocessor {
   static const String _assetPath = 'assets/ml/preprocessing.json';
@@ -142,10 +107,10 @@ class SalaryPreprocessor {
       featureValues[column] = binaryValues[column] ?? 0.0;
     }
 
-    _encodeOneHot(
+    _encodeMultiHot(
       output: featureValues,
       column: 'Diploma',
-      value: input.diploma,
+      values: input.diplomas,
     );
 
     _encodeOneHot(output: featureValues, column: 'Role', value: input.role);
@@ -154,12 +119,6 @@ class SalaryPreprocessor {
       output: featureValues,
       column: 'Industry',
       value: input.industry,
-    );
-
-    _encodeOneHot(
-      output: featureValues,
-      column: 'CitySize',
-      value: input.citySize,
     );
 
     _encodeOneHot(output: featureValues, column: 'Canton', value: input.canton);
@@ -221,13 +180,16 @@ class SalaryPreprocessor {
       throw StateError('Missing one-hot categories for $column.');
     }
 
-    final isKnown = categories.contains(value);
+    final knownCategories = categories
+        .where((category) => category != _unknownToken)
+        .toSet();
 
     for (final category in categories) {
       final featureName = '${column}__$category';
 
       if (category == _unknownToken) {
-        output[featureName] = !isKnown && _addUnknownCategory ? 1.0 : 0.0;
+        output[featureName] =
+            !knownCategories.contains(value) && _addUnknownCategory ? 1.0 : 0.0;
       } else {
         output[featureName] = category == value ? 1.0 : 0.0;
       }
@@ -247,22 +209,9 @@ class SalaryPreprocessor {
 
     final valueSet = values.toSet();
 
-    final knownCategories = categories
-        .where((category) => category != _unknownToken)
-        .toSet();
-
-    final hasUnknownValue = valueSet.any(
-      (value) => !knownCategories.contains(value),
-    );
-
     for (final category in categories) {
       final featureName = '${column}__$category';
-
-      if (category == _unknownToken) {
-        output[featureName] = hasUnknownValue ? 1.0 : 0.0;
-      } else {
-        output[featureName] = valueSet.contains(category) ? 1.0 : 0.0;
-      }
+      output[featureName] = valueSet.contains(category) ? 1.0 : 0.0;
     }
   }
 

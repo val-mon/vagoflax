@@ -15,6 +15,8 @@ void main() {
     title: 'title',
     description: 'description',
     diplomas: const [],
+    minYearsExperience: 2,
+    maxYearsExperience: 5,
     contractTime: 13,
     role: Role.intern,
     industry: Industry.informationTechnology,
@@ -42,6 +44,8 @@ void main() {
     'title': 'title',
     'description': 'description',
     'diplomas': <String>[],
+    'minYearsExperience': 2,
+    'maxYearsExperience': 5,
     'contractTime': 13,
     'role': 'intern',
     'industry': 'informationTechnology',
@@ -78,6 +82,11 @@ void main() {
 
   test('toFirestore includes contractTime', () {
     expect(job.toFirestore()['contractTime'], 13);
+  });
+
+  test('toFirestore includes experience range', () {
+    expect(job.toFirestore()['minYearsExperience'], 2);
+    expect(job.toFirestore()['maxYearsExperience'], 5);
   });
 
   test('toFirestore includes role name', () {
@@ -137,6 +146,12 @@ void main() {
 
   test('fromFirestore includes contractTime', () {
     expect(Job.fromFirestore(mapJob, '1').contractTime, 13);
+  });
+
+  test('fromFirestore includes experience range', () {
+    final parsed = Job.fromFirestore(mapJob, '1');
+    expect(parsed.minYearsExperience, 2);
+    expect(parsed.maxYearsExperience, 5);
   });
 
   test('fromFirestore parses role', () {
