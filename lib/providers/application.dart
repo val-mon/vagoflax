@@ -34,8 +34,9 @@ class ApplicationProvider extends ChangeNotifier {
         _errorMessage = null;
         notifyListeners();
       },
-      onError: (error) {
-        _errorMessage = error.toString();
+      onError: (error, stackTrace) {
+        debugPrint('ERROR STREAM APPLICATOINS : $error');
+        debugPrint('Stacktrace: $stackTrace');
         _isLoading = false;
         notifyListeners();
       },
