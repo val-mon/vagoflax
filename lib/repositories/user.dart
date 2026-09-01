@@ -13,4 +13,6 @@ abstract class UserRepository {
     required int rating,
     required String comment,
   });
+  Future<void> addSavedSearch(String userId, String search);
+  Future<void> removeSavedSearch(String userId, String search);
 }
