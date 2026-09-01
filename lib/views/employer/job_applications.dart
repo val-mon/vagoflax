@@ -30,35 +30,37 @@ class JobApplicationsScreen extends StatelessWidget {
         .toList();
 
     // sort job applications by student applier name
-    jobApplications.sort((a, b) {
-      final studentA = users.firstWhere(
-        (u) => u.id == a.studentUuid,
-        orElse: () => User(
-          id: "-1",
-          email: '',
-          role: UserRole.student,
-          createdAt: DateTime.now(),
-          canton: "",
-          city: "",
-          description: "",
-          profilePictureUrl: null,
-        ),
-      );
-      final studentB = users.firstWhere(
-        (u) => u.id == b.studentUuid,
-        orElse: () => User(
-          id: "-1",
-          email: '',
-          role: UserRole.student,
-          createdAt: DateTime.now(),
-          canton: "",
-          city: "",
-          description: "",
-          profilePictureUrl: null,
-        ),
-      );
-      return (studentA.firstName ?? '').compareTo(studentB.firstName ?? '');
-    });
+    if (users.isNotEmpty && jobApplications.isNotEmpty) {
+      jobApplications.sort((a, b) {
+        final studentA = users.firstWhere(
+          (u) => u.id == a.studentUuid,
+          orElse: () => User(
+            id: "-1",
+            email: '',
+            role: UserRole.student,
+            createdAt: DateTime.now(),
+            canton: "",
+            city: "",
+            description: "",
+            profilePictureUrl: null,
+          ),
+        );
+        final studentB = users.firstWhere(
+          (u) => u.id == b.studentUuid,
+          orElse: () => User(
+            id: "-1",
+            email: '',
+            role: UserRole.student,
+            createdAt: DateTime.now(),
+            canton: "",
+            city: "",
+            description: "",
+            profilePictureUrl: null,
+          ),
+        );
+        return (studentA.firstName ?? '').compareTo(studentB.firstName ?? '');
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
