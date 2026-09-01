@@ -20,7 +20,9 @@ class AdminScreen extends StatelessWidget {
             ? "${b.firstName} ${b.lastName}"
             : b.companyName) ??
         b.email;
-    users.sort((a, b) => userName(a).compareTo(userName(b)));
+    if (users.isNotEmpty) {
+      users.sort((a, b) => userName(a).compareTo(userName(b)));
+    }
     final isLoading = userProvider.isLoading;
 
     return Scaffold(
