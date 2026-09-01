@@ -29,13 +29,12 @@ class SignUpTypeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Spacer(),
+            const SizedBox(height: 32),
 
             // Title text
             const Text(
@@ -87,7 +86,6 @@ class SignUpTypeScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 24),
-            const Spacer(),
           ],
         ),
       ),

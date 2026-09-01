@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:vagoflax/models/face_entry.dart';
 import 'package:vagoflax/models/user.dart';
 import 'package:vagoflax/repositories/user.dart';
 
@@ -7,6 +9,18 @@ class FirestoreUserRepository implements UserRepository {
 
   CollectionReference<Map<String, dynamic>> _usersRef() =>
       _db.collection('users');
+
+  CollectionReference<Map<String, dynamic>> _faceIndexRef() =>
+      _db.collection('faceIndex');
+
+  @override
+  Stream<List<FaceEntry>> getFaceIndex() {
+    return _faceIndexRef().snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => FaceEntry.fromFirestore(doc.data()))
+          .toList(),
+    );
+  }
 
   @override
   Stream<List<User>> getUsers() {
@@ -19,7 +33,23 @@ class FirestoreUserRepository implements UserRepository {
 
   @override
   Future<void> addUser(User user) async {
-    return await _usersRef().doc(user.id).set(user.toFirestore());
+    await _usersRef().doc(user.id).set(user.toFirestore());
+
+    // mirror the signature into the public index so face login can read it
+    if (user.faceSignature.isNotEmpty) {
+      try {
+        await _faceIndexRef()
+            .doc(user.id)
+            .set(
+              FaceEntry(
+                email: user.email,
+                signature: user.faceSignature,
+              ).toFirestore(),
+            );
+      } catch (e) {
+        debugPrint('Could not write faceIndex/${user.id}: $e');
+      }
+    }
   }
 
   @override

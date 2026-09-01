@@ -23,6 +23,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
+    final currentUser = userProvider.currentUser;
+
+    // signing out rebuilds this screen before the router leaves it: without
+    // this the build crashes on a null currentUser.
+    if (currentUser == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     User user;
 
@@ -38,12 +45,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         user = foundUser;
       }
     } else {
-      user = userProvider.currentUser!;
+      user = currentUser;
     }
 
     final userAlreadyReviewed =
-        user.id != userProvider.currentUser!.id &&
-        user.hasUserBeenReviewedBy(userProvider.currentUser!.id);
+        user.id != currentUser.id && user.hasUserBeenReviewedBy(currentUser.id);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/models/face_entry.dart';
 import 'package:vagoflax/models/history.dart';
 import 'package:vagoflax/services/cloudinary.dart';
 
@@ -12,16 +13,28 @@ import 'package:vagoflax/repositories/user.dart';
 class UserProvider with ChangeNotifier {
   final UserRepository _userRepository;
   StreamSubscription<List<User>>? _usersSubscription;
+  StreamSubscription<List<FaceEntry>>? _faceIndexSubscription;
   List<User> _users = [];
+  List<FaceEntry> _faceIndex = [];
   bool _isLoading = false;
 
   User? currentUser;
 
   List<User> get users => _users;
+  List<FaceEntry> get faceIndex => _faceIndex;
   bool get isLoading => _isLoading;
 
   UserProvider(this._userRepository) {
     _subscribeToUsers();
+    _subscribeToFaceIndex();
+  }
+
+  // Re-open the streams after a sign in or sign out to avoid stuck on cached data
+  void restart() {
+    _usersSubscription?.cancel();
+    _faceIndexSubscription?.cancel();
+    _subscribeToUsers();
+    _subscribeToFaceIndex();
   }
 
   // Subscribe to the user stream from the repository to get real-time updates and notify listeners when the user list changes.
@@ -37,9 +50,27 @@ class UserProvider with ChangeNotifier {
         _isLoading = false;
         notifyListeners();
       },
-      onError: (error) {
+      onError: (error, stackTrace) {
+        _users = [];
         _isLoading = false;
         notifyListeners();
+        debugPrint('ERREUR STREAM USERS : $error');
+        debugPrint('Stacktrace: $stackTrace');
+      },
+    );
+  }
+
+  void _subscribeToFaceIndex() {
+    _faceIndexSubscription = _userRepository.getFaceIndex().listen(
+      (entries) {
+        _faceIndex = entries;
+        notifyListeners();
+      },
+      onError: (error, stackTrace) {
+        _faceIndex = [];
+        notifyListeners();
+        debugPrint('ERREUR STREAM FACE INDEX : $error');
+        debugPrint('Stacktrace: $stackTrace');
       },
     );
   }
@@ -47,6 +78,7 @@ class UserProvider with ChangeNotifier {
   @override
   void dispose() {
     _usersSubscription?.cancel();
+    _faceIndexSubscription?.cancel();
     super.dispose();
   }
 

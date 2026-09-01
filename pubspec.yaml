@@ -25,8 +25,8 @@ dependencies:
   cloudinary_url_gen: ^1.8.0
   url_launcher: ^6.3.2
   http: ^1.6.0
+  flutter_litert: ^3.8.0
   google_mlkit_face_detection: ^0.15.1
-  tflite_flutter: ^0.12.1
   image: ^4.5.2
 
 dev_dependencies:
@@ -55,6 +55,8 @@ flutter:
     - .env
     - assets/icon/icon.png
     - assets/model/mobile_face_net.tflite
-
+    - assets/ml/model.tflite
+    - assets/ml/preprocessing.json
+    
 dependency_overrides:
   app_links: ^6.3.3
