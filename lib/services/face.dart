@@ -13,9 +13,14 @@ class FaceRecognitionService {
   static const _modelAsset = 'assets/model/mobile_face_net.tflite';
   static const _inputSize = 112;
   static const _outputSize = 192;
+  static const _workingMargin = 1.6;
+  static const _cropMargin = 1.25;
 
   final _faceDetector = FaceDetector(
-    options: FaceDetectorOptions(performanceMode: FaceDetectorMode.accurate),
+    options: FaceDetectorOptions(
+      performanceMode: FaceDetectorMode.accurate,
+      enableLandmarks: true,
+    ),
   );
 
   Interpreter? _interpreter;
@@ -68,21 +73,43 @@ class FaceRecognitionService {
     return embedding.map((value) => value / norm).toList();
   }
 
-  /// Crops the face, resizes it and normalizes pixels
+  /// Cuts a square of [side] pixels centered on ([cx], [cy])
+  img.Image _squareCrop(img.Image image, double cx, double cy, double side) {
+    final size = side
+        .round()
+        .clamp(1, math.min(image.width, image.height))
+        .toInt();
+    final x = (cx - size / 2).round().clamp(0, image.width - size).toInt();
+    final y = (cy - size / 2).round().clamp(0, image.height - size).toInt();
+
+    return img.copyCrop(image, x: x, y: y, width: size, height: size);
+  }
+
+  /// Crops the face, straightens it, resizes it and normalizes pixels.
   List _preprocess(img.Image image, Face face) {
     final box = face.boundingBox;
+    final faceSize = math.max(box.width, box.height);
 
-    final left = box.left.clamp(0, image.width - 1).toInt();
-    final top = box.top.clamp(0, image.height - 1).toInt();
-    final width = box.width.clamp(1, image.width - left).toInt();
-    final height = box.height.clamp(1, image.height - top).toInt();
-
-    final cropped = img.copyCrop(
+    // Generous square first, so rotating it doesn't pull in empty corners
+    final working = _squareCrop(
       image,
-      x: left,
-      y: top,
-      width: width,
-      height: height,
+      box.center.dx,
+      box.center.dy,
+      faceSize * _workingMargin,
+    );
+
+    // headEulerAngleZ is the roll in degrees, same unit as copyRotate
+    final rotated = img.copyRotate(
+      working,
+      angle: -(face.headEulerAngleZ ?? 0),
+    );
+
+    // then the actual crop, centered on the straightened patch
+    final cropped = _squareCrop(
+      rotated,
+      rotated.width / 2,
+      rotated.height / 2,
+      faceSize * _cropMargin,
     );
     final resized = img.copyResize(
       cropped,
@@ -105,6 +132,7 @@ class FaceRecognitionService {
 
   /// Euclidean distance between two signatures —> lower means more similar
   double distance(List<double> a, List<double> b) {
+    if (a.length != b.length) return double.infinity;
     double sum = 0;
     for (var i = 0; i < a.length; i++) {
       final diff = a[i] - b[i];

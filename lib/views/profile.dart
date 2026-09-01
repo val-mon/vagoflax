@@ -49,8 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     final userAlreadyReviewed =
-        user.id != currentUser.id &&
-        user.hasUserBeenReviewedBy(currentUser.id);
+        user.id != currentUser.id && user.hasUserBeenReviewedBy(currentUser.id);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
