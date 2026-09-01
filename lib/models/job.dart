@@ -70,7 +70,7 @@ class Job {
           .toList(),
       minYearsExperience: (data['minYearsExperience'] as num?)?.toInt(),
       maxYearsExperience: (data['maxYearsExperience'] as num?)?.toInt(),
-      contractTime: (data['contractTime'] as num?)?.toInt(),
+      contractTime: (data['contractTime'] as num?)?.toInt() ?? 0,
       role: Role.values.firstWhere(
         (e) =>
             e.name.toLowerCase() ==

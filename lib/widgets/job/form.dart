@@ -304,7 +304,7 @@ class _JobFormState extends State<JobForm> {
 
   String? _requiredNonNegativeIntValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'This field is required';
+      return null; // Allow empty values for optional fields
     }
 
     final parsed = int.tryParse(value);
@@ -351,7 +351,7 @@ class _JobFormState extends State<JobForm> {
       diplomas: _selectedDiplomas,
       minYearsExperience: int.parse(_minYearsExperienceController.text),
       maxYearsExperience: int.parse(_maxYearsExperienceController.text),
-      contractTime: int.tryParse(_contractTimeController.text),
+      contractTime: int.tryParse(_contractTimeController.text) ?? 0,
       role: _selectedRole,
       industry: _selectedIndustry,
       perks: _selectedPerks,
