@@ -29,6 +29,12 @@ class StudentApplicationsScreen extends StatelessWidget {
       appliedJobs.removeAt(0);
     }
 
+    appliedJobs.sort((a, b) {
+      final appA = applications.firstWhere((app) => app.jobId == a.id);
+      final appB = applications.firstWhere((app) => app.jobId == b.id);
+      return appB.createdAt!.compareTo(appA.createdAt!);
+    });
+
     return Scaffold(
       appBar: AppBar(
         leading: const AboutIcon(),

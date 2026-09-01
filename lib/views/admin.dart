@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/user_role.dart';
+import 'package:vagoflax/models/user.dart';
 import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
 import 'package:vagoflax/widgets/user_item.dart';
@@ -11,7 +13,14 @@ class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: true);
+
     final users = userProvider.users;
+    String userName(User b) =>
+        (b.role == UserRole.student
+            ? "${b.firstName} ${b.lastName}"
+            : b.companyName) ??
+        b.email;
+    users.sort((a, b) => userName(a).compareTo(userName(b)));
     final isLoading = userProvider.isLoading;
 
     return Scaffold(

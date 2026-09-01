@@ -35,7 +35,9 @@ class UserItem extends StatelessWidget {
         title: Text(
           user.role == UserRole.student
               ? "${user.firstName ?? 'Unknown'} ${user.lastName ?? 'User'}"
-              : user.companyName ?? "Company",
+              : user.role == UserRole.employer
+              ? user.companyName ?? "Company"
+              : user.email,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
 
@@ -53,12 +55,16 @@ class UserItem extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black87,
+                    color: user.role == UserRole.student
+                        ? Colors.red
+                        : user.role == UserRole.employer
+                        ? Colors.blue
+                        : Colors.black87,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     user.role.name.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
