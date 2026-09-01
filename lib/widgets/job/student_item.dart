@@ -20,7 +20,9 @@ class JobStudentItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              job.description == '' ? 'No description available' : job.description!,
+              job.description == ''
+                  ? 'No description available'
+                  : job.description!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

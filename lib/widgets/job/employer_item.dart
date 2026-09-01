@@ -23,7 +23,9 @@ class JobEmployerItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              job.description == '' ? 'No description available' : job.description!,
+              job.description == ''
+                  ? 'No description available'
+                  : job.description!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -38,7 +40,7 @@ class JobEmployerItem extends StatelessWidget {
                       : 'No posting date available',
                   style: const TextStyle(color: Colors.grey),
                 ),
-              ]
+              ],
             ),
           ],
         ),

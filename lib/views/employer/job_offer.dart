@@ -92,7 +92,9 @@ class _JobProviderOfferScreenState extends State<JobProviderOfferScreen> {
           matchesLanguages;
     }).toList();
 
-    filteredJobs.sort((a, b) => b.createdAt == null ? -1 : b.createdAt!.compareTo(a.createdAt!));
+    filteredJobs.sort(
+      (a, b) => b.createdAt == null ? -1 : b.createdAt!.compareTo(a.createdAt!),
+    );
 
     return Scaffold(
       appBar: AppBar(
