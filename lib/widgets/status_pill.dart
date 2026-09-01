@@ -27,7 +27,7 @@ class StatusPill extends StatelessWidget {
 
 Color _getStatusColor(Status status) {
   switch (status) {
-    case Status.evaluated:
+    case Status.reviewing:
       return Colors.orange;
     case Status.accepted:
       return Colors.green;

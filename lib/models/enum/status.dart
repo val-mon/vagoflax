@@ -1,1 +1,1 @@
-enum Status { submitted, evaluated, accepted, rejected }
+enum Status { submitted, reviewing, accepted, rejected }

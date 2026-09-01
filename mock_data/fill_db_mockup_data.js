@@ -484,7 +484,7 @@ async function fillDatabase() {
     {
       studentIndex: 0,
       jobIndex: 0,
-      status: 'submitted',
+      status: 'evaluating',
     },
     {
       studentIndex: 0,
@@ -494,7 +494,7 @@ async function fillDatabase() {
     {
       studentIndex: 1,
       jobIndex: 6,
-      status: 'reviewed',
+      status: 'submitted',
     },
     {
       studentIndex: 2,

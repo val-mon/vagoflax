@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/status.dart';
 
 import 'package:vagoflax/models/job_application.dart';
 import 'package:vagoflax/providers/application.dart';
@@ -24,14 +25,15 @@ class ApplicationStatusDialog extends StatelessWidget {
           _StatusOptionTile(
             application: application,
             title: 'Submitted',
-            newStatus: 'submitted',
+            newStatus: Status.submitted.name,
             icon: Icons.mail,
             color: Colors.blueAccent,
           ),
+          const Divider(height: 1),
           _StatusOptionTile(
             application: application,
-            title: 'Evaluated',
-            newStatus: 'evaluated',
+            title: "Reviewing",
+            newStatus: Status.reviewing.name,
             icon: Icons.hourglass_empty,
             color: Colors.orange,
           ),
@@ -39,7 +41,7 @@ class ApplicationStatusDialog extends StatelessWidget {
           _StatusOptionTile(
             application: application,
             title: 'Accept',
-            newStatus: 'accepted',
+            newStatus: Status.accepted.name,
             icon: Icons.check_circle_outline,
             color: Colors.green,
           ),
@@ -47,7 +49,7 @@ class ApplicationStatusDialog extends StatelessWidget {
           _StatusOptionTile(
             application: application,
             title: 'Reject',
-            newStatus: 'rejected',
+            newStatus: Status.rejected.name,
             icon: Icons.cancel_outlined,
             color: Colors.red,
           ),
