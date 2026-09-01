@@ -3,7 +3,8 @@ import 'package:vagoflax/models/enum/status.dart';
 
 class StatusPill extends StatelessWidget {
   final Status status;
-  const StatusPill({super.key, required this.status});
+  final IconData? icon;
+  const StatusPill({super.key, required this.status, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +14,22 @@ class StatusPill extends StatelessWidget {
         color: _getStatusColor(status).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(
-        status.name.toUpperCase(),
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: _getStatusColor(status),
-          fontSize: 12,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon!, size: 12, color: _getStatusColor(status)),
+            const SizedBox(width: 4),
+          ],
+          Text(
+            status.name.toUpperCase(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: _getStatusColor(status),
+              fontSize: 12,
+            ),
+          ),
+        ],
       ),
     );
   }
