@@ -1,4 +1,4 @@
-.PHONY: help clean get format analyze run check goncalo mock_data
+.PHONY: help clean get format analyze test run check goncalo mock_data
 
 .DEFAULT_GOAL := help
 
@@ -20,7 +20,10 @@ analyze: ## Analyse statiquement le projet
 run: ## Lance l'application Flutter
 	flutter run
 
-check: get format analyze ## Installe, formate et analyse le projet
+test: ## Lance les tests unitaires
+	flutter test
+
+check: get format analyze test ## Installe, formate et analyse le projet
 
 goncalo: check run ## Vérifie le projet puis lance l'application
 
