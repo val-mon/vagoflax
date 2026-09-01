@@ -15,7 +15,11 @@ class AdminScreen extends StatelessWidget {
     final userProvider = Provider.of<UserProvider>(context, listen: true);
 
     final users = userProvider.users;
-    String userName(User b) => (b.role == UserRole.student ? "${b.firstName} ${b.lastName}" : b.companyName) ?? b.email;
+    String userName(User b) =>
+        (b.role == UserRole.student
+            ? "${b.firstName} ${b.lastName}"
+            : b.companyName) ??
+        b.email;
     users.sort((a, b) => userName(a).compareTo(userName(b)));
     final isLoading = userProvider.isLoading;
 
