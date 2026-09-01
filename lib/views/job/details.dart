@@ -592,8 +592,8 @@ class _JobDetailsState extends State<JobDetails> {
 
             FutureBuilder<List<Connection>>(
               future: TransportService.getConnections(
-                userProvider.currentUser?.city ?? '',
-                company?.city ?? '',
+                userProvider.currentUser?.address ?? '',
+                company?.address ?? '',
               ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -614,7 +614,7 @@ class _JobDetailsState extends State<JobDetails> {
                       leading: const Icon(Icons.train_outlined),
                       title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
                       subtitle: Text(
-                        '${c.products.join(' • ')} | ${userProvider.currentUser?.city} → ${company?.city}',
+                        '${c.products.join(' • ')} | ${userProvider.currentUser?.address} → ${company?.address}',
                       ),
                     );
                   }).toList(),
@@ -749,7 +749,7 @@ class _JobDetailsState extends State<JobDetails> {
       return 'Location not specified';
     }
 
-    final city = company.city.trim();
+    final city = company.address.trim();
     final canton = company.canton.trim();
 
     if (city.isNotEmpty && canton.isNotEmpty) {

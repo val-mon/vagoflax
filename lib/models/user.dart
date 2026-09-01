@@ -6,7 +6,7 @@ import 'package:vagoflax/models/enum/user_role.dart';
 class User {
   final String id;
   final String canton;
-  final String city;
+  final String address;
   final String description;
   final String email;
   final String? firstName;
@@ -23,7 +23,7 @@ class User {
   User({
     required this.id,
     required this.canton,
-    required this.city,
+    required this.address,
     required this.description,
     required this.email,
     this.firstName,
@@ -44,7 +44,7 @@ class User {
     return User(
       id: documentId,
       canton: data['canton'] ?? '',
-      city: data['city'] ?? '',
+      address: data['address'] ?? '',
       description: data['description'] ?? '',
       email: data['email'] ?? '',
       firstName: data['firstName'] ?? '',
@@ -91,7 +91,7 @@ class User {
   Map<String, dynamic> toFirestore() {
     return {
       'canton': canton,
-      'city': city,
+      'address': address,
       'description': description,
       'email': email,
       'firstName': firstName,
@@ -130,7 +130,7 @@ class User {
     String? lastName,
     String? companyName,
     int? companySize,
-    String? city,
+    String? address,
     String? canton,
     String? description,
     List<String>? skills,
@@ -145,7 +145,7 @@ class User {
             role: role,
             firstName: firstName ?? this.firstName,
             lastName: lastName ?? this.lastName,
-            city: city ?? this.city,
+            address: address ?? this.address,
             canton: canton ?? this.canton,
             description: description ?? this.description,
             skills: skills ?? this.skills,
@@ -159,7 +159,7 @@ class User {
             role: role,
             companyName: companyName ?? this.companyName,
             companySize: companySize ?? this.companySize,
-            city: city ?? this.city,
+            address: address ?? this.address,
             canton: canton ?? this.canton,
             description: description ?? this.description,
             profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,

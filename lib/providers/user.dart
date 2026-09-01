@@ -107,7 +107,7 @@ class UserProvider with ChangeNotifier {
     String? firstName,
     String? lastName,
     String? companyName,
-    String? city,
+    String? address,
     String? canton,
     String? description,
     List<String>? skills,
@@ -133,7 +133,7 @@ class UserProvider with ChangeNotifier {
         ? currentUser!.copyWith(
             firstName: firstName ?? currentUser!.firstName,
             lastName: lastName ?? currentUser!.lastName,
-            city: city ?? currentUser!.city,
+            address: address ?? currentUser!.address,
             canton: canton ?? currentUser!.canton,
             description: description ?? currentUser!.description,
             skills: skills ?? currentUser!.skills,
@@ -160,7 +160,7 @@ class UserProvider with ChangeNotifier {
         profilePictureUrl: '',
         createdAt: DateTime.now(),
         canton: "",
-        city: "",
+        address: "",
         description: "",
       ),
     );

@@ -64,7 +64,7 @@ class JobApplicationsScreen extends StatelessWidget {
                     profilePictureUrl: '',
                     createdAt: DateTime.now(),
                     canton: "",
-                    city: "",
+                    address: "",
                     description: "",
                   ),
                 );

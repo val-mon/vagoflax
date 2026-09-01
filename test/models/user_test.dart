@@ -6,7 +6,7 @@ void main() {
   final user = User(
     id: '1',
     canton: 'ZH',
-    city: 'Zurich',
+    address: 'Zurich',
     description: 'Test user',
     email: 'test@example.com',
     profilePictureUrl: 'https://example.com/image.jpg',
@@ -57,7 +57,7 @@ void main() {
   });
 
   test('fromFirestore includes city', () {
-    expect(User.fromFirestore(mapUser, '1').city, 'Zurich');
+    expect(User.fromFirestore(mapUser, '1').address, 'Zurich');
   });
 
   test('fromFirestore includes description', () {

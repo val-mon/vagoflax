@@ -29,7 +29,7 @@ void main() {
   User employerWithSize(int size) => User(
     id: 'employer',
     canton: 'vd',
-    city: 'Lausanne',
+    address: 'Lausanne',
     description: '',
     email: 'company@example.com',
     role: UserRole.employer,

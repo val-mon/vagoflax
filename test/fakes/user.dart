@@ -49,6 +49,6 @@ User _user(String id) => User(
   profilePictureUrl: '',
   createdAt: DateTime(2026, 1, 1),
   canton: 'VS',
-  city: 'Sion',
+  address: 'Sion',
   description: '',
 );

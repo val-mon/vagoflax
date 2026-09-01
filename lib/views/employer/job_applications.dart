@@ -63,7 +63,7 @@ class JobApplicationsScreen extends StatelessWidget {
                     role: UserRole.student,
                     createdAt: DateTime.now(),
                     canton: "",
-                    city: "",
+                    address: "",
                     description: "",
                     profilePictureUrl: null,
                   ),

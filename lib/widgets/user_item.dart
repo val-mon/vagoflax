@@ -75,7 +75,7 @@ class UserItem extends StatelessWidget {
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      '${user.city} - ${user.canton}',
+                      '${user.address} - ${user.canton}',
                       style: const TextStyle(
                         color: Colors.black54,
                         fontSize: 13,

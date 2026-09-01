@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:vagoflax/services/address.dart';
 
 class SignUpEmployerScreen extends StatefulWidget {
   const SignUpEmployerScreen({super.key});
@@ -19,10 +20,11 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _cantonController = TextEditingController();
-  final _cityController = TextEditingController();
+  final _addressController = TextEditingController();
   final _companySizeController = TextEditingController();
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
+  bool _addressSelected = false;
 
   Future<void> _pickImage() async {
     final XFile? pickedFile = await _picker.pickImage(
@@ -42,7 +44,7 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
     _nameController.dispose();
     _descriptionController.dispose();
     _cantonController.dispose();
-    _cityController.dispose();
+    _addressController.dispose();
     _companySizeController.dispose();
     super.dispose();
   }
@@ -163,54 +165,36 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
 
               const SizedBox(height: 16),
 
-              TextField(
-                controller: _cantonController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  label: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Canton (e.g., ZH, GE, VD)',
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        const TextSpan(
-                          text: ' *',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
+              //address
+              Autocomplete<AddressSuggestion>(
+                displayStringForOption: (option) => option.fullAddress,
+                optionsBuilder: (value) async {
+                  if (value.text.trim().length < 3) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                  try {
+                    return await AddressService.search(value.text);
+                  } catch (_) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                },
+                onSelected: (address) {
+                  _addressController.text = address.fullAddress;
+                  _cantonController.text = address.canton;
+                  debugPrint('Selected address: ${address.fullAddress}, Canton: ${address.canton}');
+                  _addressSelected = true;
+                },
+                fieldViewBuilder: (context, controller, focusNode, onSubmit) {
+                  return TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    decoration: const InputDecoration(
+                      labelText: 'Address',
+                      prefixIcon: Icon(Icons.location_on_outlined),
+                      border: OutlineInputBorder(),
                     ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              TextField(
-                controller: _cityController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  label: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'City',
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        const TextSpan(
-                          text: ' *',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+                  );
+                },
               ),
 
               const SizedBox(height: 16),
@@ -260,14 +244,26 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                   final name = _nameController.text.trim();
                   final desc = _descriptionController.text.trim();
                   final canton = _cantonController.text.trim();
-                  final city = _cityController.text.trim();
+                  final address = _addressController.text.trim();
                   final companySize =
                       int.tryParse(_companySizeController.text.trim()) ?? 0;
+
+                  if (!_addressSelected) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a valid address.'),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
 
                   if (name.isEmpty ||
                       desc.isEmpty ||
                       canton.isEmpty ||
-                      city.isEmpty ||
+                      address.isEmpty ||
                       companySize == 0) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -280,13 +276,15 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                     return;
                   }
 
-                  // lancer app_state signUpStep4Employer and then navigate to next screen
+
+
+                  // launch app_state signUpStep4Employer and then navigate to next screen
                   try {
                     await context.read<ApplicationState>().signUpStep4Employer(
                       name,
                       desc,
                       canton,
-                      city,
+                      address,
                       companySize,
                       _selectedImage,
                     );
