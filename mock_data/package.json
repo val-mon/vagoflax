@@ -1,0 +1,14 @@
+{
+  "name": "mock_data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fill_db_mockup_data.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "firebase-admin": "^14.3.0"
+  }
+}

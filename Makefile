@@ -1,4 +1,4 @@
-.PHONY: help clean get format analyze run check goncalo
+.PHONY: help clean get format analyze run check goncalo mock_data
 
 .DEFAULT_GOAL := help
 
@@ -23,3 +23,9 @@ run: ## Lance l'application Flutter
 check: get format analyze ## Installe, formate et analyse le projet
 
 goncalo: check run ## Vérifie le projet puis lance l'application
+
+mock_data: ## Creates mock data for the database
+	@node -e "if (!require('fs').existsSync('mock_data/serviceAccountKey.json')) { console.error('serviceAccountKey.json is missing in mock_data/.'); process.exit(1); }"
+	@echo Creating mock data for the database...
+	@npm --prefix mock_data install
+	@node mock_data/fill_db_mockup_data.js
