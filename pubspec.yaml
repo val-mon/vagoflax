@@ -27,7 +27,6 @@ dependencies:
   http: ^1.6.0
   flutter_litert: ^3.8.0
   google_mlkit_face_detection: ^0.15.1
-  tflite_flutter: ^0.12.1
   image: ^4.5.2
 
 dev_dependencies:
