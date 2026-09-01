@@ -89,8 +89,7 @@ class _JobProviderOfferScreenState extends State<JobProviderOfferScreen> {
           matchesDiplomas &&
           matchesRoles &&
           matchesIndustries &&
-          matchesLanguages &&
-          job.visible;
+          matchesLanguages;
     }).toList();
 
     return Scaffold(

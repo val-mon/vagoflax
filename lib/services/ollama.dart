@@ -29,7 +29,7 @@ class OllamaService {
         HttpHeaders.authorizationHeader: 'Bearer $apiKey',
       },
       body: jsonEncode({
-        "model": "gemma4:31b",
+        "model": "gpt-oss:120b",
         "prompt": prompt,
         "stream": false, // gives the full response at once instead of streaming
         "format": "json",

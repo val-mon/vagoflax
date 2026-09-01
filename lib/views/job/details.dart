@@ -83,9 +83,15 @@ class _JobDetailsState extends State<JobDetails> {
 
   Future<void> _onLanguageSelected(Languages? lang) async {
     if (translationState.language == lang && translated) return;
+    final jobProvider = context.read<JobProvider>();
 
-    final currentJob = widget.job;
-    if (currentJob == null || currentJob.id == null) return;
+    Job currentJob = widget.job!;
+    try {
+      currentJob = jobProvider.jobs.firstWhere((j) => j.id == widget.job!.id);
+    } catch (_) {
+      currentJob = widget.job!;
+    }
+    if (currentJob.id == null) return;
 
     if (lang == null) {
       setState(() {
@@ -113,7 +119,6 @@ class _JobDetailsState extends State<JobDetails> {
     // AI translation
     if (!mounted) return;
     final messenger = ScaffoldMessenger.of(context);
-    final jobProvider = context.read<JobProvider>();
 
     messenger.showSnackBar(
       SnackBar(content: Text('Generating translation for ${lang.name}...')),
