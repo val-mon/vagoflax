@@ -143,6 +143,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final hasAlreadyReviewed = user.hasUserBeenReviewedBy(currentUser.id);
     final canReview = canUserReview(user, currentUser);
 
+    final history = user.history;
+
+    history.sort((a, b) => b.startedAt.compareTo(a.startedAt));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -278,10 +282,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const _SectionTitle(title: 'History'),
                     const SizedBox(height: 14),
 
-                    user.history.isEmpty
+                    history.isEmpty
                         ? const Text('-')
                         : Column(
-                            children: user.history
+                            children: history
                                 .map(
                                   (h) => _InfoRow(
                                     icon: Icons.work,
