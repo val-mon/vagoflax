@@ -8,7 +8,6 @@ import 'package:vagoflax/models/user.dart';
 
 class SalaryPredictionInput {
   final double minYearsExperience;
-  final double maxYearsExperience;
   final double contractMonths;
   final bool isPermanent;
   final double holidays;
@@ -25,7 +24,6 @@ class SalaryPredictionInput {
 
   const SalaryPredictionInput({
     required this.minYearsExperience,
-    required this.maxYearsExperience,
     required this.contractMonths,
     required this.isPermanent,
     required this.holidays,
@@ -44,17 +42,16 @@ class SalaryPredictionInput {
     required User employer,
   }) {
     final minExperience = job.minYearsExperience;
-    final maxExperience = job.maxYearsExperience;
     final contractMonths = job.contractTime;
     final holidays = job.holidays;
     final workloadPercent = job.workloadPercent;
     final companySize = employer.companySize;
 
-    if (minExperience == null || maxExperience == null) {
-      throw ArgumentError('The job experience range is required.');
+    if (minExperience == null) {
+      throw ArgumentError('The minimum years of experience is required.');
     }
-    if (minExperience < 0 || maxExperience < minExperience) {
-      throw ArgumentError('The job experience range is invalid.');
+    if (minExperience < 0) {
+      throw ArgumentError('The job experience minimum is invalid.');
     }
     if (contractMonths == null) {
       throw ArgumentError('The contract duration is required.');
@@ -83,7 +80,6 @@ class SalaryPredictionInput {
 
     return SalaryPredictionInput(
       minYearsExperience: minExperience.toDouble(),
-      maxYearsExperience: maxExperience.toDouble(),
       contractMonths: contractMonths.toDouble(),
       isPermanent: contractMonths == 0,
       holidays: holidays.toDouble(),

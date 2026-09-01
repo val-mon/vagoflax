@@ -68,8 +68,8 @@ class Job {
             ),
           )
           .toList(),
-      minYearsExperience: (data['minYearsExperience'] as num?)?.toInt(),
-      maxYearsExperience: (data['maxYearsExperience'] as num?)?.toInt(),
+      minYearsExperience: (data['minYearsExperience'] as num?)?.toInt() ?? 0,
+      maxYearsExperience: (data['maxYearsExperience'] as num?)?.toInt() ?? 0,
       contractTime: (data['contractTime'] as num?)?.toInt() ?? 0,
       role: Role.values.firstWhere(
         (e) =>

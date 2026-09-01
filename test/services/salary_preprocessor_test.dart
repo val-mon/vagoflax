@@ -12,7 +12,6 @@ void main() {
     final values = preprocessor.transform(
       const SalaryPredictionInput(
         minYearsExperience: 2,
-        maxYearsExperience: 5,
         contractMonths: 0,
         isPermanent: true,
         holidays: 25,

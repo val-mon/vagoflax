@@ -43,7 +43,6 @@ void main() {
     );
 
     expect(input.minYearsExperience, 2.0);
-    expect(input.maxYearsExperience, 5.0);
     expect(input.contractMonths, 0.0);
     expect(input.isPermanent, isTrue);
     expect(input.diplomas, ['Bachelor', 'Master']);

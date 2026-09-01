@@ -316,10 +316,15 @@ class _JobFormState extends State<JobForm> {
   String? _maxExperienceValidator(String? value) {
     final validationError = _requiredNonNegativeIntValidator(value);
     if (validationError != null) return validationError;
+    if (value == null || value.trim().isEmpty) return null;
 
     final minimum = int.tryParse(_minYearsExperienceController.text);
-    final maximum = int.parse(value!);
-    if (minimum != null && maximum < minimum) {
+    if (minimum == null) {
+      return null;
+    }
+    final maximum = int.parse(value);
+
+    if (maximum < minimum) {
       return 'Maximum must be greater than or equal to minimum';
     }
 
@@ -349,8 +354,8 @@ class _JobFormState extends State<JobForm> {
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       diplomas: _selectedDiplomas,
-      minYearsExperience: int.parse(_minYearsExperienceController.text),
-      maxYearsExperience: int.parse(_maxYearsExperienceController.text),
+      minYearsExperience: int.tryParse(_minYearsExperienceController.text) ?? 0,
+      maxYearsExperience: int.tryParse(_maxYearsExperienceController.text) ?? 0,
       contractTime: int.tryParse(_contractTimeController.text) ?? 0,
       role: _selectedRole,
       industry: _selectedIndustry,

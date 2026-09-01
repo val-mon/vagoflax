@@ -31,7 +31,6 @@ MULTI_HOT_COLUMNS = [
 
 SCALED_NUMERIC_COLUMNS = [
     "MinYearsExperience",
-    "MaxYearsExperience",
     "ContractMonths",
     "Holidays",
     "WorkloadPercent",
@@ -44,12 +43,14 @@ BINARY_COLUMNS = [
 UNKNOWN_TOKEN = "__UNKNOWN__"
 
 
-def parse_experience_range_value(value: object) -> tuple[float, float]:
+
+
+def parse_min_experience_value(value: object) -> float:
     """
     Transform "4 to 6" into (4.0, 6.0).
     """
     if pd.isna(value):
-        return np.nan, np.nan
+        return np.nan
 
     text = str(value).strip()
 
@@ -60,9 +61,8 @@ def parse_experience_range_value(value: object) -> tuple[float, float]:
             raise ValueError
 
         min_years = float(parts[0].strip())
-        max_years = float(parts[1].strip())
 
-        return min_years, max_years
+        return min_years
 
     except (ValueError, IndexError) as exc:
         raise ValueError(
@@ -135,7 +135,7 @@ def basic_cleanup(df: pd.DataFrame) -> pd.DataFrame:
     Apply deterministic cleanup before fitting or transforming.
 
     - Delete paternity and maternity leave columns.
-    - Split MinYearsExperience into minimum and maximum experience.
+    - Split MinYearsExperience into minimum experience.
     - Convert Contract into ContractMonths and IsPermanent.
     - Replace missing Perks with an explicit "None" category.
     """
@@ -148,16 +148,11 @@ def basic_cleanup(df: pd.DataFrame) -> pd.DataFrame:
 
     if "MinYearsExperience" in result.columns:
         experience = result["MinYearsExperience"].apply(
-            parse_experience_range_value
+            parse_min_experience_value
         )
 
-        result["MinYearsExperience"] = experience.apply(
-            lambda value: value[0]
-        )
+        result["MinYearsExperience"] = experience
 
-        result["MaxYearsExperience"] = experience.apply(
-            lambda value: value[1]
-        )
 
     if "Contract" in result.columns:
         contract_values = result["Contract"].astype("string")
@@ -194,7 +189,6 @@ class JobOfferPreprocessor:
 
     Scaled numeric features:
         - MinYearsExperience
-        - MaxYearsExperience
         - ContractMonths
         - Holidays
         - WorkloadPercent

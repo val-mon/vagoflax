@@ -83,7 +83,6 @@ class SalaryPreprocessor {
 
     final numericValues = <String, double>{
       'MinYearsExperience': input.minYearsExperience,
-      'MaxYearsExperience': input.maxYearsExperience,
       'ContractMonths': input.contractMonths,
       'Holidays': input.holidays,
       'WorkloadPercent': input.workloadPercent,
