@@ -13,6 +13,7 @@ import 'package:vagoflax/providers/job.dart';
 import 'package:vagoflax/providers/user.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:vagoflax/widgets/user_rating_badge.dart';
 
 /// Page displaying the details of a job.
 class JobDetails extends StatefulWidget {
@@ -240,74 +241,84 @@ class _JobDetailsState extends State<JobDetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// COMPANY
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    if (company == null) {
-                      return;
-                    }
-
-                    context.push("/profile/${company.id}");
-                  },
-                  child: _CompanyImage(imageUrl: company?.profilePictureUrl),
-                ),
-
-                const SizedBox(width: 20),
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Material(
+              color: Colors.grey.shade50,
+              borderRadius: BorderRadius.circular(16),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: company == null
+                    ? null
+                    : () => context.push("/profile/${company?.id}"),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey.shade300, width: 1),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        _companyName(company),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      _CompanyImage(imageUrl: company?.profilePictureUrl),
+
+                      const SizedBox(width: 16),
+
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _companyName(company),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            const SizedBox(height: 6),
+
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on_outlined,
+                                  size: 16,
+                                  color: Colors.grey.shade700,
+                                ),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    _location(company),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey.shade800,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 8),
+
+                            UserRatingBadge(
+                              rating: company?.averageRating ?? 0,
+                              count: company?.reviewCount ?? 0,
+                            ),
+                          ],
                         ),
                       ),
 
-                      const SizedBox(height: 8),
+                      const SizedBox(width: 8),
 
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on_outlined, size: 18),
-
-                          const SizedBox(width: 5),
-
-                          Expanded(
-                            child: Text(
-                              _location(company),
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      Row(
-                        children: [
-                          const Icon(Icons.business_center_outlined, size: 18),
-
-                          const SizedBox(width: 5),
-
-                          Expanded(
-                            child: Text(
-                              _enumName(currentJob.industry.name),
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey.shade700,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: Colors.grey.shade500,
+                        size: 26,
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
 
             if (!currentJob.visible) ...[
@@ -490,6 +501,14 @@ class _JobDetailsState extends State<JobDetails> {
                       currentJob.maxYearsExperience != null
                   ? '${currentJob.minYearsExperience}–${currentJob.maxYearsExperience} years'
                   : 'Not specified',
+            ),
+
+            const SizedBox(height: 12),
+
+            _InfoRow(
+              icon: Icons.business_center_outlined,
+              title: 'Industry',
+              value: _enumName(currentJob.industry.name),
             ),
 
             // Posted time

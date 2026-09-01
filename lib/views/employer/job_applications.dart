@@ -24,7 +24,6 @@ class JobApplicationsScreen extends StatelessWidget {
     final applicationProvider = context.watch<ApplicationProvider>();
     final users = context.watch<UserProvider>().users;
 
-    // Filtering
     final jobApplications = applicationProvider.applications
         .where((app) => app.jobId == jobId)
         .toList();
@@ -83,8 +82,15 @@ class JobApplicationsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   elevation: 0,
+                  clipBehavior: Clip.antiAlias,
                   child: ListTile(
-                    contentPadding: const EdgeInsets.all(12),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    onTap: () {
+                      context.push('/profile/${student.id}', extra: student);
+                    },
                     leading: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.grey.shade300,
@@ -96,34 +102,22 @@ class JobApplicationsScreen extends StatelessWidget {
                           : null,
                     ),
                     title: Text(
-                      '${student.firstName} ${student.lastName}',
+                      '${student.firstName ?? ''} ${student.lastName ?? ''}'
+                              .trim()
+                              .isEmpty
+                          ? (student.companyName ?? 'Candidate')
+                          : '${student.firstName} ${student.lastName}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    subtitle: Align(
-                      alignment: Alignment.centerLeft,
-                      child: StatusPill(status: application.status),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // user profile
-                        IconButton(
-                          icon: const Icon(Icons.person_search),
-                          tooltip: 'View Profile',
-                          onPressed: () {
-                            context.push(
-                              '/profile/${student.id}',
-                              extra: student,
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          tooltip: "Change Application Status",
-                          onPressed: () {
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                          onTap: () {
                             showDialog(
                               context: context,
                               builder: (context) => ApplicationStatusDialog(
@@ -131,8 +125,17 @@ class JobApplicationsScreen extends StatelessWidget {
                               ),
                             );
                           },
+                          child: StatusPill(
+                            status: application.status,
+                            icon: Icons.edit,
+                          ),
                         ),
-                      ],
+                      ),
+                    ),
+                    trailing: const Icon(
+                      Icons.chevron_right_rounded,
+                      color: Colors.grey,
+                      size: 24,
                     ),
                   ),
                 );

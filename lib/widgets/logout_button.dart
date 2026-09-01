@@ -8,8 +8,9 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: const Text('Logout'),
+    return IconButton(
+      icon: const Icon(Icons.logout),
+      tooltip: 'Logout',
       onPressed: () {
         context.read<ApplicationState>().signOut();
         context.go('/');
