@@ -86,4 +86,18 @@ class FirestoreUserRepository implements UserRepository {
       'reviews': FieldValue.arrayUnion([reviewData]),
     });
   }
+
+  @override
+  Future<void> addSavedSearch(String userId, String search) async {
+    return await _usersRef().doc(userId).update({
+      'savedSearches': FieldValue.arrayUnion([search]),
+    });
+  }
+
+  @override
+  Future<void> removeSavedSearch(String userId, String search) async {
+    return await _usersRef().doc(userId).update({
+      'savedSearches': FieldValue.arrayRemove([search]),
+    });
+  }
 }

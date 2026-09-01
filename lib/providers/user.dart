@@ -47,6 +47,15 @@ class UserProvider with ChangeNotifier {
     _usersSubscription = _userRepository.getUsers().listen(
       (users) {
         _users = users;
+
+        // Syncs currentUser
+        if (currentUser != null) {
+          currentUser = users.firstWhere(
+            (u) => u.id == currentUser!.id,
+            orElse: () => currentUser!,
+          );
+        }
+
         _isLoading = false;
         notifyListeners();
       },
@@ -188,5 +197,13 @@ class UserProvider with ChangeNotifier {
       rating: rating,
       comment: comment,
     );
+  }
+
+  Future<void> addSavedSearch(String search) async {
+    return await _userRepository.addSavedSearch(currentUser!.id, search);
+  }
+
+  Future<void> removeSavedSearch(String search) async {
+    return await _userRepository.removeSavedSearch(currentUser!.id, search);
   }
 }

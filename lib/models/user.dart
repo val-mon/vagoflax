@@ -19,6 +19,7 @@ class User {
   final List<Review> reviews;
   final List<HistoryEntry> history;
   final int? companySize;
+  final List<String> savedSearches;
   final DateTime? createdAt;
   User({
     required this.id,
@@ -34,6 +35,7 @@ class User {
     this.companySize,
     this.companyName = '',
     this.createdAt,
+    this.savedSearches = const [],
     this.skills = const [],
     this.reviews = const [],
     this.history = const [],
@@ -60,6 +62,7 @@ class User {
       createdAt: data['createdAt'] != null
           ? (data['createdAt'] as Timestamp).toDate()
           : null,
+      savedSearches: List<String>.from(data['savedSearches'] ?? ["erreur"]),
       reviews:
           (data['reviews'] as List<dynamic>?)
               ?.map(
@@ -100,8 +103,10 @@ class User {
       'faceSignature': faceSignature,
       'role': role.toFirestore(),
       'skills': skills,
+      'savedSearches': savedSearches,
       'companySize': companySize,
       'companyName': companyName,
+      'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : null,
       'reviews': reviews
           .map(
             (review) => {
@@ -143,6 +148,7 @@ class User {
             id: id,
             email: email,
             role: role,
+            createdAt: createdAt,
             firstName: firstName ?? this.firstName,
             lastName: lastName ?? this.lastName,
             city: city ?? this.city,
@@ -150,6 +156,7 @@ class User {
             description: description ?? this.description,
             skills: skills ?? this.skills,
             history: history ?? this.history,
+            savedSearches: savedSearches,
             profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
             faceSignature: faceSignature,
           )
@@ -157,10 +164,12 @@ class User {
             id: id,
             email: email,
             role: role,
+            createdAt: createdAt,
             companyName: companyName ?? this.companyName,
             companySize: companySize ?? this.companySize,
             city: city ?? this.city,
             canton: canton ?? this.canton,
+            savedSearches: savedSearches,
             description: description ?? this.description,
             profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
             faceSignature: faceSignature,
@@ -183,4 +192,8 @@ class User {
 
   /// Total review count
   int get reviewCount => reviews.length;
+
+  bool hasBookmarkedSearch(String search) {
+    return savedSearches.isNotEmpty && savedSearches.contains(search);
+  }
 }
