@@ -145,7 +145,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final history = user.history;
 
-    history.sort((a, b) => b.startedAt.compareTo(a.startedAt));
+    if (history.isNotEmpty) {
+      history.sort((a, b) => b.startedAt.compareTo(a.startedAt));
+    }
 
     return Scaffold(
       appBar: AppBar(

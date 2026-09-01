@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:vagoflax/providers/auth.dart';
-import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
-
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:vagoflax/providers/auth.dart';
 import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/services/face.dart';
 
@@ -37,9 +36,83 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Opens the camera, matches the face against the users who registered one
-  // during sign up, and fills in the email of the recognized user.
-  // The password is still required: Firebase Auth can't be unlocked by a face.
+  void _showForgotPasswordDialog() {
+    final resetEmailController = TextEditingController(
+      text: _emailController.text.trim(),
+    );
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Reset Password'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Enter your email address to receive a password reset link.',
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: resetEmailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final email = resetEmailController.text.trim();
+              if (email.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Please enter your email.')),
+                );
+                return;
+              }
+
+              Navigator.pop(ctx);
+
+              try {
+                await context.read<ApplicationState>().sendPasswordResetEmail(
+                  email,
+                );
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Password reset link sent! Check your inbox.',
+                    ),
+                  ),
+                );
+              } on FirebaseAuthException catch (e) {
+                if (!mounted) return;
+                String message = 'Failed to send reset email.';
+                if (e.code == 'invalid-email') {
+                  message = 'The email address is invalid.';
+                }
+                _showError(message);
+              } catch (_) {
+                if (!mounted) return;
+                _showError('An unexpected error occurred.');
+              }
+            },
+            child: const Text('Send'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _recognizeFace() async {
     ScaffoldMessenger.of(context).clearSnackBars();
     setState(() => _isRecognizing = true);
@@ -141,9 +214,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-
-            const SizedBox(height: 32),
-
+            const SizedBox(height: 4),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: isBusy ? null : _showForgotPasswordDialog,
+                child: const Text('Forgot Password?'),
+              ),
+            ),
+            const SizedBox(height: 16),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,

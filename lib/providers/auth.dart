@@ -242,4 +242,8 @@ class ApplicationState extends ChangeNotifier {
       profilePicture: profilePicture,
     );
   }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
 }

@@ -24,6 +24,7 @@ class JobApplicationStudentItem extends StatelessWidget {
       child: ListTile(
         title: Text(job.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               job.description == ''
