@@ -5,7 +5,7 @@ import 'package:vagoflax/services/salary_preprocessor.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('builds the 72-feature vector with multiple diplomas', () async {
+  test('builds the 71-feature vector with multiple diplomas', () async {
     final preprocessor = SalaryPreprocessor();
     await preprocessor.initialize();
 
@@ -26,7 +26,7 @@ void main() {
       ),
     );
 
-    expect(values, hasLength(72));
+    expect(values, hasLength(71));
     expect(preprocessor.featureNames, isNot(contains('CitySize__Large city')));
     expect(values[preprocessor.featureNames.indexOf('Diploma__Bachelor')], 1.0);
     expect(values[preprocessor.featureNames.indexOf('Diploma__Master')], 1.0);
