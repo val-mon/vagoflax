@@ -1,1 +1,1 @@
-enum Role { junior, midLevel, senior, manager, lead, director, intern, unknown }
+enum Role { junior, midLevel, senior, manager, lead, director, intern }

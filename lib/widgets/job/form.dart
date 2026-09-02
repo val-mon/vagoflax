@@ -117,12 +117,13 @@ class _JobFormState extends State<JobForm> {
             TextFormField(
               controller: _titleController,
               decoration: const InputDecoration(labelText: 'Job Title'),
-              validator: _requiredValidator,
+              validator: (v) => _stringLength(v, 50, true),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(labelText: 'Job Description'),
+              validator: (v) => _stringLength(v, 500, false),
               maxLines: 5,
             ),
             const SizedBox(height: 16),
@@ -176,7 +177,7 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Minimum years of experience',
               ),
               keyboardType: TextInputType.number,
-              validator: _requiredNonNegativeIntValidator,
+              validator: (v) => _intLength(v, 0, 50, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -195,14 +196,14 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Contract time (months)',
               ),
               keyboardType: TextInputType.number,
-              validator: _requiredNonNegativeIntValidator,
+              validator: (v) => _intLength(v, 0, 600, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _holidaysController,
               decoration: const InputDecoration(labelText: 'Holidays (days)'),
               keyboardType: TextInputType.number,
-              validator: _requiredNonNegativeIntValidator,
+              validator: (v) => _intLength(v, 0, 365, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -211,7 +212,7 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Maternity leave (weeks)',
               ),
               keyboardType: TextInputType.number,
-              validator: _intValidator,
+              validator: (v) => _intLength(v, 0, 52, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -220,7 +221,7 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Paternity leave (weeks)',
               ),
               keyboardType: TextInputType.number,
-              validator: _intValidator,
+              validator: (v) => _intLength(v, 0, 52, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -237,6 +238,7 @@ class _JobFormState extends State<JobForm> {
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),
+              validator: (v) => _intLength(v, 0, 1000000, false),
             ),
             const SizedBox(height: 16),
             SwitchListTile(
@@ -291,14 +293,27 @@ class _JobFormState extends State<JobForm> {
     );
   }
 
-  String? _requiredValidator(String? value) {
-    if (value == null || value.trim().isEmpty) return 'This field is required';
+  String? _stringLength(String? value, int max, bool required) {
+    if (required && (value == null || value.trim().isEmpty)) {
+      return 'This field is required';
+    }
+    if (value != null && value.length > max) {
+      return 'Maximum length is $max characters';
+    }
     return null;
   }
 
-  String? _intValidator(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    if (int.tryParse(value) == null) return 'Enter a whole number';
+  String? _intLength(String? value, int min, int max, bool required) {
+    if (required && (value == null || value.trim().isEmpty)) {
+      return 'This field is required';
+    }
+    if (value != null) {
+      final parsed = int.tryParse(value);
+      if (parsed == null) return 'Enter a whole number';
+      if (parsed < min || parsed > max) {
+        return 'Enter a value between $min and $max';
+      }
+    }
     return null;
   }
 
@@ -326,6 +341,10 @@ class _JobFormState extends State<JobForm> {
 
     if (maximum < minimum) {
       return 'Maximum must be greater than or equal to minimum';
+    }
+
+    if (maximum > 50) {
+      return 'Maximum years of experience cannot exceed 50';
     }
 
     return null;

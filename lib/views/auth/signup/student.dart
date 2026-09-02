@@ -278,6 +278,48 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
                     return;
                   }
 
+                  if (firstName.length < 2 || lastName.length < 2) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'First name and last name must be at least 2 characters long.',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  if (firstName.length > 50 || lastName.length > 50) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Firstname or(and) lastname is too long. (Max 50 characters)',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  if (desc.length > 500) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Description is too long. (Max 500 characters)',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
                   // launch app_state saveSignUpStep1Data(email, password) and then navigate to next screen
                   try {
                     await context.read<ApplicationState>().signUpStep4Student(

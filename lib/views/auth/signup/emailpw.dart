@@ -166,6 +166,36 @@ class _SignUpEmailPwScreenState extends State<SignUpEmailPwScreen> {
                   return;
                 }
 
+                if (password.length > 50) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Password is too long. Please use a password with 50 characters or less.',
+                      ),
+                      backgroundColor: Colors.red.shade600,
+                    ),
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                }
+
+                if (password.length < 6) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Password is too short. Please use a password with at least 6 characters.',
+                      ),
+                      backgroundColor: Colors.red.shade600,
+                    ),
+                  );
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  return;
+                }
+
                 // lancer app_state signUpStep1(email, password) which creates the account, and then navigate to next screen
                 try {
                   await context.read<ApplicationState>().signUpStep1(
