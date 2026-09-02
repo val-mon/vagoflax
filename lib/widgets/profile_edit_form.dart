@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:vagoflax/providers/user.dart';
+import 'package:vagoflax/services/address.dart';
 
 class ProfileEditForm extends StatefulWidget {
   const ProfileEditForm({super.key});
@@ -24,7 +25,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _companyNameController = TextEditingController();
-  final _cityController = TextEditingController();
+  final _addressController = TextEditingController();
   final _cantonController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _skillController = TextEditingController();
@@ -39,6 +40,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final List<HistoryEntry> _history = [];
 
   bool isSaving = false;
+  bool _addressSelected = false;
 
   Future<void> _pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -54,7 +56,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _firstNameController.text = state?.firstName ?? '';
     _lastNameController.text = state?.lastName ?? '';
     _companyNameController.text = state?.companyName ?? '';
-    _cityController.text = state?.city ?? '';
+    _addressController.text = state?.address ?? '';
     _cantonController.text = state?.canton ?? '';
     _descriptionController.text = state?.description ?? '';
     _companySizeController.text = state?.companySize?.toString() ?? '';
@@ -64,6 +66,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _historyEndedAt = null;
     _skills.addAll(state?.skills ?? []);
     _history.addAll(state?.history ?? []);
+    _addressSelected = state?.address != null;
   }
 
   @override
@@ -71,7 +74,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _companyNameController.dispose();
-    _cityController.dispose();
+    _addressController.dispose();
     _cantonController.dispose();
     _descriptionController.dispose();
     _companySizeController.dispose();
@@ -131,15 +134,37 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                 ),
               ],
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _cityController,
-                decoration: const InputDecoration(labelText: 'City'),
+              Autocomplete<AddressSuggestion>(
+                initialValue: TextEditingValue(text: _addressController.text),
+                displayStringForOption: (option) => option.fullAddress,
+                optionsBuilder: (value) async {
+                  if (value.text.trim().length < 3) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                  try {
+                    return await AddressService.search(value.text);
+                  } catch (_) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                },
+                onSelected: (address) {
+                  _addressController.text = address.fullAddress;
+                  _cantonController.text = address.canton;
+                  _addressSelected = true;
+                },
+                fieldViewBuilder: (context, controller, focusNode, onSubmit) {
+                  return TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    decoration: const InputDecoration(
+                      labelText: 'Address',
+                      prefixIcon: Icon(Icons.location_on_outlined),
+                      border: OutlineInputBorder(),
+                    ),
+                  );
+                },
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _cantonController,
-                decoration: const InputDecoration(labelText: 'Canton'),
-              ),
+
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
@@ -329,13 +354,20 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
+    if (!_addressSelected) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a valid address')),
+      );
+      return;
+    }
+
     setState(() => isSaving = true);
 
     if (context.read<UserProvider>().currentUser?.role == UserRole.student) {
       await context.read<UserProvider>().updateUser(
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
-        city: _cityController.text.trim(),
+        address: _addressController.text.trim(),
         canton: _cantonController.text.trim(),
         description: _descriptionController.text.trim(),
         skills: _skills,
@@ -346,7 +378,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       await context.read<UserProvider>().updateUser(
         companyName: _companyNameController.text.trim(),
         companySize: int.tryParse(_companySizeController.text.trim()),
-        city: _cityController.text.trim(),
+        address: _addressController.text.trim(),
         canton: _cantonController.text.trim(),
         description: _descriptionController.text.trim(),
         profilePicture: _profilePicture,

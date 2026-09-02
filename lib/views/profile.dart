@@ -250,8 +250,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 20),
                   _InfoRow(
                     icon: Icons.location_city,
-                    title: 'City',
-                    value: user.city,
+                    title: 'Address',
+                    value: user.address,
                   ),
                   _InfoRow(
                     icon: Icons.location_on,
@@ -371,7 +371,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 : '${reviewer.firstName ?? 'Unknown'} ${reviewer.lastName ?? 'User'}';
                             final userLocation = reviewer == null
                                 ? ""
-                                : ' • ${reviewer.city} ${reviewer.canton}';
+                                : ' • ${reviewer.address} ${reviewer.canton}';
                             return [
                               ListTile(
                                 title: Text(userName + userLocation),

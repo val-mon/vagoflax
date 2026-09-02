@@ -43,7 +43,7 @@ class ApplicationState extends ChangeNotifier {
 
   String? tempRole;
   String? tempCanton;
-  String? tempCity;
+  String? tempAddress;
   File? tempProfilePicture;
   String? tempDescription;
   List<double> tempFaceSignature = const [];
@@ -144,7 +144,7 @@ class ApplicationState extends ChangeNotifier {
     String lastname,
     String description,
     String canton,
-    String city /*, List<String> skills, List<String> history*/,
+    String address /*, List<String> skills, List<String> history*/,
     File? profilePicture,
   ) async {
     // TODO: add skills and history
@@ -152,7 +152,7 @@ class ApplicationState extends ChangeNotifier {
     tempLastName = lastname;
     tempDescription = description;
     tempCanton = canton;
-    tempCity = city;
+    tempAddress = address;
     tempProfilePicture = profilePicture;
 
     return finalizeSignUp();
@@ -162,14 +162,14 @@ class ApplicationState extends ChangeNotifier {
     String companyName,
     String description,
     String canton,
-    String city,
+    String address,
     int companySize,
     File? profilePicture,
   ) async {
     tempCompanyName = companyName;
     tempDescription = description;
     tempCanton = canton;
-    tempCity = city;
+    tempAddress = address;
     tempCompanySize = companySize;
     tempProfilePicture = profilePicture;
 
@@ -199,7 +199,7 @@ class ApplicationState extends ChangeNotifier {
       lastName: tempLastName,
       description: tempDescription ?? '',
       canton: tempCanton ?? '',
-      city: tempCity ?? '',
+      address: tempAddress ?? '',
       companyName: tempCompanyName,
       companySize: tempCompanySize,
     );
@@ -224,7 +224,7 @@ class ApplicationState extends ChangeNotifier {
   Future<void> updateProfile({
     required String firstName,
     required String lastName,
-    required String city,
+    required String address,
     required String canton,
     required String description,
     required List<String> skills,
@@ -234,7 +234,7 @@ class ApplicationState extends ChangeNotifier {
     await userProvider.updateUser(
       firstName: firstName,
       lastName: lastName,
-      city: city,
+      address: address,
       canton: canton,
       description: description,
       skills: skills,
