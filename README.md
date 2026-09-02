@@ -251,13 +251,15 @@ lastName            string
 email               string
 role                UserRole        // enum
 description         string
+address             string
 canton              string
-city                string
 profilePictureUrl   string?
-faceRecognitionUrl  string?
 skills              string[]
 history             HistoryEntry[]  // see models
 reviews             Review[]        // see models
+savedSearches       string[]        // your bookmarked searches
+favoriteJobs        string[]        // array of the ids of favorite jobs
+createdAt           timestamp
 ```
 
 Role: `employer`
@@ -267,11 +269,11 @@ email               string
 role                UserRole        // enum
 description         string
 canton              string
-city                string
+address             string
 profilePictureUrl   string?
-faceRecognitionUrl  string?
 companySize         int
 reviews             Review[]        // see models
+createdAt           timestamp
 ```
 
 Role: `admin`
@@ -292,6 +294,8 @@ title               string
 description         string?
 diplomas            Diplomas[]        // enum
 contractTime        int?
+minYearsExperience  int?
+maxYearsExperience  int?
 role                Role              // enum
 industry            Industry          // enum
 perks               Perks[]           // enum
