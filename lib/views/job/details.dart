@@ -158,6 +158,46 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
+  Future<void> _handleFavorite() async {
+    final userProvider = context.read<UserProvider>();
+    final currentUser = userProvider.currentUser;
+
+    if (currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You must be logged in to favorite jobs.'),
+        ),
+      );
+      return;
+    }
+
+    final jobId = widget.job?.id;
+    if (jobId == null) return;
+
+    final isFavorite = currentUser.favoriteJobs.contains(jobId);
+
+    String snackbarMessage =
+        "Error updating favorites. Please try again later.";
+
+    try {
+      if (isFavorite) {
+        await userProvider.removeFavoriteJob(jobId);
+        snackbarMessage = "Job removed from favorites.";
+      } else {
+        await userProvider.addFavoriteJob(jobId);
+        snackbarMessage = "Job added to favorites.";
+      }
+    } catch (e) {
+      debugPrint('Error updating favorite jobs: $e');
+    } finally {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(snackbarMessage)));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.job == null) {
@@ -170,6 +210,10 @@ class _JobDetailsState extends State<JobDetails> {
 
     final currentUserId = userProvider.currentUser?.id ?? '';
     final isStudent = userProvider.currentUser?.role == UserRole.student;
+
+    final isFavorite =
+        userProvider.currentUser?.isFavoriteJob(widget.job!.id ?? "-1") ??
+        false;
 
     // Get the updated job from the provider.
     Job currentJob = widget.job!;
@@ -211,26 +255,16 @@ class _JobDetailsState extends State<JobDetails> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert),
-            tooltip: 'Options',
-            onSelected: (value) {
-              if (value == 'translate') {
-                _showLanguageSelectionDialog();
-              }
-            },
-            itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<String>(
-                value: 'translate',
-                child: Row(
-                  children: [
-                    Icon(Icons.translate_outlined, size: 20),
-                    SizedBox(width: 12),
-                    Text('Translate job details'),
-                  ],
-                ),
-              ),
-            ],
+          IconButton(
+            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+            style: isFavorite
+                ? IconButton.styleFrom(foregroundColor: Colors.red)
+                : null,
+            onPressed: _handleFavorite,
+          ),
+          IconButton(
+            icon: const Icon(Icons.translate_outlined),
+            onPressed: _showLanguageSelectionDialog,
           ),
         ],
         centerTitle: true,

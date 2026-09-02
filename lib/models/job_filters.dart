@@ -1,4 +1,5 @@
 import 'package:vagoflax/models/enum/diplomas.dart';
+import 'package:vagoflax/models/enum/favorite_choice.dart';
 import 'package:vagoflax/models/enum/industry.dart';
 import 'package:vagoflax/models/enum/languages.dart';
 import 'package:vagoflax/models/enum/role.dart';
@@ -6,6 +7,8 @@ import 'package:vagoflax/models/enum/role.dart';
 class JobFilters {
   final double? minSalary;
   final double? maxSalary;
+
+  final FavoriteChoice favorited;
 
   final Set<Diplomas> diplomas;
   final Set<Role> roles;
@@ -19,6 +22,7 @@ class JobFilters {
     this.roles = const {},
     this.industries = const {},
     this.languages = const {},
+    this.favorited = FavoriteChoice.all,
   });
 
   bool get isEmpty =>
@@ -27,7 +31,8 @@ class JobFilters {
       diplomas.isEmpty &&
       roles.isEmpty &&
       industries.isEmpty &&
-      languages.isEmpty;
+      languages.isEmpty &&
+      favorited == FavoriteChoice.all;
 
   int get activeFilterCount {
     int count = 0;
@@ -52,6 +57,10 @@ class JobFilters {
       count++;
     }
 
+    if (favorited != FavoriteChoice.all) {
+      count++;
+    }
+
     return count;
   }
 
@@ -62,6 +71,7 @@ class JobFilters {
     Set<Role>? roles,
     Set<Industry>? industries,
     Set<Languages>? languages,
+    FavoriteChoice? favorited,
   }) {
     return JobFilters(
       minSalary: minSalary ?? this.minSalary,
@@ -70,6 +80,7 @@ class JobFilters {
       roles: roles ?? this.roles,
       industries: industries ?? this.industries,
       languages: languages ?? this.languages,
+      favorited: favorited ?? this.favorited,
     );
   }
 }
