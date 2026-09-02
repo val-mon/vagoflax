@@ -65,10 +65,10 @@ async function fillDatabase() {
     {
       firstName: 'Gonçalo',
       lastName: 'Arieira Esteves',
-      email: 'gon@vagoflax.ch',
+      email: "Rue de l'Envol 8, 1950 Sion",
       description: 'Business Information Technology student at HES-SO Valais-Wallis.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Sion',
       skills: ['Flutter', 'Dart', 'Python', 'Firebase', 'Git'],
       history: [
         {
@@ -85,7 +85,7 @@ async function fillDatabase() {
       email: 'val@vagoflax.ch',
       description: 'Coffee and motorcycle enthusiast. Systems Engineering student at HEI Sion.',
       canton: 'VS',
-      city: 'Choëx',
+      address: "Rte d'Outre-Vièze 131, 1871 Monthey",
       skills: ['Customer service', 'Event management', 'German C1', 'MS Office'],
       profilePictureUrl: 'https://isc.hevs.ch/learn/pluginfile.php/4523/user/icon/mb2nl/f1?rev=131019',
       history: [
@@ -103,7 +103,7 @@ async function fillDatabase() {
       email: 'flo@vagoflax.ch',
       description: 'Energy and Environmental Engineering student. Rigorous, curious, and available for part-time jobs.',
       canton: 'VS',
-      city: 'Haute-Nendaz',
+      address: 'Chem. de la poya 138, 1997 Nendaz',
       skills: ['AutoCAD', 'Matlab', 'Thermodynamics', 'Herald License', 'League of Legends', 'Chaos ARAM'],
       history: [
         {
@@ -120,7 +120,7 @@ async function fillDatabase() {
       email: 'axe@vagoflax.ch',
       description: 'Business Administration student with a strong interest in digital marketing and local finance.',
       canton: 'VS',
-      city: 'Vétroz',
+      address: 'Rue des Vignerons 94, 1963 Vétroz',
       profilePictureUrl: 'https://res.cloudinary.com/oaqyf2ip/image/upload/v1788251100/renoi.avif',
       skills: ['Digital marketing', 'Cost accounting', 'Excel expert', 'Canva'],
       history: [
@@ -151,7 +151,7 @@ async function fillDatabase() {
       role: 'student',
       description: s.description,
       canton: s.canton,
-      city: s.city,
+      address: s.address,
       profilePictureUrl: s.profilePictureUrl || null,
       skills: s.skills,
       history: s.history,
@@ -168,7 +168,7 @@ async function fillDatabase() {
       email: 'jobs@oiken.ch',
       description: 'Energy, water, and multimedia infrastructure provider in Central Valais.',
       canton: 'VS',
-      city: 'Sion',
+      address: "Rue de l'Industrie 43, 1951 Sion",
       profilePictureUrl: 'https://i.ytimg.com/vi/57oivOLxoKU/hqdefault.jpg',
       companySize: 500,
       jobs: [
@@ -230,7 +230,7 @@ async function fillDatabase() {
       email: 'jobs@hopitalvs.ch',
       description: 'Leading hospital center providing acute and specialized medical care in Valais.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Av. du Grand-Champsec 80, 1951 Sion',
       profilePictureUrl: 'https://agenda.science-valais.ch/uploads/thumbs_logo/bf/bfeb34bf7c464e36f0767d9d472f87d8.png',
       companySize: 5500,
       jobs: [
@@ -292,7 +292,7 @@ async function fillDatabase() {
       email: 'jobs@grandpont.ch',
       description: 'Traditional restaurant in historic downtown Sion serving Valais specialties.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Rue du Grand-Pont 6, 1950 Sion',
       profilePictureUrl: 'https://grand-pont.ch/wp-content/uploads/2025/02/BrasserieDuGrandPont_Plats_Thibautlampe_WebRes-21-683x1024.jpg',
       companySize: 20,
       jobs: [
@@ -352,9 +352,9 @@ async function fillDatabase() {
     {
       companyName: 'Novel-T Software',
       email: 'jobs@novelt.ch',
-      description: 'Software solutions and IT innovation company based at Energypolis Sion.',
+      description: 'Software solutions and IT innovation company.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Rte de Peney 2/4, 1214 Vernier',
       profilePictureUrl: 'https://media.licdn.com/dms/image/v2/C4D0BAQFaPPo7wEOV4w/company-logo_200_200/company-logo_200_200/0/1654586514322/novel_t_s_rl_logo?e=2147483647&v=beta&t=VABNXryzijMwNYYocrWe1ZpAWP-82L2uQM0YPGbP8s0',
       companySize: 45,
       jobs: [
@@ -445,7 +445,7 @@ async function fillDatabase() {
       role: 'employer',
       description: emp.description,
       canton: emp.canton,
-      city: emp.city,
+      address: emp.address,
       profilePictureUrl: emp.profilePictureUrl || null,
       companySize: emp.companySize,
       reviews: [],

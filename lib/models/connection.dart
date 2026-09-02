@@ -32,7 +32,7 @@ class Connection {
       products: List<String>.from(json['products'] ?? []),
       sections: (json['sections'] as List<dynamic>? ?? [])
           .map((s) => Section.fromJson(s as Map<String, dynamic>))
-          .toList()
+          .toList(),
     );
   }
 

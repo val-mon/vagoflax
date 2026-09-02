@@ -608,23 +608,27 @@ class _JobDetailsState extends State<JobDetails> {
                   );
                 }
 
-              return Column(
-                children: connections.map((c) {
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    child: ExpansionTile(
-                      leading: const Icon(Icons.train_outlined),
-                      title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
-                      subtitle: Text('${c.products.join(', ')} • ${c.duration.replaceFirst('00d', '').trim()}'),
-                      childrenPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
+                return Column(
+                  children: connections.map((c) {
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: ExpansionTile(
+                        leading: const Icon(Icons.train_outlined),
+                        title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
+                        subtitle: Text(
+                          '${c.products.join(', ')} • ${c.duration.replaceFirst('00d', '').trim()}',
+                        ),
+                        childrenPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        children: c.sections
+                            .map((s) => _buildSectionRow(s))
+                            .toList(),
                       ),
-                      children: c.sections.map((s) => _buildSectionRow(s)).toList(),
-                    ),
-                  );
-                }).toList(),
-              );
+                    );
+                  }).toList(),
+                );
               },
             ),
           ],
@@ -742,80 +746,99 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-Widget _buildSectionRow(Section s) {
-  if (s.isWalk) {
+  Widget _buildSectionRow(Section s) {
+    if (s.isWalk) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Walk',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  '${_hm(s.departure)} ${s.departureName}',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                ),
+                Text(
+                  '${_hm(s.arrival)} ${s.arrivalName}',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
+          const Icon(Icons.train, size: 18, color: Colors.blueGrey),
           const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            Text('Walk',style: const TextStyle(fontWeight: FontWeight.w600),),
-            Text('${_hm(s.departure)} ${s.departureName}', style: TextStyle(fontSize: 13, color: Colors.grey.shade700),),
-            Text('${_hm(s.arrival)} ${s.arrivalName}', style: TextStyle(fontSize: 13, color: Colors.grey.shade700),),
-          ],)
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  s.journeyName ?? '',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: '${_hm(s.departure)} ',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    children: [
+                      TextSpan(
+                        text: s.departureDelay != null && s.departureDelay! > 0
+                            ? '+${s.departureDelay} '
+                            : '',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      TextSpan(
+                        text: s.departureName,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: '${_hm(s.arrival)} ',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    children: [
+                      TextSpan(
+                        text: s.arrivalDelay != null && s.arrivalDelay! > 0
+                            ? '(+${s.arrivalDelay} min) '
+                            : '',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      TextSpan(
+                        text: s.arrivalName,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
-
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Row(
-      children: [
-        const Icon(Icons.train, size: 18, color: Colors.blueGrey),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                s.journeyName ?? '',
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: '${_hm(s.departure)} ',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                  children: [
-                    TextSpan(
-                      text: s.departureDelay != null && s.departureDelay! > 0 ? '+${s.departureDelay} ' : '',
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    TextSpan(
-                      text: s.departureName,
-                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                    ),
-                  ],
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: '${_hm(s.arrival)} ',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                  children: [
-                    TextSpan(
-                      text: s.arrivalDelay != null && s.arrivalDelay! > 0 ? '(+${s.arrivalDelay} min) ' : '',
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    TextSpan(
-                      text: s.arrivalName,
-                      style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
 
   static String _companyName(User? company) {
     if (company == null) {
