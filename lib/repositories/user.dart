@@ -15,4 +15,6 @@ abstract class UserRepository {
   });
   Future<void> addSavedSearch(String userId, String search);
   Future<void> removeSavedSearch(String userId, String search);
+  Future<void> addFavoriteJob(String userId, String jobId);
+  Future<void> removeFavoriteJob(String userId, String jobId);
 }

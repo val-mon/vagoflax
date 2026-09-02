@@ -206,4 +206,12 @@ class UserProvider with ChangeNotifier {
   Future<void> removeSavedSearch(String search) async {
     return await _userRepository.removeSavedSearch(currentUser!.id, search);
   }
+
+  Future<void> addFavoriteJob(String jobId) async {
+    return await _userRepository.addFavoriteJob(currentUser!.id, jobId);
+  }
+
+  Future<void> removeFavoriteJob(String jobId) async {
+    return await _userRepository.removeFavoriteJob(currentUser!.id, jobId);
+  }
 }

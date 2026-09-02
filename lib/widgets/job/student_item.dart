@@ -7,8 +7,9 @@ import 'package:vagoflax/utils/date.dart';
 
 class JobStudentItem extends StatelessWidget {
   final Job job;
+  final bool favorited;
 
-  const JobStudentItem({super.key, required this.job});
+  const JobStudentItem({super.key, required this.job, this.favorited = false});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +38,10 @@ class JobStudentItem extends StatelessWidget {
                       : 'No posting date available',
                   style: const TextStyle(color: Colors.grey),
                 ),
+                if (favorited) ...[
+                  const SizedBox(width: 4),
+                  Icon(Icons.favorite, size: 16, color: Colors.red),
+                ],
               ],
             ),
           ],

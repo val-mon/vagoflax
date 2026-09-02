@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/models/enum/favorite_choice.dart';
+import 'package:vagoflax/providers/user.dart';
 import 'package:vagoflax/widgets/about_icon.dart';
 import 'package:vagoflax/widgets/job/filter_drawer.dart';
 import 'package:vagoflax/widgets/search_filter.dart';
@@ -25,6 +27,7 @@ class _JobListScreenState extends State<JobListScreen> {
   @override
   Widget build(BuildContext context) {
     final jobProvider = context.watch<JobProvider>();
+    final userProvider = context.watch<UserProvider>();
 
     final jobs = jobProvider.jobs;
     final isLoading = jobProvider.isLoading;
@@ -83,6 +86,15 @@ class _JobListScreenState extends State<JobListScreen> {
             (language) => filters.languages.contains(language),
           );
 
+      // favorites
+      final matchesFavorites =
+          filters.favorited == FavoriteChoice.all ||
+          (filters.favorited == FavoriteChoice.favorited &&
+              userProvider.currentUser?.isFavoriteJob(job.id ?? "-1") ==
+                  true) ||
+          (filters.favorited == FavoriteChoice.notFavorited &&
+              userProvider.currentUser?.isFavoriteJob(job.id ?? "-1") == false);
+
       return matchesSearch &&
           matchesMinSalary &&
           matchesMaxSalary &&
@@ -90,6 +102,7 @@ class _JobListScreenState extends State<JobListScreen> {
           matchesRoles &&
           matchesIndustries &&
           matchesLanguages &&
+          matchesFavorites &&
           job.visible;
     }).toList();
 
@@ -145,6 +158,7 @@ class _JobListScreenState extends State<JobListScreen> {
                               });
                               Navigator.pop(ctx);
                             },
+                            showFavoriteFilter: true,
                           ),
                         ),
                       ),
@@ -161,7 +175,16 @@ class _JobListScreenState extends State<JobListScreen> {
                           itemBuilder: (context, index) {
                             final job = filteredJobs[index];
 
-                            return JobStudentItem(job: job);
+                            final isFavorite =
+                                userProvider.currentUser?.isFavoriteJob(
+                                  job.id ?? "-1",
+                                ) ??
+                                false;
+
+                            return JobStudentItem(
+                              job: job,
+                              favorited: isFavorite,
+                            );
                           },
                         ),
                 ),
