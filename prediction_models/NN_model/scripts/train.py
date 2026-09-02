@@ -1,434 +1,368 @@
-from copy import deepcopy
-from pathlib import Path
-import random
+import json
 
 import numpy as np
 import pandas as pd
 import torch
-from sklearn.model_selection import train_test_split
-from torch import nn
-from torch.utils.data import DataLoader, TensorDataset
-
-from scripts.preprocessing import JobOfferPreprocessor
-from scripts.model import SalaryModel
-
-
-def set_seed(seed: int) -> None:
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
-
-
-def get_device() -> torch.device:
-    if torch.cuda.is_available():
-        return torch.device("cuda")
-
-    if torch.backends.mps.is_available():
-        return torch.device("mps")
-
-    return torch.device("cpu")
-
-
-def split_data(
-    df: pd.DataFrame,
-    train_ratio: float,
-    validation_ratio: float,
-    test_ratio: float,
-    random_seed: int,
-) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    remaining_ratio = validation_ratio + test_ratio
-
-    train_df, remaining_df = train_test_split(
-        df,
-        test_size=remaining_ratio,
-        random_state=random_seed,
-        shuffle=True,
-    )
-
-    relative_test_ratio = test_ratio / remaining_ratio
-
-    validation_df, test_df = train_test_split(
-        remaining_df,
-        test_size=relative_test_ratio,
-        random_state=random_seed,
-        shuffle=True,
-    )
-
-    return (
-        train_df.reset_index(drop=True),
-        validation_df.reset_index(drop=True),
-        test_df.reset_index(drop=True),
-    )
-
-
-def prepare_data(
-    train_df: pd.DataFrame,
-    validation_df: pd.DataFrame,
-    test_df: pd.DataFrame,
-) -> tuple[
-    JobOfferPreprocessor,
-    TensorDataset,
-    TensorDataset,
-    TensorDataset,
-    float,
-    float,
-]:
-    preprocessor = JobOfferPreprocessor(
-        scale_numeric=True,
-    )
-
-    preprocessor.fit(train_df)
-
-    X_train, y_train = preprocessor.transform_to_tensors(train_df)
-    X_validation, y_validation = preprocessor.transform_to_tensors(validation_df)
-    X_test, y_test = preprocessor.transform_to_tensors(test_df)
-
-    if y_train is None or y_validation is None or y_test is None:
-        raise ValueError("SalaryCHF is missing from the dataset.")
-
-    target_mean = y_train.mean().item()
-    target_std = y_train.std(unbiased=False).item()
-
-    if target_std == 0:
-        target_std = 1.0
-
-    y_train = (y_train - target_mean) / target_std
-    y_validation = (y_validation - target_mean) / target_std
-    y_test = (y_test - target_mean) / target_std
-
-    train_dataset = TensorDataset(
-        X_train,
-        y_train,
-    )
-
-    validation_dataset = TensorDataset(
-        X_validation,
-        y_validation,
-    )
-
-    test_dataset = TensorDataset(
-        X_test,
-        y_test,
-    )
-
-    return (
-        preprocessor,
-        train_dataset,
-        validation_dataset,
-        test_dataset,
-        target_mean,
-        target_std,
-    )
-
-
-def create_loaders(
-    train_dataset: TensorDataset,
-    validation_dataset: TensorDataset,
-    test_dataset: TensorDataset,
-    batch_size: int,
-    random_seed: int,
-) -> tuple[DataLoader, DataLoader, DataLoader]:
-    generator = torch.Generator()
-    generator.manual_seed(random_seed)
-
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=batch_size,
-        shuffle=True,
-        generator=generator,
-    )
-
-    validation_loader = DataLoader(
-        validation_dataset,
-        batch_size=batch_size,
-        shuffle=False,
-    )
-
-    test_loader = DataLoader(
-        test_dataset,
-        batch_size=batch_size,
-        shuffle=False,
-    )
-
-    return train_loader, validation_loader, test_loader
-
-
-def compute_loss(
-    model: nn.Module,
-    data_loader: DataLoader,
-    criterion: nn.Module,
-    device: torch.device,
-) -> float:
-    model.eval()
-
-    total_loss = 0.0
-    total_samples = 0
-
-    with torch.no_grad():
-        for X, y in data_loader:
-            X = X.to(device)
-            y = y.to(device)
-
-            predictions = model(X)
-            loss = criterion(predictions, y)
-
-            batch_size = X.size(0)
-
-            total_loss += loss.item() * batch_size
-            total_samples += batch_size
-
-    return total_loss / total_samples
-
-
-def evaluate(
-    model: nn.Module,
-    data_loader: DataLoader,
-    device: torch.device,
-    target_mean: float,
-    target_std: float,
-) -> dict[str, float]:
-    model.eval()
-
-    predictions = []
-    targets = []
-
-    with torch.no_grad():
-        for X, y in data_loader:
-            X = X.to(device)
-            y = y.to(device)
-
-            output = model(X)
-
-            predictions.append(output.cpu())
-            targets.append(y.cpu())
-
-    predictions_tensor = torch.cat(predictions)
-    targets_tensor = torch.cat(targets)
-
-    predictions_chf = predictions_tensor * target_std + target_mean
-
-    targets_chf = targets_tensor * target_std + target_mean
-
-    errors = predictions_chf - targets_chf
-
-    mae = torch.mean(torch.abs(errors)).item()
-    rmse = torch.sqrt(torch.mean(errors**2)).item()
-
-    target_sum_of_squares = torch.sum((targets_chf - targets_chf.mean()) ** 2)
-
-    residual_sum_of_squares = torch.sum(errors**2)
-
-    if target_sum_of_squares.item() == 0:
-        r2 = 0.0
-    else:
-        r2 = (1 - residual_sum_of_squares / target_sum_of_squares).item()
-
-    return {
-        "mae": mae,
-        "rmse": rmse,
-        "r2": r2,
-    }
-
-
-def train_model(
-    model: nn.Module,
-    train_loader: DataLoader,
-    validation_loader: DataLoader,
-    device: torch.device,
-    learning_rate: float,
-    weight_decay: float,
-    max_epochs: int,
-    patience: int,
-) -> tuple[nn.Module, int]:
-    criterion = nn.MSELoss()
-
-    optimizer = torch.optim.AdamW(
-        model.parameters(),
-        lr=learning_rate,
-        weight_decay=weight_decay,
-    )
-
-    best_validation_loss = float("inf")
-    best_model_state = None
-    best_epoch = 0
-    epochs_without_improvement = 0
-
-    for epoch in range(1, max_epochs + 1):
-        model.train()
-
-        total_train_loss = 0.0
-        total_samples = 0
-
-        for X, y in train_loader:
-            X = X.to(device)
-            y = y.to(device)
-
-            optimizer.zero_grad()
-
-            predictions = model(X)
-            loss = criterion(predictions, y)
-
-            loss.backward()
-            optimizer.step()
-
-            current_batch_size = X.size(0)
-
-            total_train_loss += loss.item() * current_batch_size
-            total_samples += current_batch_size
-
-        train_loss = total_train_loss / total_samples
-
-        validation_loss = compute_loss(
-            model,
-            validation_loader,
-            criterion,
-            device,
+import torch.nn as nn
+import litert_torch
+from sklearn.metrics import (
+    mean_absolute_error,
+    root_mean_squared_error,
+    r2_score,
+)
+import matplotlib.pyplot as plt
+
+
+class SalaryModel(nn.Module):
+    def __init__(self, input_size):
+        super().__init__()
+
+        self.network = nn.Sequential(
+            nn.Linear(input_size, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, 1),
         )
 
-        print(
-            f"Epoch {epoch:03d} | "
-            f"Train loss: {train_loss:.4f} | "
-            f"Validation loss: {validation_loss:.4f}"
-        )
-
-        if validation_loss < best_validation_loss:
-            best_validation_loss = validation_loss
-            best_model_state = deepcopy(model.state_dict())
-            best_epoch = epoch
-            epochs_without_improvement = 0
-        else:
-            epochs_without_improvement += 1
-
-        if epochs_without_improvement >= patience:
-            print(f"Early stopping at epoch {epoch}.")
-            break
-
-    if best_model_state is None:
-        raise RuntimeError("No model state was saved.")
-
-    model.load_state_dict(best_model_state)
-
-    return model, best_epoch
+    def forward(self, x):
+        return self.network(x)
 
 
 def train(
-    data_path: Path,
-    random_seed: int,
-    train_ratio: float,
-    validation_ratio: float,
-    test_ratio: float,
-    batch_size: int,
-    learning_rate: float,
-    weight_decay: float,
-    max_epochs: int,
-    patience: int,
-) -> dict:
-    if not np.isclose(
-        train_ratio + validation_ratio + test_ratio,
-        1.0,
-    ):
-        raise ValueError("Train, validation and test ratios must sum to 1.")
+    X_train,
+    X_validation,
+    X_test,
+    Y_train,
+    Y_validation,
+    Y_test,
+    base_dir,
+    scaler_y,
+    random_state,
+    epochs,
+    patience,
+    min_delta,
+):
+    # Reproducibility
+    np.random.seed(random_state)
+    torch.manual_seed(random_state)
 
-    set_seed(random_seed)
-    device = get_device()
-    df = pd.read_csv(data_path)
-
-    train_df, validation_df, test_df = split_data(
-        df,
-        train_ratio,
-        validation_ratio,
-        test_ratio,
-        random_seed,
+    # Convert datasets to tensors
+    X_train_tensor = torch.tensor(
+        X_train.values,
+        dtype=torch.float32,
     )
 
-    print(f"Device: {device}")
-    print(f"Total samples: {len(df)}")
-    print(f"Training samples: {len(train_df)}")
-    print(f"Validation samples: {len(validation_df)}")
-    print(f"Test samples: {len(test_df)}")
-
-    (
-        preprocessor,
-        train_dataset,
-        validation_dataset,
-        test_dataset,
-        target_mean,
-        target_std,
-    ) = prepare_data(
-        train_df,
-        validation_df,
-        test_df,
+    X_validation_tensor = torch.tensor(
+        X_validation.values,
+        dtype=torch.float32,
     )
 
-    train_loader, validation_loader, test_loader = create_loaders(
-        train_dataset,
-        validation_dataset,
-        test_dataset,
-        batch_size,
-        random_seed,
-    )
-    model = SalaryModel(
-        input_dim=preprocessor.input_dim,
-    ).to(device)
-
-    model, best_epoch = train_model(
-        model,
-        train_loader,
-        validation_loader,
-        device,
-        learning_rate,
-        weight_decay,
-        max_epochs,
-        patience,
-    )
-    validation_metrics = evaluate(
-        model,
-        validation_loader,
-        device,
-        target_mean,
-        target_std,
-    )
-    test_metrics = evaluate(
-        model,
-        test_loader,
-        device,
-        target_mean,
-        target_std,
+    X_test_tensor = torch.tensor(
+        X_test.values,
+        dtype=torch.float32,
     )
 
-    print(f"Best epoch: {best_epoch}")
-    print(f"Validation MAE: {validation_metrics['mae']:.2f} CHF")
-    print(f"Validation RMSE: {validation_metrics['rmse']:.2f} CHF")
-    print(f"Validation R2: {validation_metrics['r2']:.4f}")
-    print(f"Test MAE: {test_metrics['mae']:.2f} CHF")
-    print(f"Test RMSE: {test_metrics['rmse']:.2f} CHF")
-    print(f"Test R2: {test_metrics['r2']:.4f}")
+    Y_train_tensor = torch.tensor(
+        Y_train,
+        dtype=torch.float32,
+    ).reshape(-1, 1)
 
-    return {
-        "model": model.cpu(),
-        "preprocessor": preprocessor,
-        "target_mean": target_mean,
-        "target_std": target_std,
-        "statistics": {
-            "best_epoch": best_epoch,
-            "validation": validation_metrics,
-            "test": test_metrics,
-            "train_samples": len(train_df),
-            "validation_samples": len(validation_df),
-            "test_samples": len(test_df),
-            "parameters": {
-                "random_seed": random_seed,
-                "train_ratio": train_ratio,
-                "validation_ratio": validation_ratio,
-                "test_ratio": test_ratio,
-                "batch_size": batch_size,
-                "learning_rate": learning_rate,
-                "weight_decay": weight_decay,
-                "max_epochs": max_epochs,
-                "patience": patience,
-            },
-        },
-    }
+    Y_validation_tensor = torch.tensor(
+        Y_validation,
+        dtype=torch.float32,
+    ).reshape(-1, 1)
+
+    # Train the model with 70 % of the data and 15 % for validation
+    model = SalaryModel(X_train.shape[1])
+    criterion = nn.MSELoss()
+
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=0.001,
+        weight_decay=1e-3,
+    )
+
+    best_validation_loss = np.inf
+    best_epoch = 0
+    patience_counter = 0
+
+    # For plots
+    train_rmse_history = []
+    validation_rmse_history = []
+
+    for epoch in range(epochs):
+        model.train()
+        optimizer.zero_grad()
+
+        Y_pred_train = model(X_train_tensor)
+        train_loss = criterion(
+            Y_pred_train,
+            Y_train_tensor,
+        )
+
+        train_loss.backward()
+        optimizer.step()
+
+        # validation
+        model.eval()
+
+        with torch.no_grad():
+            # Recompute train predictions after optimizer step
+            Y_pred_train_eval = model(X_train_tensor)
+            Y_pred_validation = model(X_validation_tensor)
+
+            validation_loss = criterion(
+                Y_pred_validation,
+                Y_validation_tensor,
+            ).item()
+
+            # Convert train predictions to CHF
+            Y_pred_train_chf = scaler_y.inverse_transform(
+                Y_pred_train_eval.numpy()
+            ).flatten()
+
+            Y_train_chf = scaler_y.inverse_transform(Y_train_tensor.numpy()).flatten()
+            train_rmse_chf = root_mean_squared_error(
+                Y_train_chf,
+                Y_pred_train_chf,
+            )
+
+            # Convert validation predictions to CHF
+            Y_pred_validation_chf = scaler_y.inverse_transform(
+                Y_pred_validation.numpy()
+            ).flatten()
+
+            Y_validation_chf = scaler_y.inverse_transform(
+                Y_validation_tensor.numpy()
+            ).flatten()
+
+            validation_rmse_chf = root_mean_squared_error(
+                Y_validation_chf,
+                Y_pred_validation_chf,
+            )
+
+        train_rmse_history.append(train_rmse_chf)
+        validation_rmse_history.append(validation_rmse_chf)
+
+        # Early stopping
+        if validation_loss < best_validation_loss - min_delta:
+            best_validation_loss = validation_loss
+            best_epoch = epoch + 1
+            patience_counter = 0
+        else:
+            patience_counter += 1
+
+        # Print every 10 epochs
+        if (epoch + 1) % 10 == 0 or epoch == 0 or patience_counter >= patience:
+            print(
+                f"Epoch {epoch + 1}/{epochs}, "
+                f"Train RMSE: {train_rmse_chf:.2f} CHF, "
+                f"Validation RMSE: {validation_rmse_chf:.2f} CHF, "
+                f"Best Epoch: {best_epoch}"
+            )
+
+        if patience_counter >= patience:
+            print(f"Early stopping at epoch {epoch + 1}. " f"Best epoch: {best_epoch}")
+            break
+
+    # Train the final model on the combined training and validation set using the best epoch
+    X_train_full = pd.concat(
+        [X_train, X_validation],
+        axis=0,
+    )
+
+    Y_train_full = np.concatenate(
+        [Y_train, Y_validation],
+        axis=0,
+    )
+
+    X_train_full_tensor = torch.tensor(
+        X_train_full.values,
+        dtype=torch.float32,
+    )
+
+    Y_train_full_tensor = torch.tensor(
+        Y_train_full,
+        dtype=torch.float32,
+    ).reshape(-1, 1)
+
+    # Reset seed so final model initialization is reproducible
+    torch.manual_seed(random_state)
+
+    model = SalaryModel(X_train_full.shape[1])
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=0.001,
+    )
+
+    print(f"\nFinal training on train + validation " f"for {best_epoch} epochs...")
+
+    for epoch in range(best_epoch):
+        model.train()
+        optimizer.zero_grad()
+
+        Y_pred = model(X_train_full_tensor)
+
+        loss = criterion(
+            Y_pred,
+            Y_train_full_tensor,
+        )
+
+        loss.backward()
+        optimizer.step()
+
+    # Final predictions on train and test sets
+    model.eval()
+
+    with torch.no_grad():
+        Y_pred_train = model(X_train_full_tensor).numpy().flatten()
+
+        Y_pred_test = model(X_test_tensor).numpy().flatten()
+
+    # Convert predictions back to CHF
+    Y_pred_train = scaler_y.inverse_transform(Y_pred_train.reshape(-1, 1)).flatten()
+    Y_pred_test = scaler_y.inverse_transform(Y_pred_test.reshape(-1, 1)).flatten()
+
+    # Convert actual values back to CHF
+    Y_train_full_chf = scaler_y.inverse_transform(Y_train_full.reshape(-1, 1)).flatten()
+    Y_test_chf = scaler_y.inverse_transform(Y_test.reshape(-1, 1)).flatten()
+
+    # Metrics
+    mae_train = mean_absolute_error(
+        Y_train_full_chf,
+        Y_pred_train,
+    )
+
+    mae_test = mean_absolute_error(
+        Y_test_chf,
+        Y_pred_test,
+    )
+
+    rmse_train = root_mean_squared_error(
+        Y_train_full_chf,
+        Y_pred_train,
+    )
+
+    rmse_test = root_mean_squared_error(
+        Y_test_chf,
+        Y_pred_test,
+    )
+
+    r2_train = r2_score(
+        Y_train_full_chf,
+        Y_pred_train,
+    )
+
+    r2_test = r2_score(
+        Y_test_chf,
+        Y_pred_test,
+    )
+
+    # Save directories
+    nn_model_dir = base_dir.joinpath("NN_model")
+    results_dir = nn_model_dir.joinpath("results")
+    visualization_dir = nn_model_dir.joinpath("visualization")
+
+    results_dir.mkdir(parents=True, exist_ok=True)
+    visualization_dir.mkdir(parents=True, exist_ok=True)
+    results_path = results_dir.joinpath("neural_network_results.txt")
+
+    predictions_visualization_path = visualization_dir.joinpath(
+        "neural_network_predictions.png"
+    )
+
+    training_visualization_path = visualization_dir.joinpath(
+        "neural_network_training.png"
+    )
+
+    # Save results
+    total_size = X_train_full.shape[0] + X_test.shape[0]
+    train_percentage = X_train_full.shape[0] / total_size * 100
+    test_percentage = X_test.shape[0] / total_size * 100
+
+    with open(results_path, "w") as f:
+        f.write("Neural Network Parameters:\n")
+        f.write("Hidden layers: 64 - 32\n")
+        f.write("Activation: ReLU\n")
+        f.write("Optimizer: Adam\n")
+        f.write("Learning rate: 0.001\n")
+        f.write(f"Maximum epochs: {epochs}\n")
+        f.write(f"Patience: {patience}\n")
+        f.write(f"Best epoch: {best_epoch}\n\n")
+        f.write("Dataset split:\n")
+        f.write(f"Training set size: " f"{X_train_full.shape[0]}\n")
+        f.write(f"Test set size: " f"{X_test.shape[0]}\n")
+        f.write(
+            f"Train-Test split percentage: "
+            f"{train_percentage:.2f}% - "
+            f"{test_percentage:.2f}%\n\n"
+        )
+        f.write("Neural Network Results:\n")
+        f.write(f"MAE - Train: {mae_train:.2f} CHF, " f"Test: {mae_test:.2f} CHF\n")
+        f.write(f"RMSE - Train: {rmse_train:.2f} CHF, " f"Test: {rmse_test:.2f} CHF\n")
+        f.write(f"R² - Train: {r2_train:.6f}, " f"Test: {r2_test:.6f}\n")
+
+    # save predictions vs actual values plot
+    plt.figure(figsize=(10, 6))
+    plt.scatter(
+        Y_test_chf,
+        Y_pred_test,
+        alpha=0.5,
+    )
+    plt.plot(
+        [
+            Y_test_chf.min(),
+            Y_test_chf.max(),
+        ],
+        [
+            Y_test_chf.min(),
+            Y_test_chf.max(),
+        ],
+        "k--",
+        lw=2,
+    )
+    plt.xlabel("Actual Salary (CHF)")
+    plt.ylabel("Predicted Salary (CHF)")
+    plt.title("Neural Network - Actual vs Predicted")
+    plt.tight_layout()
+    plt.savefig(predictions_visualization_path)
+    plt.close()
+
+    # save training history plot
+    plt.figure(figsize=(10, 6))
+    epoch_numbers = range(
+        1,
+        len(train_rmse_history) + 1,
+    )
+    plt.plot(
+        epoch_numbers,
+        train_rmse_history,
+        label="Train RMSE",
+    )
+    plt.plot(
+        epoch_numbers,
+        validation_rmse_history,
+        label="Validation RMSE",
+    )
+    plt.axvline(
+        x=best_epoch,
+        linestyle="--",
+        label=f"Best epoch: {best_epoch}",
+    )
+    plt.xlabel("Epoch")
+    plt.ylabel("RMSE (CHF)")
+    plt.title("Neural Network - Training History")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(training_visualization_path)
+    plt.close()
+
+    print("\nFinal results:")
+    print(f"MAE  - Train: {mae_train:.2f} CHF, " f"Test: {mae_test:.2f} CHF")
+    print(f"RMSE - Train: {rmse_train:.2f} CHF, " f"Test: {rmse_test:.2f} CHF")
+    print(f"R²   - Train: {r2_train:.4f}, " f"Test: {r2_test:.4f}")
+
+    return model
+    
+

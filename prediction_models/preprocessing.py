@@ -5,8 +5,10 @@ def preprocess(df):
     df = clean_company_size(df)
     df = replace_missing_values(df)
     df = clean_contract_length(df)
+    Y = df["SalaryCHF"].copy()
+    df = df.drop(columns=["SalaryCHF"])
 
-    return df
+    return df, Y
 
 
 def drop_irrelevant_columns(df):
@@ -69,7 +71,6 @@ def clean_contract_length(df):
     )
 
     return df
-
 
 if __name__ == "__main__":
     from pathlib import Path
