@@ -81,7 +81,9 @@ class _JobProviderOfferScreenState extends State<JobProviderOfferScreen> {
       //
       final matchesLanguages =
           filters.languages.isEmpty ||
-          job.languages.any((language) => filters.languages.contains(language));
+          job.languages.every(
+            (language) => filters.languages.contains(language),
+          );
 
       return matchesSearch &&
           matchesMinSalary &&
