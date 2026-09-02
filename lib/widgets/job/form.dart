@@ -387,6 +387,7 @@ class _JobFormState extends State<JobForm> {
       salary: double.tryParse(_salaryController.text),
       visible: _visible,
       translations: widget.job?.translations ?? [],
+      createdAt: widget.job?.createdAt,
     );
 
     final employer = context.read<UserProvider>().currentUser;
