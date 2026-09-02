@@ -34,11 +34,23 @@ class JobEmployerItem extends StatelessWidget {
               children: [
                 const Icon(Icons.lock_clock, size: 16, color: Colors.grey),
                 const SizedBox(width: 4),
-                Text(
-                  job.createdAt != null
-                      ? DateFormat.formatDate(job.createdAt!)
-                      : 'No posting date available',
-                  style: const TextStyle(color: Colors.grey),
+                Row(
+                  children: [
+                    Text(
+                      job.createdAt != null
+                          ? DateFormat.formatDate(job.createdAt!)
+                          : 'No posting date available',
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                    if (!job.visible) ...[
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.visibility_off,
+                        color: Colors.grey.shade600,
+                        size: 16,
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),
@@ -47,10 +59,6 @@ class JobEmployerItem extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (!job.visible) ...[
-              Icon(Icons.visibility_off, color: Colors.grey.shade600),
-              const SizedBox(width: 8),
-            ],
             IconButton(
               icon: const Icon(Icons.person_search),
               tooltip: 'View Applications',
