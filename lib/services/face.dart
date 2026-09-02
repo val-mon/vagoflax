@@ -31,7 +31,7 @@ class FaceRecognitionService {
     _interpreter = Interpreter.fromBuffer(buffer.buffer.asUint8List());
   }
 
-  /// Detects the (biggest) face in [imageFile] and returns its signature
+  /// Detects the face in [imageFile] and returns its signature
   Future<List<double>> getFaceSignature(File imageFile) async {
     await _ensureModelLoaded();
 

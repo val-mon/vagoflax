@@ -147,7 +147,6 @@ class ApplicationState extends ChangeNotifier {
     String address /*, List<String> skills, List<String> history*/,
     File? profilePicture,
   ) async {
-    // TODO: add skills and history
     tempFirstName = firstname;
     tempLastName = lastname;
     tempDescription = description;
