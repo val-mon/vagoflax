@@ -61,8 +61,7 @@ class _JobListScreenState extends State<JobListScreen> {
       // Diplomas
       //
       final matchesDiplomas =
-          filters.diplomas.isEmpty ||
-          job.diplomas.any((diploma) => filters.diplomas.contains(diploma));
+          filters.diplomas.isEmpty || filters.diplomas.contains(job.diploma);
 
       //
       // Role

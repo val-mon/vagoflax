@@ -8,27 +8,26 @@ import 'package:vagoflax/models/user.dart';
 
 class SalaryPredictionInput {
   final double minYearsExperience;
-  final double contractMonths;
+  final double contract;
   final bool isPermanent;
   final double holidays;
   final double workloadPercent;
 
-  final List<String> diplomas;
+  final String diploma;
   final String role;
   final String industry;
   final String canton;
   final String companySize;
-
   final List<String> perks;
   final List<String> languages;
 
   const SalaryPredictionInput({
     required this.minYearsExperience,
-    required this.contractMonths,
+    required this.contract,
     required this.isPermanent,
     required this.holidays,
     required this.workloadPercent,
-    required this.diplomas,
+    required this.diploma,
     required this.role,
     required this.industry,
     required this.canton,
@@ -42,7 +41,7 @@ class SalaryPredictionInput {
     required User employer,
   }) {
     final minExperience = job.minYearsExperience;
-    final contractMonths = job.contractTime;
+    final contract = job.contractTime;
     final holidays = job.holidays;
     final workloadPercent = job.workloadPercent;
     final companySize = employer.companySize;
@@ -53,10 +52,10 @@ class SalaryPredictionInput {
     if (minExperience < 0) {
       throw ArgumentError('The job experience minimum is invalid.');
     }
-    if (contractMonths == null) {
+    if (contract == null) {
       throw ArgumentError('The contract duration is required.');
     }
-    if (contractMonths < 0) {
+    if (contract < 0) {
       throw ArgumentError('The contract duration cannot be negative.');
     }
     if (holidays == null) {
@@ -80,11 +79,11 @@ class SalaryPredictionInput {
 
     return SalaryPredictionInput(
       minYearsExperience: minExperience.toDouble(),
-      contractMonths: contractMonths.toDouble(),
-      isPermanent: contractMonths == 0,
+      contract: contract.toDouble(),
+      isPermanent: contract == 0,
       holidays: holidays.toDouble(),
       workloadPercent: workloadPercent.toDouble(),
-      diplomas: job.diplomas.map(_diplomaLabel).toList(growable: false),
+      diploma: _diplomaLabel(job.diploma),
       role: _roleLabel(job.role),
       industry: _industryLabel(job.industry),
       canton: employer.canton.trim().toUpperCase(),
@@ -142,9 +141,9 @@ class SalaryPredictionInput {
   };
 
   static String _companySizeLabel(int companySize) {
-    if (companySize < 50) return 'Startup (<50)';
-    if (companySize < 200) return 'Small (50-200)';
-    if (companySize < 1000) return 'Medium (200-1000)';
-    return 'Large (1000+)';
+    if (companySize < 50) return 'Startup';
+    if (companySize < 200) return 'Small';
+    if (companySize < 1000) return 'Medium';
+    return 'Large';
   }
 }

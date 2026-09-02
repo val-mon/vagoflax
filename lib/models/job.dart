@@ -12,7 +12,7 @@ class Job {
   final String? userUuid;
   final String title;
   final String? description;
-  final List<Diplomas> diplomas;
+  final Diplomas diploma;
   final int? minYearsExperience;
   final int? maxYearsExperience;
   final int? contractTime;
@@ -35,7 +35,7 @@ class Job {
     this.userUuid,
     required this.title,
     this.description,
-    required this.diplomas,
+    required this.diploma,
     this.minYearsExperience,
     this.maxYearsExperience,
     this.contractTime,
@@ -60,14 +60,12 @@ class Job {
       userUuid: data['userUuid']?.toString() ?? '',
       title: data['title']?.toString() ?? '',
       description: data['description']?.toString(),
-      diplomas: (data['diplomas'] as List<dynamic>? ?? const [])
-          .map(
-            (d) => Diplomas.values.firstWhere(
-              (e) => e.name.toLowerCase() == d.toString().toLowerCase(),
-              orElse: () => Diplomas.values.first,
-            ),
-          )
-          .toList(),
+      diploma: Diplomas.values.firstWhere(
+        (e) =>
+            e.name.toLowerCase() ==
+            (data['diploma'] ?? '').toString().toLowerCase(),
+        orElse: () => Diplomas.values.first,
+      ),
       minYearsExperience: (data['minYearsExperience'] as num?)?.toInt() ?? 0,
       maxYearsExperience: (data['maxYearsExperience'] as num?)?.toInt() ?? 0,
       contractTime: (data['contractTime'] as num?)?.toInt() ?? 0,
@@ -122,7 +120,7 @@ class Job {
       'userUuid': userUuid,
       'title': title,
       'description': description,
-      'diplomas': diplomas.map((d) => d.name).toList(),
+      'diploma': diploma.name,
       'minYearsExperience': minYearsExperience,
       'maxYearsExperience': maxYearsExperience,
       'contractTime': contractTime,
@@ -156,7 +154,7 @@ class Job {
       userUuid: userUuid,
       title: title,
       description: description,
-      diplomas: diplomas,
+      diploma: diploma,
       minYearsExperience: minYearsExperience,
       maxYearsExperience: maxYearsExperience,
       contractTime: contractTime,

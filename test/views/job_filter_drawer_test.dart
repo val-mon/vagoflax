@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
 import 'package:vagoflax/models/job.dart';
 import 'package:vagoflax/models/job_filters.dart';
 import 'package:vagoflax/models/enum/role.dart';
@@ -11,7 +12,7 @@ Job _job() => Job(
   userUuid: 'owner',
   title: 'Dev',
   description: '',
-  diplomas: const [],
+  diploma: Diplomas.bachelor,
   role: Role.intern,
   industry: Industry.informationTechnology,
   perks: const [],

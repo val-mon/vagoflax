@@ -138,7 +138,7 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
   @override
   Widget build(BuildContext context) {
     final List<Diplomas> availableDiplomas = widget.jobs
-        .expand((job) => job.diplomas)
+        .map((job) => job.diploma)
         .toSet()
         .toList();
 

@@ -570,19 +570,11 @@ class _JobDetailsState extends State<JobDetails> {
 
             const SizedBox(height: 14),
 
-            if (currentJob.diplomas.isEmpty)
-              const Text('No diploma specified', style: TextStyle(fontSize: 16))
-            else
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: currentJob.diplomas.map((diploma) {
-                  return _InfoChip(
-                    icon: Icons.school_outlined,
-                    label: _enumName(diploma.name),
-                  );
-                }).toList(),
-              ),
+            _InfoRow(
+              icon: Icons.school_outlined,
+              title: 'Diploma',
+              value: _enumName(currentJob.diploma.name),
+            ),
 
             const SizedBox(height: 35),
 
@@ -805,31 +797,31 @@ class _JobDetailsState extends State<JobDetails> {
     if (s.isWalk) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
-        child: SingleChildScrollView( 
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
-            const SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Walk',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  '${_hm(s.departure)} ${s.departureName}',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                ),
-                Text(
-                  '${_hm(s.arrival)} ${s.arrivalName}',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                ),
-              ],
-            ),
-          ],
-        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Walk',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    '${_hm(s.departure)} ${s.departureName}',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                  Text(
+                    '${_hm(s.arrival)} ${s.arrivalName}',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }

@@ -175,7 +175,7 @@ async function fillDatabase() {
         {
           title: 'Junior Full-Stack Developer (Student Job)',
           description: 'Participate in developing internal tools for smart electrical grid management.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'junior',
           industry: 'informationTechnology',
@@ -192,7 +192,7 @@ async function fillDatabase() {
         {
           title: 'IT & Network Support Assistant',
           description: 'Level 1 & 2 technical support for agency users in Sion and Sierre.',
-          diplomas: ['apprenticeship', 'bachelor'],
+          diploma: 'apprenticeship',
           contractTime: 12,
           role: 'junior',
           industry: 'informationTechnology',
@@ -209,7 +209,7 @@ async function fillDatabase() {
         {
           title: 'Energy Transition & Data Intern',
           description: 'Analyze photovoltaic consumption data and build forecast models.',
-          diplomas: ['bachelor', 'master'],
+          diploma: 'bachelor',
           contractTime: 4,
           role: 'intern',
           industry: 'informationTechnology',
@@ -237,7 +237,7 @@ async function fillDatabase() {
         {
           title: 'Patient Reception & Admissions Assistant',
           description: 'Greet emergency room patients and manage administrative check-ins during evenings and weekends.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: null,
           role: 'assistant',
           industry: 'healthcare',
@@ -254,7 +254,7 @@ async function fillDatabase() {
         {
           title: 'HR Administrative Assistant Intern',
           description: 'Maintain employee records and assist with nursing shift scheduling.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'intern',
           industry: 'healthcare',
@@ -271,7 +271,7 @@ async function fillDatabase() {
         {
           title: 'Medical Logistics & Inventory Clerk',
           description: 'Receive, inspect, and distribute medical supplies throughout Sion Hospital.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: 3,
           role: 'unknown',
           industry: 'healthcare',
@@ -299,7 +299,7 @@ async function fillDatabase() {
         {
           title: 'Terrace Server (Weekend)',
           description: 'Serve tables and patio areas during peak hours and local festivals.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: 4,
           role: 'unknown',
           industry: 'hospitality',
@@ -316,7 +316,7 @@ async function fillDatabase() {
         {
           title: 'Kitchen Assistant / Dishwasher',
           description: 'Assist kitchen staff with prep work and maintain dishwashing stations.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: 3,
           role: 'unknown',
           industry: 'hospitality',
@@ -333,7 +333,7 @@ async function fillDatabase() {
         {
           title: 'Assistant Floor Manager',
           description: 'Supervise evening dining service and perform end-of-day register closures.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: null,
           role: 'manager',
           industry: 'hospitality',
@@ -361,7 +361,7 @@ async function fillDatabase() {
         {
           title: 'Mobile Flutter Developer Intern',
           description: 'Design and maintain mobile modules for regional industrial clients.',
-          diplomas: ['bachelor', 'master'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'intern',
           industry: 'informationTechnology',
@@ -378,7 +378,7 @@ async function fillDatabase() {
         {
           title: 'Digital Marketing & Communications Assistant',
           description: 'Manage social media channels, write technical blog posts, and engage community members.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'unknown',
           industry: 'informationTechnology',
@@ -395,7 +395,7 @@ async function fillDatabase() {
         {
           title: 'QA & Automation Engineer',
           description: 'Write and run automated test suites for web and mobile applications.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 12,
           role: 'midLevel',
           industry: 'informationTechnology',
@@ -412,7 +412,7 @@ async function fillDatabase() {
         {
           title: 'Junior IT Project Manager',
           description: 'Manage Agile/Scrum delivery and handle communications with regional clients.',
-          diplomas: ['master'],
+          diploma: 'master',
           contractTime: null,
           role: 'manager',
           industry: 'informationTechnology',
@@ -457,7 +457,7 @@ async function fillDatabase() {
         userUuid: employerAuth.uid,
         title: job.title,
         description: job.description,
-        diplomas: job.diplomas,
+        diploma: job.diploma,
         contractTime: job.contractTime,
         role: job.role,
         industry: job.industry,
