@@ -61,6 +61,13 @@ ThemeData buildThemeData() {
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
+
+    expansionTileTheme: ExpansionTileThemeData(
+      backgroundColor: Colors.white,
+      collapsedBackgroundColor: Colors.white,
+      collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
   );
 }
 

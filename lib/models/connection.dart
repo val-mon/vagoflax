@@ -1,3 +1,5 @@
+import 'package:vagoflax/models/section.dart';
+
 class Connection {
   final String fromName;
   final String toName;
@@ -5,6 +7,7 @@ class Connection {
   final DateTime? arrival;
   final String duration;
   final List<String> products;
+  final List<Section> sections;
 
   Connection({
     required this.fromName,
@@ -13,6 +16,7 @@ class Connection {
     required this.arrival,
     required this.duration,
     required this.products,
+    required this.sections,
   });
 
   factory Connection.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,9 @@ class Connection {
       arrival: _parse(to?['arrival']),
       duration: json['duration'] ?? '',
       products: List<String>.from(json['products'] ?? []),
+      sections: (json['sections'] as List<dynamic>? ?? [])
+          .map((s) => Section.fromJson(s as Map<String, dynamic>))
+          .toList()
     );
   }
 

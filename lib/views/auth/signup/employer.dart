@@ -181,7 +181,6 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                 onSelected: (address) {
                   _addressController.text = address.fullAddress;
                   _cantonController.text = address.canton;
-                  debugPrint('Selected address: ${address.fullAddress}, Canton: ${address.canton}');
                   _addressSelected = true;
                 },
                 fieldViewBuilder: (context, controller, focusNode, onSubmit) {
@@ -275,8 +274,6 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                     });
                     return;
                   }
-
-
 
                   // launch app_state signUpStep4Employer and then navigate to next screen
                   try {

@@ -1,13 +1,12 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+
 class AddressSuggestion {
   final String fullAddress;
   final String canton;
 
-  AddressSuggestion({
-    required this.fullAddress,
-    required this.canton,
-  });
+  AddressSuggestion({required this.fullAddress, required this.canton});
 }
 
 class AddressService {
@@ -17,7 +16,7 @@ class AddressService {
     final uri = Uri.parse(
       'https://api3.geo.admin.ch/rest/services/api/SearchServer'
       '?searchText=${Uri.encodeQueryComponent(query)}'
-      '&type=locations&origins=address&limit=8',
+      '&type=locations&origins=address&limit=5',
     );
 
     final response = await http.get(uri);
@@ -38,10 +37,7 @@ class AddressService {
       String canton = (attrs['detail'] as String? ?? '').toUpperCase();
       canton = canton.substring(canton.length - 2);
 
-      return AddressSuggestion(
-        fullAddress: fullAddress,
-        canton: canton,
-      );
+      return AddressSuggestion(fullAddress: fullAddress, canton: canton);
     }).toList();
   }
 }

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:vagoflax/providers/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:vagoflax/services/address.dart';
+
 class SignUpStudentScreen extends StatefulWidget {
   const SignUpStudentScreen({super.key});
 
@@ -192,7 +193,6 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
                   ),
                 ),
               ),
-
 
               const SizedBox(height: 16),
 
