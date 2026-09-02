@@ -6,7 +6,7 @@ import 'package:vagoflax/models/enum/user_role.dart';
 class User {
   final String id;
   final String canton;
-  final String city;
+  final String address;
   final String description;
   final String email;
   final String? firstName;
@@ -20,11 +20,12 @@ class User {
   final List<HistoryEntry> history;
   final int? companySize;
   final List<String> savedSearches;
+  final List<String> favoriteJobs;
   final DateTime? createdAt;
   User({
     required this.id,
     required this.canton,
-    required this.city,
+    required this.address,
     required this.description,
     required this.email,
     this.firstName,
@@ -39,6 +40,7 @@ class User {
     this.skills = const [],
     this.reviews = const [],
     this.history = const [],
+    this.favoriteJobs = const [],
   });
 
   /// Builds a User object from a Firestore document.
@@ -46,7 +48,7 @@ class User {
     return User(
       id: documentId,
       canton: data['canton'] ?? '',
-      city: data['city'] ?? '',
+      address: data['address'] ?? '',
       description: data['description'] ?? '',
       email: data['email'] ?? '',
       firstName: data['firstName'] ?? '',
@@ -63,6 +65,7 @@ class User {
           ? (data['createdAt'] as Timestamp).toDate()
           : null,
       savedSearches: List<String>.from(data['savedSearches'] ?? []),
+      favoriteJobs: List<String>.from(data['favoriteJobs'] ?? []),
       reviews:
           (data['reviews'] as List<dynamic>?)
               ?.map(
@@ -94,7 +97,7 @@ class User {
   Map<String, dynamic> toFirestore() {
     return {
       'canton': canton,
-      'city': city,
+      'address': address,
       'description': description,
       'email': email,
       'firstName': firstName,
@@ -103,6 +106,7 @@ class User {
       'faceSignature': faceSignature,
       'role': role.toFirestore(),
       'skills': skills,
+      'favoriteJobs': favoriteJobs,
       'savedSearches': savedSearches,
       'companySize': companySize,
       'companyName': companyName,
@@ -135,7 +139,7 @@ class User {
     String? lastName,
     String? companyName,
     int? companySize,
-    String? city,
+    String? address,
     String? canton,
     String? description,
     List<String>? skills,
@@ -151,12 +155,13 @@ class User {
             createdAt: createdAt,
             firstName: firstName ?? this.firstName,
             lastName: lastName ?? this.lastName,
-            city: city ?? this.city,
+            address: address ?? this.address,
             canton: canton ?? this.canton,
             description: description ?? this.description,
             skills: skills ?? this.skills,
             history: history ?? this.history,
             savedSearches: savedSearches,
+            favoriteJobs: favoriteJobs,
             profilePictureUrl: profilePictureUrl ?? this.profilePictureUrl,
             faceSignature: faceSignature,
           )
@@ -167,7 +172,7 @@ class User {
             createdAt: createdAt,
             companyName: companyName ?? this.companyName,
             companySize: companySize ?? this.companySize,
-            city: city ?? this.city,
+            address: address ?? this.address,
             canton: canton ?? this.canton,
             savedSearches: savedSearches,
             description: description ?? this.description,
@@ -195,5 +200,9 @@ class User {
 
   bool hasBookmarkedSearch(String search) {
     return savedSearches.isNotEmpty && savedSearches.contains(search);
+  }
+
+  bool isFavoriteJob(String jobId) {
+    return favoriteJobs.isNotEmpty && favoriteJobs.contains(jobId);
   }
 }

@@ -65,10 +65,10 @@ async function fillDatabase() {
     {
       firstName: 'Gonçalo',
       lastName: 'Arieira Esteves',
-      email: 'gon@vagoflax.ch',
+      email: "gon@vagoflax.ch",
       description: 'Business Information Technology student at HES-SO Valais-Wallis.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Rue de l\'Envol 8, 1950 Sion',
       skills: ['Flutter', 'Dart', 'Python', 'Firebase', 'Git'],
       history: [
         {
@@ -85,7 +85,7 @@ async function fillDatabase() {
       email: 'val@vagoflax.ch',
       description: 'Coffee and motorcycle enthusiast. Systems Engineering student at HEI Sion.',
       canton: 'VS',
-      city: 'Choëx',
+      address: "Rte d'Outre-Vièze 131, 1871 Monthey",
       skills: ['Customer service', 'Event management', 'German C1', 'MS Office'],
       profilePictureUrl: 'https://isc.hevs.ch/learn/pluginfile.php/4523/user/icon/mb2nl/f1?rev=131019',
       history: [
@@ -103,7 +103,7 @@ async function fillDatabase() {
       email: 'flo@vagoflax.ch',
       description: 'Energy and Environmental Engineering student. Rigorous, curious, and available for part-time jobs.',
       canton: 'VS',
-      city: 'Haute-Nendaz',
+      address: 'Chem. de la poya 138, 1997 Nendaz',
       skills: ['AutoCAD', 'Matlab', 'Thermodynamics', 'Herald License', 'League of Legends', 'Chaos ARAM'],
       history: [
         {
@@ -120,7 +120,7 @@ async function fillDatabase() {
       email: 'axe@vagoflax.ch',
       description: 'Business Administration student with a strong interest in digital marketing and local finance.',
       canton: 'VS',
-      city: 'Vétroz',
+      address: 'Rue des Vignerons 94, 1963 Vétroz',
       profilePictureUrl: 'https://res.cloudinary.com/oaqyf2ip/image/upload/v1788251100/renoi.avif',
       skills: ['Digital marketing', 'Cost accounting', 'Excel expert', 'Canva'],
       history: [
@@ -151,7 +151,7 @@ async function fillDatabase() {
       role: 'student',
       description: s.description,
       canton: s.canton,
-      city: s.city,
+      address: s.address,
       profilePictureUrl: s.profilePictureUrl || null,
       skills: s.skills,
       history: s.history,
@@ -168,14 +168,14 @@ async function fillDatabase() {
       email: 'jobs@oiken.ch',
       description: 'Energy, water, and multimedia infrastructure provider in Central Valais.',
       canton: 'VS',
-      city: 'Sion',
+      address: "Rue de l'Industrie 43, 1951 Sion",
       profilePictureUrl: 'https://i.ytimg.com/vi/57oivOLxoKU/hqdefault.jpg',
       companySize: 500,
       jobs: [
         {
           title: 'Junior Full-Stack Developer (Student Job)',
           description: 'Participate in developing internal tools for smart electrical grid management.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'junior',
           industry: 'informationTechnology',
@@ -192,7 +192,7 @@ async function fillDatabase() {
         {
           title: 'IT & Network Support Assistant',
           description: 'Level 1 & 2 technical support for agency users in Sion and Sierre.',
-          diplomas: ['apprenticeship', 'bachelor'],
+          diploma: 'apprenticeship',
           contractTime: 12,
           role: 'junior',
           industry: 'informationTechnology',
@@ -209,7 +209,7 @@ async function fillDatabase() {
         {
           title: 'Energy Transition & Data Intern',
           description: 'Analyze photovoltaic consumption data and build forecast models.',
-          diplomas: ['bachelor', 'master'],
+          diploma: 'bachelor',
           contractTime: 4,
           role: 'intern',
           industry: 'informationTechnology',
@@ -230,14 +230,14 @@ async function fillDatabase() {
       email: 'jobs@hopitalvs.ch',
       description: 'Leading hospital center providing acute and specialized medical care in Valais.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Avenue du Grand-Champsec 80 1950 Sion',
       profilePictureUrl: 'https://agenda.science-valais.ch/uploads/thumbs_logo/bf/bfeb34bf7c464e36f0767d9d472f87d8.png',
       companySize: 5500,
       jobs: [
         {
           title: 'Patient Reception & Admissions Assistant',
           description: 'Greet emergency room patients and manage administrative check-ins during evenings and weekends.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: null,
           role: 'assistant',
           industry: 'healthcare',
@@ -254,7 +254,7 @@ async function fillDatabase() {
         {
           title: 'HR Administrative Assistant Intern',
           description: 'Maintain employee records and assist with nursing shift scheduling.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'intern',
           industry: 'healthcare',
@@ -271,7 +271,7 @@ async function fillDatabase() {
         {
           title: 'Medical Logistics & Inventory Clerk',
           description: 'Receive, inspect, and distribute medical supplies throughout Sion Hospital.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: 3,
           role: 'unknown',
           industry: 'healthcare',
@@ -292,14 +292,14 @@ async function fillDatabase() {
       email: 'jobs@grandpont.ch',
       description: 'Traditional restaurant in historic downtown Sion serving Valais specialties.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Rue du Grand-Pont 6, 1950 Sion',
       profilePictureUrl: 'https://grand-pont.ch/wp-content/uploads/2025/02/BrasserieDuGrandPont_Plats_Thibautlampe_WebRes-21-683x1024.jpg',
       companySize: 20,
       jobs: [
         {
           title: 'Terrace Server (Weekend)',
           description: 'Serve tables and patio areas during peak hours and local festivals.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: 4,
           role: 'unknown',
           industry: 'hospitality',
@@ -316,7 +316,7 @@ async function fillDatabase() {
         {
           title: 'Kitchen Assistant / Dishwasher',
           description: 'Assist kitchen staff with prep work and maintain dishwashing stations.',
-          diplomas: ['apprenticeship'],
+          diploma: 'apprenticeship',
           contractTime: 3,
           role: 'unknown',
           industry: 'hospitality',
@@ -333,7 +333,7 @@ async function fillDatabase() {
         {
           title: 'Assistant Floor Manager',
           description: 'Supervise evening dining service and perform end-of-day register closures.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: null,
           role: 'manager',
           industry: 'hospitality',
@@ -352,16 +352,16 @@ async function fillDatabase() {
     {
       companyName: 'Novel-T Software',
       email: 'jobs@novelt.ch',
-      description: 'Software solutions and IT innovation company based at Energypolis Sion.',
+      description: 'Software solutions and IT innovation company.',
       canton: 'VS',
-      city: 'Sion',
+      address: 'Rte de Peney 2/4, 1214 Vernier',
       profilePictureUrl: 'https://media.licdn.com/dms/image/v2/C4D0BAQFaPPo7wEOV4w/company-logo_200_200/company-logo_200_200/0/1654586514322/novel_t_s_rl_logo?e=2147483647&v=beta&t=VABNXryzijMwNYYocrWe1ZpAWP-82L2uQM0YPGbP8s0',
       companySize: 45,
       jobs: [
         {
           title: 'Mobile Flutter Developer Intern',
           description: 'Design and maintain mobile modules for regional industrial clients.',
-          diplomas: ['bachelor', 'master'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'intern',
           industry: 'informationTechnology',
@@ -378,7 +378,7 @@ async function fillDatabase() {
         {
           title: 'Digital Marketing & Communications Assistant',
           description: 'Manage social media channels, write technical blog posts, and engage community members.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 6,
           role: 'unknown',
           industry: 'informationTechnology',
@@ -395,7 +395,7 @@ async function fillDatabase() {
         {
           title: 'QA & Automation Engineer',
           description: 'Write and run automated test suites for web and mobile applications.',
-          diplomas: ['bachelor'],
+          diploma: 'bachelor',
           contractTime: 12,
           role: 'midLevel',
           industry: 'informationTechnology',
@@ -412,7 +412,7 @@ async function fillDatabase() {
         {
           title: 'Junior IT Project Manager',
           description: 'Manage Agile/Scrum delivery and handle communications with regional clients.',
-          diplomas: ['master'],
+          diploma: 'master',
           contractTime: null,
           role: 'manager',
           industry: 'informationTechnology',
@@ -445,7 +445,7 @@ async function fillDatabase() {
       role: 'employer',
       description: emp.description,
       canton: emp.canton,
-      city: emp.city,
+      address: emp.address,
       profilePictureUrl: emp.profilePictureUrl || null,
       companySize: emp.companySize,
       reviews: [],
@@ -457,7 +457,7 @@ async function fillDatabase() {
         userUuid: employerAuth.uid,
         title: job.title,
         description: job.description,
-        diplomas: job.diplomas,
+        diploma: job.diploma,
         contractTime: job.contractTime,
         role: job.role,
         industry: job.industry,
@@ -484,7 +484,7 @@ async function fillDatabase() {
     {
       studentIndex: 0,
       jobIndex: 0,
-      status: 'evaluating',
+      status: 'reviewing',
     },
     {
       studentIndex: 0,

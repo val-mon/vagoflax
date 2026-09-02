@@ -11,7 +11,7 @@ import 'package:vagoflax/models/job.dart';
 import 'package:vagoflax/models/user.dart';
 import 'package:vagoflax/providers/job.dart';
 import 'package:vagoflax/providers/user.dart';
-
+import 'package:vagoflax/models/section.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vagoflax/widgets/user_rating_badge.dart';
 
@@ -158,6 +158,46 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
+  Future<void> _handleFavorite() async {
+    final userProvider = context.read<UserProvider>();
+    final currentUser = userProvider.currentUser;
+
+    if (currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You must be logged in to favorite jobs.'),
+        ),
+      );
+      return;
+    }
+
+    final jobId = widget.job?.id;
+    if (jobId == null) return;
+
+    final isFavorite = currentUser.favoriteJobs.contains(jobId);
+
+    String snackbarMessage =
+        "Error updating favorites. Please try again later.";
+
+    try {
+      if (isFavorite) {
+        await userProvider.removeFavoriteJob(jobId);
+        snackbarMessage = "Job removed from favorites.";
+      } else {
+        await userProvider.addFavoriteJob(jobId);
+        snackbarMessage = "Job added to favorites.";
+      }
+    } catch (e) {
+      debugPrint('Error updating favorite jobs: $e');
+    } finally {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(snackbarMessage)));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.job == null) {
@@ -170,6 +210,10 @@ class _JobDetailsState extends State<JobDetails> {
 
     final currentUserId = userProvider.currentUser?.id ?? '';
     final isStudent = userProvider.currentUser?.role == UserRole.student;
+
+    final isFavorite =
+        userProvider.currentUser?.isFavoriteJob(widget.job!.id ?? "-1") ??
+        false;
 
     // Get the updated job from the provider.
     Job currentJob = widget.job!;
@@ -211,26 +255,16 @@ class _JobDetailsState extends State<JobDetails> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert),
-            tooltip: 'Options',
-            onSelected: (value) {
-              if (value == 'translate') {
-                _showLanguageSelectionDialog();
-              }
-            },
-            itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<String>(
-                value: 'translate',
-                child: Row(
-                  children: [
-                    Icon(Icons.translate_outlined, size: 20),
-                    SizedBox(width: 12),
-                    Text('Translate job details'),
-                  ],
-                ),
-              ),
-            ],
+          IconButton(
+            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+            style: isFavorite
+                ? IconButton.styleFrom(foregroundColor: Colors.red)
+                : null,
+            onPressed: _handleFavorite,
+          ),
+          IconButton(
+            icon: const Icon(Icons.translate_outlined),
+            onPressed: _showLanguageSelectionDialog,
           ),
         ],
         centerTitle: true,
@@ -536,19 +570,11 @@ class _JobDetailsState extends State<JobDetails> {
 
             const SizedBox(height: 14),
 
-            if (currentJob.diplomas.isEmpty)
-              const Text('No diploma specified', style: TextStyle(fontSize: 16))
-            else
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: currentJob.diplomas.map((diploma) {
-                  return _InfoChip(
-                    icon: Icons.school_outlined,
-                    label: _enumName(diploma.name),
-                  );
-                }).toList(),
-              ),
+            _InfoRow(
+              icon: Icons.school_outlined,
+              title: 'Diploma',
+              value: _enumName(currentJob.diploma.name),
+            ),
 
             const SizedBox(height: 35),
 
@@ -612,8 +638,8 @@ class _JobDetailsState extends State<JobDetails> {
 
             FutureBuilder<List<Connection>>(
               future: TransportService.getConnections(
-                userProvider.currentUser?.city ?? '',
-                company?.city ?? '',
+                userProvider.currentUser?.address ?? '',
+                company?.address ?? '',
               ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -630,11 +656,22 @@ class _JobDetailsState extends State<JobDetails> {
 
                 return Column(
                   children: connections.map((c) {
-                    return ListTile(
-                      leading: const Icon(Icons.train_outlined),
-                      title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
-                      subtitle: Text(
-                        '${c.products.join(' • ')} | ${userProvider.currentUser?.city} → ${company?.city}',
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: ExpansionTile(
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        leading: const Icon(Icons.train_outlined),
+                        title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
+                        subtitle: Text(
+                          '${c.products.join(', ')} • ${c.duration.replaceFirst('00d', '').trim()}',
+                        ),
+                        childrenPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        children: c.sections
+                            .map((s) => _buildSectionRow(s))
+                            .toList(),
                       ),
                     );
                   }).toList(),
@@ -756,6 +793,103 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
+  Widget _buildSectionRow(Section s) {
+    if (s.isWalk) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Walk',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    '${_hm(s.departure)} ${s.departureName}',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                  Text(
+                    '${_hm(s.arrival)} ${s.arrivalName}',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.train, size: 18, color: Colors.blueGrey),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  s.journeyName ?? '',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: '${_hm(s.departure)} ',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    children: [
+                      TextSpan(
+                        text: s.departureDelay != null && s.departureDelay! > 0
+                            ? '+${s.departureDelay} '
+                            : '',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      TextSpan(
+                        text: s.departureName,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: '${_hm(s.arrival)} ',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    children: [
+                      TextSpan(
+                        text: s.arrivalDelay != null && s.arrivalDelay! > 0
+                            ? '(+${s.arrivalDelay} min) '
+                            : '',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      TextSpan(
+                        text: s.arrivalName,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   static String _companyName(User? company) {
     if (company == null) {
       return 'Company';
@@ -769,7 +903,7 @@ class _JobDetailsState extends State<JobDetails> {
       return 'Location not specified';
     }
 
-    final city = company.city.trim();
+    final city = company.address.trim();
     final canton = company.canton.trim();
 
     if (city.isNotEmpty && canton.isNotEmpty) {

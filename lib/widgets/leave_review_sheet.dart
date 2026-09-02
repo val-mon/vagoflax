@@ -20,14 +20,13 @@ class _LeaveReviewSheetState extends State<LeaveReviewSheet> {
   int _rating = 5;
   final _commentController = TextEditingController();
   bool _isSubmitting = false;
+  String? _commentError;
 
   @override
   void dispose() {
     _commentController.dispose();
     super.dispose();
   }
-
-  // lib/widgets/leave_review_sheet.dart
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +52,6 @@ class _LeaveReviewSheetState extends State<LeaveReviewSheet> {
             ),
             const SizedBox(height: 16),
 
-            // Sélecteur d'étoiles
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(5, (index) {
@@ -72,7 +70,6 @@ class _LeaveReviewSheetState extends State<LeaveReviewSheet> {
             ),
             const SizedBox(height: 16),
 
-            // Champ de commentaire
             TextField(
               controller: _commentController,
               maxLines: 4,
@@ -81,11 +78,11 @@ class _LeaveReviewSheetState extends State<LeaveReviewSheet> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
+                errorText: _commentError,
               ),
             ),
             const SizedBox(height: 20),
 
-            // Bouton d'envoi
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
@@ -97,14 +94,19 @@ class _LeaveReviewSheetState extends State<LeaveReviewSheet> {
                   ? null
                   : () async {
                       final comment = _commentController.text.trim();
-                      if (comment.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please write a comment'),
-                          ),
-                        );
-                        return;
-                      }
+
+                      setState(() {
+                        if (comment.isEmpty) {
+                          _commentError = 'Please write a comment';
+                        } else if (comment.length > 250) {
+                          _commentError =
+                              'Comment is too long (max 250 characters)';
+                        } else {
+                          _commentError = null;
+                        }
+                      });
+
+                      if (_commentError != null) return;
 
                       setState(() => _isSubmitting = true);
 

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagoflax/providers/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:vagoflax/services/address.dart';
 
 class SignUpStudentScreen extends StatefulWidget {
   const SignUpStudentScreen({super.key});
@@ -19,9 +20,10 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
   final _lastNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _cantonController = TextEditingController();
-  final _cityController = TextEditingController();
+  final _addressController = TextEditingController();
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
+  bool _addressSelected = false;
 
   Future<void> _pickImage() async {
     final XFile? pickedFile = await _picker.pickImage(
@@ -42,7 +44,7 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
     _lastNameController.dispose();
     _descriptionController.dispose();
     _cantonController.dispose();
-    _cityController.dispose();
+    _addressController.dispose();
     super.dispose();
   }
 
@@ -194,56 +196,36 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
 
               const SizedBox(height: 16),
 
-              TextField(
-                controller: _cantonController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  label: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Canton (e.g., ZH, GE, VD)',
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        const TextSpan(
-                          text: ' *',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
+              //address
+              Autocomplete<AddressSuggestion>(
+                displayStringForOption: (option) => option.fullAddress,
+                optionsBuilder: (value) async {
+                  if (value.text.trim().length < 3) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                  try {
+                    return await AddressService.search(value.text);
+                  } catch (_) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                },
+                onSelected: (address) {
+                  _addressController.text = address.fullAddress;
+                  _cantonController.text = address.canton;
+                  _addressSelected = true;
+                },
+                fieldViewBuilder: (context, controller, focusNode, onSubmit) {
+                  return TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    decoration: const InputDecoration(
+                      labelText: 'Address',
+                      prefixIcon: Icon(Icons.location_on_outlined),
+                      border: OutlineInputBorder(),
                     ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+                  );
+                },
               ),
-
-              const SizedBox(height: 16),
-
-              TextField(
-                controller: _cityController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  label: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'City',
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        const TextSpan(
-                          text: ' *',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-
               const SizedBox(height: 32),
 
               ElevatedButton(
@@ -266,7 +248,19 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
                   final lastName = _lastNameController.text.trim();
                   final desc = _descriptionController.text.trim();
                   final canton = _cantonController.text.trim();
-                  final city = _cityController.text.trim();
+                  final city = _addressController.text.trim();
+
+                  if (!_addressSelected) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a valid address.'),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
 
                   if (firstName.isEmpty ||
                       lastName.isEmpty ||
@@ -284,7 +278,49 @@ class _SignUpStudentScreenState extends State<SignUpStudentScreen> {
                     return;
                   }
 
-                  // lancer app_state saveSignUpStep1Data(email, password) and then navigate to next screen
+                  if (firstName.length < 2 || lastName.length < 2) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'First name and last name must be at least 2 characters long.',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  if (firstName.length > 50 || lastName.length > 50) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Firstname or(and) lastname is too long. (Max 50 characters)',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  if (desc.length > 500) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Description is too long. (Max 500 characters)',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  // launch app_state saveSignUpStep1Data(email, password) and then navigate to next screen
                   try {
                     await context.read<ApplicationState>().signUpStep4Student(
                       firstName,

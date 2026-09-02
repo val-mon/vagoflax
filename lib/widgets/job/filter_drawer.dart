@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vagoflax/models/enum/favorite_choice.dart';
 
 import 'package:vagoflax/models/job_filters.dart';
 import 'package:vagoflax/models/job.dart';
@@ -12,12 +13,14 @@ class JobFilterDrawer extends StatefulWidget {
   final List<Job> jobs;
   final JobFilters initialFilters;
   final ValueChanged<JobFilters> onApply;
+  final bool showFavoriteFilter;
 
   const JobFilterDrawer({
     super.key,
     required this.jobs,
     required this.initialFilters,
     required this.onApply,
+    this.showFavoriteFilter = false,
   });
 
   @override
@@ -29,6 +32,7 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
   late Set<Role> selectedRoles;
   late Set<Industry> selectedIndustries;
   late Set<Languages> selectedLanguages;
+  late FavoriteChoice selectedFavorite;
 
   RangeValues? salaryRange;
 
@@ -43,6 +47,7 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
     selectedRoles = {...widget.initialFilters.roles};
     selectedIndustries = {...widget.initialFilters.industries};
     selectedLanguages = {...widget.initialFilters.languages};
+    selectedFavorite = widget.initialFilters.favorited;
 
     _initializeSalaryRange();
   }
@@ -83,6 +88,8 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
       selectedRoles.clear();
       selectedIndustries.clear();
       selectedLanguages.clear();
+      selectedFavorite =
+          FavoriteChoice.all; // ou la valeur par défaut de ton enum
 
       if (availableMinSalary != null && availableMaxSalary != null) {
         salaryRange = RangeValues(availableMinSalary!, availableMaxSalary!);
@@ -119,6 +126,7 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
         roles: {...selectedRoles},
         industries: {...selectedIndustries},
         languages: {...selectedLanguages},
+        favorited: selectedFavorite,
       ),
     );
   }
@@ -130,7 +138,7 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
   @override
   Widget build(BuildContext context) {
     final List<Diplomas> availableDiplomas = widget.jobs
-        .expand((job) => job.diplomas)
+        .map((job) => job.diploma)
         .toSet()
         .toList();
 
@@ -186,6 +194,15 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
                   vertical: 16,
                 ),
                 children: [
+                  if (widget.showFavoriteFilter) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: _buildFavoriteFilter(),
+                    ),
+                  ],
+
+                  const SizedBox(height: 16),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: _buildSalaryFilter(),
@@ -255,9 +272,44 @@ class _JobFilterDrawerState extends State<JobFilterDrawer> {
     );
   }
 
-  // ------------------------------------------------------------
-  // Dropdown filter section (ExpansionTile)
-  // ------------------------------------------------------------
+  Widget _buildFavoriteFilter() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Row(
+          children: [
+            Icon(Icons.favorite_outline, size: 20, color: Colors.grey),
+            SizedBox(width: 8),
+            Text(
+              'Favorites',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: SegmentedButton<FavoriteChoice>(
+            segments: FavoriteChoice.values.map((choice) {
+              return ButtonSegment<FavoriteChoice>(
+                value: choice,
+                label: Text(
+                  _formatEnumName(choice.name),
+                  style: const TextStyle(fontSize: 12),
+                ),
+              );
+            }).toList(),
+            selected: {selectedFavorite},
+            onSelectionChanged: (newSelection) {
+              setState(() {
+                selectedFavorite = newSelection.first;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildDropdownSection<T>({
     required String title,

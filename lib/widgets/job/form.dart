@@ -41,8 +41,8 @@ class _JobFormState extends State<JobForm> {
 
   Role _selectedRole = Role.intern;
   Industry _selectedIndustry = Industry.informationTechnology;
+  Diplomas _selectedDiploma = Diplomas.bachelor;
 
-  final List<Diplomas> _selectedDiplomas = [];
   final List<Perks> _selectedPerks = [];
   final List<Languages> _selectedLanguages = [];
 
@@ -76,7 +76,7 @@ class _JobFormState extends State<JobForm> {
       _salaryController.text = job.salary?.toString() ?? '';
       _selectedRole = job.role;
       _selectedIndustry = job.industry;
-      _selectedDiplomas.addAll(job.diplomas);
+      _selectedDiploma = job.diploma;
       _selectedPerks.addAll(job.perks);
       _selectedLanguages.addAll(job.languages);
       _visible = job.visible;
@@ -117,12 +117,13 @@ class _JobFormState extends State<JobForm> {
             TextFormField(
               controller: _titleController,
               decoration: const InputDecoration(labelText: 'Job Title'),
-              validator: _requiredValidator,
+              validator: (v) => _stringLength(v, 50, true),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(labelText: 'Job Description'),
+              validator: (v) => _stringLength(v, 500, false),
               maxLines: 5,
             ),
             const SizedBox(height: 16),
@@ -151,11 +152,17 @@ class _JobFormState extends State<JobForm> {
             ),
             const SizedBox(height: 16),
 
-            _buildMultiSelect<Diplomas>(
-              label: 'Diplomas',
-              all: Diplomas.values,
-              selected: _selectedDiplomas,
+            DropdownButtonFormField<Diplomas>(
+              initialValue: _selectedDiploma,
+              decoration: const InputDecoration(labelText: 'Diploma'),
+              items: Diplomas.values
+                  .map((d) => DropdownMenuItem(value: d, child: Text(d.name)))
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) setState(() => _selectedDiploma = value);
+              },
             ),
+
             const SizedBox(height: 16),
             _buildMultiSelect<Perks>(
               label: 'Perks',
@@ -176,7 +183,7 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Minimum years of experience',
               ),
               keyboardType: TextInputType.number,
-              validator: _requiredNonNegativeIntValidator,
+              validator: (v) => _intLength(v, 0, 50, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -195,14 +202,14 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Contract time (months)',
               ),
               keyboardType: TextInputType.number,
-              validator: _requiredNonNegativeIntValidator,
+              validator: (v) => _intLength(v, 0, 600, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _holidaysController,
               decoration: const InputDecoration(labelText: 'Holidays (days)'),
               keyboardType: TextInputType.number,
-              validator: _requiredNonNegativeIntValidator,
+              validator: (v) => _intLength(v, 0, 365, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -211,7 +218,7 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Maternity leave (weeks)',
               ),
               keyboardType: TextInputType.number,
-              validator: _intValidator,
+              validator: (v) => _intLength(v, 0, 52, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -220,7 +227,7 @@ class _JobFormState extends State<JobForm> {
                 labelText: 'Paternity leave (weeks)',
               ),
               keyboardType: TextInputType.number,
-              validator: _intValidator,
+              validator: (v) => _intLength(v, 0, 52, false),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -237,6 +244,7 @@ class _JobFormState extends State<JobForm> {
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),
+              validator: (v) => _doubleLength(v, 0, 1000000, false),
             ),
             const SizedBox(height: 16),
             SwitchListTile(
@@ -291,14 +299,41 @@ class _JobFormState extends State<JobForm> {
     );
   }
 
-  String? _requiredValidator(String? value) {
-    if (value == null || value.trim().isEmpty) return 'This field is required';
+  String? _stringLength(String? value, int max, bool required) {
+    if (required && (value == null || value.trim().isEmpty)) {
+      return 'This field is required';
+    }
+    if (value != null && value.length > max) {
+      return 'Maximum length is $max characters';
+    }
     return null;
   }
 
-  String? _intValidator(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    if (int.tryParse(value) == null) return 'Enter a whole number';
+  String? _doubleLength(String? value, double min, double max, bool required) {
+    if (required && (value == null || value.trim().isEmpty)) {
+      return 'This field is required';
+    }
+    if (value != null) {
+      final parsed = double.tryParse(value);
+      if (parsed == null) return null;
+      if (parsed < min || parsed > max) {
+        return 'Enter a value between $min and $max';
+      }
+    }
+    return null;
+  }
+
+  String? _intLength(String? value, int min, int max, bool required) {
+    if (required && (value == null || value.trim().isEmpty)) {
+      return 'This field is required';
+    }
+    if (value != null) {
+      final parsed = int.tryParse(value);
+      if (parsed == null) return null;
+      if (parsed < min || parsed > max) {
+        return 'Enter a value between $min and $max';
+      }
+    }
     return null;
   }
 
@@ -328,6 +363,10 @@ class _JobFormState extends State<JobForm> {
       return 'Maximum must be greater than or equal to minimum';
     }
 
+    if (maximum > 50) {
+      return 'Maximum years of experience cannot exceed 50';
+    }
+
     return null;
   }
 
@@ -353,7 +392,7 @@ class _JobFormState extends State<JobForm> {
       userUuid: context.read<UserProvider>().currentUser?.id,
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
-      diplomas: _selectedDiplomas,
+      diploma: _selectedDiploma,
       minYearsExperience: int.tryParse(_minYearsExperienceController.text) ?? 0,
       maxYearsExperience: int.tryParse(_maxYearsExperienceController.text) ?? 0,
       contractTime: int.tryParse(_contractTimeController.text) ?? 0,
@@ -368,6 +407,7 @@ class _JobFormState extends State<JobForm> {
       salary: double.tryParse(_salaryController.text),
       visible: _visible,
       translations: widget.job?.translations ?? [],
+      createdAt: widget.job?.createdAt,
     );
 
     final employer = context.read<UserProvider>().currentUser;

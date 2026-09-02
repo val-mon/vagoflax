@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:vagoflax/providers/user.dart';
+import 'package:vagoflax/services/address.dart';
 
 class ProfileEditForm extends StatefulWidget {
   const ProfileEditForm({super.key});
@@ -24,7 +25,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _companyNameController = TextEditingController();
-  final _cityController = TextEditingController();
+  final _addressController = TextEditingController();
   final _cantonController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _skillController = TextEditingController();
@@ -39,6 +40,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   final List<HistoryEntry> _history = [];
 
   bool isSaving = false;
+  bool _addressSelected = false;
 
   Future<void> _pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -54,7 +56,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _firstNameController.text = state?.firstName ?? '';
     _lastNameController.text = state?.lastName ?? '';
     _companyNameController.text = state?.companyName ?? '';
-    _cityController.text = state?.city ?? '';
+    _addressController.text = state?.address ?? '';
     _cantonController.text = state?.canton ?? '';
     _descriptionController.text = state?.description ?? '';
     _companySizeController.text = state?.companySize?.toString() ?? '';
@@ -64,6 +66,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _historyEndedAt = null;
     _skills.addAll(state?.skills ?? []);
     _history.addAll(state?.history ?? []);
+    _addressSelected = state?.address != null;
   }
 
   @override
@@ -71,7 +74,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _companyNameController.dispose();
-    _cityController.dispose();
+    _addressController.dispose();
     _cantonController.dispose();
     _descriptionController.dispose();
     _companySizeController.dispose();
@@ -115,36 +118,72 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                 TextFormField(
                   controller: _firstNameController,
                   decoration: const InputDecoration(labelText: 'First name'),
-                  validator: _required,
+                  validator: (v) => _stringLength(v, 50, true),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _lastNameController,
                   decoration: const InputDecoration(labelText: 'Last name'),
-                  validator: _required,
+                  validator: (v) => _stringLength(v, 50, true),
                 ),
               ] else if (state?.role == UserRole.employer) ...[
                 TextFormField(
                   controller: _companyNameController,
                   decoration: const InputDecoration(labelText: 'Company name'),
-                  validator: _required,
+                  validator: (v) => _stringLength(v, 50, true),
                 ),
               ],
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _cityController,
-                decoration: const InputDecoration(labelText: 'City'),
+              Autocomplete<AddressSuggestion>(
+                initialValue: TextEditingValue(text: _addressController.text),
+                displayStringForOption: (option) => option.fullAddress,
+                optionsBuilder: (value) async {
+                  if (value.text.trim().length < 3) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                  try {
+                    return await AddressService.search(value.text);
+                  } catch (_) {
+                    return const Iterable<AddressSuggestion>.empty();
+                  }
+                },
+                onSelected: (address) {
+                  _addressController.text = address.fullAddress;
+                  _cantonController.text = address.canton;
+                  _addressSelected = true;
+                },
+                fieldViewBuilder:
+                    (context, textEditingController, focusNode, onSubmit) {
+                      return TextFormField(
+                        controller: textEditingController,
+                        focusNode: focusNode,
+                        decoration: const InputDecoration(
+                          labelText: 'Address',
+                          prefixIcon: Icon(Icons.location_on_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (text) {
+                          _addressController.text = text;
+                          if (_addressSelected) {
+                            setState(() => _addressSelected = false);
+                          }
+                        },
+                        validator: (val) {
+                          if (val == null || val.trim().isEmpty) {
+                            return 'Address is required';
+                          }
+                          return null;
+                        },
+                      );
+                    },
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _cantonController,
-                decoration: const InputDecoration(labelText: 'Canton'),
-              ),
+
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
                 decoration: const InputDecoration(labelText: 'Description'),
-                maxLines: 4,
+                validator: (v) => _stringLength(v, 500, false),
+                maxLines: 5,
               ),
               const SizedBox(height: 24),
 
@@ -264,6 +303,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                   controller: _companySizeController,
                   decoration: const InputDecoration(labelText: 'Company size'),
                   keyboardType: TextInputType.number,
+                  validator: (v) => _intLength(v, 1, 100000, true),
                 ),
               ],
               const SizedBox(height: 24),
@@ -284,6 +324,14 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   void _addSkill() {
     final text = _skillController.text.trim();
     if (text.isEmpty || _skills.contains(text)) return;
+    if (text.length > 25) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Skill cannot be longer than 25 characters'),
+        ),
+      );
+      return;
+    }
     setState(() {
       _skills.add(text);
       _skillController.clear();
@@ -298,6 +346,24 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
         company.isEmpty ||
         _historyStartedAt == null ||
         _historyEndedAt == null) {
+      return;
+    }
+
+    if (title.length > 50 || company.length > 50) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Title and company cannot be longer than 50 characters',
+          ),
+        ),
+      );
+      return;
+    }
+
+    if (_historyStartedAt!.isAfter(_historyEndedAt!)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Start date cannot be after end date')),
+      );
       return;
     }
 
@@ -323,11 +389,36 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       '${date.month.toString().padLeft(2, '0')}/'
       '${date.year}';
 
-  String? _required(String? v) =>
-      (v == null || v.trim().isEmpty) ? 'This field is required' : null;
+  String? _stringLength(String? v, int max, bool required) =>
+      (v == null || v.trim().isEmpty)
+      ? (required ? 'This field is required' : null)
+      : (v.trim().length > max
+            ? 'This field cannot be longer than $max characters'
+            : null);
+
+  String? _intLength(String? v, int min, int max, bool required) {
+    if (v == null || v.trim().isEmpty) {
+      return required ? 'This field is required' : null;
+    }
+    final value = int.tryParse(v.trim());
+    if (value == null) {
+      return 'This field must be a number';
+    }
+    if (value < min || value > max) {
+      return 'This field must be between $min and $max';
+    }
+    return null;
+  }
 
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    if (!_addressSelected) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a valid address')),
+      );
+      return;
+    }
 
     setState(() => isSaving = true);
 
@@ -335,7 +426,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       await context.read<UserProvider>().updateUser(
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
-        city: _cityController.text.trim(),
+        address: _addressController.text.trim(),
         canton: _cantonController.text.trim(),
         description: _descriptionController.text.trim(),
         skills: _skills,
@@ -346,7 +437,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       await context.read<UserProvider>().updateUser(
         companyName: _companyNameController.text.trim(),
         companySize: int.tryParse(_companySizeController.text.trim()),
-        city: _cityController.text.trim(),
+        address: _addressController.text.trim(),
         canton: _cantonController.text.trim(),
         description: _descriptionController.text.trim(),
         profilePicture: _profilePicture,

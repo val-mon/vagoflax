@@ -1,0 +1,18 @@
+Neural Network Parameters:
+Hidden layers: 64 - 32
+Activation: ReLU
+Optimizer: Adam
+Learning rate: 0.001
+Maximum epochs: 500
+Patience: 50
+Best epoch: 493
+
+Dataset split:
+Training set size: 424
+Test set size: 76
+Train-Test split percentage: 84.80% - 15.20%
+
+Neural Network Results:
+MAE - Train: 724.26 CHF, Test: 6690.53 CHF
+RMSE - Train: 1019.85 CHF, Test: 11389.55 CHF
+R² - Train: 0.999786, Test: 0.980241

@@ -6,7 +6,7 @@ void main() {
   final user = User(
     id: '1',
     canton: 'ZH',
-    city: 'Zurich',
+    address: 'Zurich',
     description: 'Test user',
     email: 'test@example.com',
     profilePictureUrl: 'https://example.com/image.jpg',
@@ -15,7 +15,7 @@ void main() {
 
   final mapUser = {
     'canton': 'ZH',
-    'city': 'Zurich',
+    'address': 'Zurich',
     'description': 'Test user',
     'email': 'test@example.com',
     'profilePictureUrl': 'https://example.com/image.jpg',
@@ -32,8 +32,8 @@ void main() {
     expect(user.toFirestore()['canton'], 'ZH');
   });
 
-  test('toFirestore includes city', () {
-    expect(user.toFirestore()['city'], 'Zurich');
+  test('toFirestore includes address', () {
+    expect(user.toFirestore()['address'], 'Zurich');
   });
 
   test('toFirestore includes description', () {
@@ -56,8 +56,8 @@ void main() {
     expect(User.fromFirestore(mapUser, '1').canton, 'ZH');
   });
 
-  test('fromFirestore includes city', () {
-    expect(User.fromFirestore(mapUser, '1').city, 'Zurich');
+  test('fromFirestore includes address', () {
+    expect(User.fromFirestore(mapUser, '1').address, 'Zurich');
   });
 
   test('fromFirestore includes description', () {

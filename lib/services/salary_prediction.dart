@@ -39,9 +39,7 @@ class SalaryPredictionService {
     }
 
     final features = _preprocessor.transform(input);
-
     final modelInput = [features];
-
     final modelOutput = [
       [0.0],
     ];
@@ -50,7 +48,11 @@ class SalaryPredictionService {
 
     final normalizedSalary = modelOutput[0][0];
 
-    final predictedSalary = _preprocessor.denormalizeTarget(normalizedSalary);
+    final fullWorkloadSalary = _preprocessor.denormalizeTarget(
+      normalizedSalary,
+    );
+
+    final predictedSalary = fullWorkloadSalary * (input.workloadPercent / 100);
 
     if (!predictedSalary.isFinite) {
       throw StateError('The model returned an invalid salary prediction.');
@@ -72,7 +74,6 @@ class SalaryPredictionService {
     }
 
     final inputTensor = interpreter.getInputTensor(0);
-
     final outputTensor = interpreter.getOutputTensor(0);
 
     final inputShape = inputTensor.shape;
@@ -88,17 +89,12 @@ class SalaryPredictionService {
 
     if (inputShape[1] != _preprocessor.inputDimension) {
       throw StateError(
-        'Model expects ${inputShape[1]} features, '
-        'but preprocessing produces '
-        '${_preprocessor.inputDimension}.',
+        'Model expects ${inputShape[1]} features, but preprocessing produces ${_preprocessor.inputDimension}.',
       );
     }
 
     if (outputShape.length != 2 || outputShape[0] != 1 || outputShape[1] != 1) {
-      throw StateError(
-        'Expected model output shape [1, 1], '
-        'got $outputShape.',
-      );
+      throw StateError('Expected model output shape [1, 1], got $outputShape.');
     }
   }
 }

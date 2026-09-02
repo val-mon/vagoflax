@@ -34,11 +34,23 @@ class JobEmployerItem extends StatelessWidget {
               children: [
                 const Icon(Icons.lock_clock, size: 16, color: Colors.grey),
                 const SizedBox(width: 4),
-                Text(
-                  job.createdAt != null
-                      ? DateFormat.formatDate(job.createdAt!)
-                      : 'No posting date available',
-                  style: const TextStyle(color: Colors.grey),
+                Row(
+                  children: [
+                    Text(
+                      job.createdAt != null
+                          ? DateFormat.formatDate(job.createdAt!)
+                          : 'No posting date available',
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                    if (!job.visible) ...[
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.visibility_off,
+                        color: Colors.grey.shade600,
+                        size: 16,
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),
@@ -47,10 +59,6 @@ class JobEmployerItem extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (!job.visible) ...[
-              Icon(Icons.visibility_off, color: Colors.grey.shade600),
-              const SizedBox(width: 8),
-            ],
             IconButton(
               icon: const Icon(Icons.person_search),
               tooltip: 'View Applications',
@@ -58,21 +66,41 @@ class JobEmployerItem extends StatelessWidget {
                 context.push('/job-applications', extra: job);
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                context.push('/add-job', extra: job);
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) {
+                if (value == 'edit') {
+                  context.push('/add-job', extra: job);
+                } else if (value == 'delete') {
+                  final jobProvider = Provider.of<JobProvider>(
+                    context,
+                    listen: false,
+                  );
+                  jobProvider.deleteJob(job);
+                }
               },
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () {
-                final jobProvider = Provider.of<JobProvider>(
-                  context,
-                  listen: false,
-                );
-                jobProvider.deleteJob(job);
-              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      Icon(Icons.edit, size: 20),
+                      SizedBox(width: 8),
+                      Text('Edit'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete, size: 20, color: Colors.red),
+                      SizedBox(width: 8),
+                      Text('Delete', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),

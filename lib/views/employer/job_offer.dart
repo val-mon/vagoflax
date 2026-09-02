@@ -60,8 +60,7 @@ class _JobProviderOfferScreenState extends State<JobProviderOfferScreen> {
       // Diplomas
       //
       final matchesDiplomas =
-          filters.diplomas.isEmpty ||
-          job.diplomas.any((diploma) => filters.diplomas.contains(diploma));
+          filters.diplomas.isEmpty || filters.diplomas.contains(job.diploma);
 
       //
       // Role
@@ -81,7 +80,9 @@ class _JobProviderOfferScreenState extends State<JobProviderOfferScreen> {
       //
       final matchesLanguages =
           filters.languages.isEmpty ||
-          job.languages.any((language) => filters.languages.contains(language));
+          job.languages.every(
+            (language) => filters.languages.contains(language),
+          );
 
       return matchesSearch &&
           matchesMinSalary &&

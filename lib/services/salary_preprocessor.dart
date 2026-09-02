@@ -5,7 +5,6 @@ import 'package:vagoflax/models/salary_prediction_model.dart';
 
 class SalaryPreprocessor {
   static const String _assetPath = 'assets/ml/preprocessing.json';
-  static const String _unknownToken = '__UNKNOWN__';
 
   late final List<String> _featureNames;
   late final List<String> _scaledNumericColumns;
@@ -16,9 +15,6 @@ class SalaryPreprocessor {
 
   late final Map<String, double> _numericMeans;
   late final Map<String, double> _numericStds;
-
-  late final bool _scaleNumeric;
-  late final bool _addUnknownCategory;
 
   late final double targetMean;
   late final double targetStd;
@@ -37,7 +33,6 @@ class SalaryPreprocessor {
     }
 
     final rawJson = await rootBundle.loadString(_assetPath);
-
     final config = jsonDecode(rawJson) as Map<String, dynamic>;
 
     _featureNames = List<String>.from(config['feature_names'] as List);
@@ -64,10 +59,6 @@ class SalaryPreprocessor {
       config['numeric_stds'] as Map<String, dynamic>,
     );
 
-    _scaleNumeric = config['scale_numeric'] as bool? ?? true;
-
-    _addUnknownCategory = config['add_unknown_category'] as bool? ?? true;
-
     targetMean = (config['target_mean'] as num).toDouble();
     targetStd = (config['target_std'] as num).toDouble();
 
@@ -83,9 +74,8 @@ class SalaryPreprocessor {
 
     final numericValues = <String, double>{
       'MinYearsExperience': input.minYearsExperience,
-      'ContractMonths': input.contractMonths,
       'Holidays': input.holidays,
-      'WorkloadPercent': input.workloadPercent,
+      'Contract': input.contract,
     };
 
     for (final column in _scaledNumericColumns) {
@@ -95,7 +85,7 @@ class SalaryPreprocessor {
         throw StateError('Missing numeric value for column $column.');
       }
 
-      featureValues[column] = _scaleNumeric ? _scale(column, value) : value;
+      featureValues[column] = _scale(column, value);
     }
 
     final binaryValues = <String, double>{
@@ -106,10 +96,10 @@ class SalaryPreprocessor {
       featureValues[column] = binaryValues[column] ?? 0.0;
     }
 
-    _encodeMultiHot(
+    _encodeOneHot(
       output: featureValues,
       column: 'Diploma',
-      values: input.diplomas,
+      value: input.diploma,
     );
 
     _encodeOneHot(output: featureValues, column: 'Role', value: input.role);
@@ -141,9 +131,7 @@ class SalaryPreprocessor {
     );
 
     return _featureNames
-        .map((featureName) {
-          return featureValues[featureName] ?? 0.0;
-        })
+        .map((featureName) => featureValues[featureName] ?? 0.0)
         .toList(growable: false);
   }
 
@@ -179,19 +167,9 @@ class SalaryPreprocessor {
       throw StateError('Missing one-hot categories for $column.');
     }
 
-    final knownCategories = categories
-        .where((category) => category != _unknownToken)
-        .toSet();
-
     for (final category in categories) {
-      final featureName = '${column}__$category';
-
-      if (category == _unknownToken) {
-        output[featureName] =
-            !knownCategories.contains(value) && _addUnknownCategory ? 1.0 : 0.0;
-      } else {
-        output[featureName] = category == value ? 1.0 : 0.0;
-      }
+      final featureName = '${column}_$category';
+      output[featureName] = category == value ? 1.0 : 0.0;
     }
   }
 
@@ -209,7 +187,7 @@ class SalaryPreprocessor {
     final valueSet = values.toSet();
 
     for (final category in categories) {
-      final featureName = '${column}__$category';
+      final featureName = '${column}_$category';
       output[featureName] = valueSet.contains(category) ? 1.0 : 0.0;
     }
   }

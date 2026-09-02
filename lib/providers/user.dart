@@ -116,7 +116,7 @@ class UserProvider with ChangeNotifier {
     String? firstName,
     String? lastName,
     String? companyName,
-    String? city,
+    String? address,
     String? canton,
     String? description,
     List<String>? skills,
@@ -142,7 +142,7 @@ class UserProvider with ChangeNotifier {
         ? currentUser!.copyWith(
             firstName: firstName ?? currentUser!.firstName,
             lastName: lastName ?? currentUser!.lastName,
-            city: city ?? currentUser!.city,
+            address: address ?? currentUser!.address,
             canton: canton ?? currentUser!.canton,
             description: description ?? currentUser!.description,
             skills: skills ?? currentUser!.skills,
@@ -152,6 +152,9 @@ class UserProvider with ChangeNotifier {
         : currentUser!.copyWith(
             companyName: companyName ?? currentUser!.companyName,
             companySize: companySize ?? currentUser!.companySize,
+            address: address ?? currentUser!.address,
+            canton: canton ?? currentUser!.canton,
+            description: description ?? currentUser!.description,
             profilePictureUrl: profilePictureUrl,
           );
 
@@ -169,7 +172,7 @@ class UserProvider with ChangeNotifier {
         profilePictureUrl: '',
         createdAt: DateTime.now(),
         canton: "",
-        city: "",
+        address: "",
         description: "",
       ),
     );
@@ -205,5 +208,13 @@ class UserProvider with ChangeNotifier {
 
   Future<void> removeSavedSearch(String search) async {
     return await _userRepository.removeSavedSearch(currentUser!.id, search);
+  }
+
+  Future<void> addFavoriteJob(String jobId) async {
+    return await _userRepository.addFavoriteJob(currentUser!.id, jobId);
+  }
+
+  Future<void> removeFavoriteJob(String jobId) async {
+    return await _userRepository.removeFavoriteJob(currentUser!.id, jobId);
   }
 }
