@@ -91,74 +91,116 @@ talks to Firebase or Cloudinary directly.
 
 ## Project structure
 ```
-lib/
-├── main.dart                   # App entry point
-├── models/                     # Data models (e.g., Job, User)
-├── providers/                  # Flutter interfaces / states
-│   ├── application.dart
-│   ├── auth.dart
-│   ├── job.dart
-│   └── user.dart
-├── repositories/               # DB Interfaces
-│   ├── application.dart
-│   ├── firestore_application.dart
-│   ├── firestore_job.dart
-│   ├── firestore_user.dart
-│   ├── job.dart
-│   └── user.dart
-├── services/                   # Third-party APIs
-│   ├── cloudinary.dart
-│   ├── ollama.dart
-│   └── transport.dart
-├── utils/                      # Constants, themes, routes, utilities
-│   ├── firebase_options.dart
-│   ├── router.dart
-│   └── theme.dart
-├── views/                      # Screens
-│   ├── auth/
-│   │   ├── login/
-│   │   │   └── login.dart
-│   │   ├── signup/
-│   │   │   ├── step_1_emailpw.dart
-│   │   │   ├── step_2_type.dart
-│   │   │   ├── step_3_employer.dart
-│   │   │   └── step_3_student.dart
-│   │   ├── auth_gate.dart
-│   │   └── welcome.dart
-│   ├── employer/
-│   │   ├── add_job.dart
-│   │   ├── job_applications.dart
-│   │   └── job_offer.dart
-│   ├── job/
-│   │   ├── applications_screen.dart
-│   │   └── details.dart
-│   ├── student/
-│   │   ├── applications.dart
-│   │   ├── gate.dart
-│   │   ├── search.dart
-│   │   └── student_search.dart
-│   ├── about_us.dart
-│   ├── admin.dart
-│   ├── loading.dart
-│   └── profile.dart
-└── widgets/                    # Reusable UI components
-    ├── job/
-    │   ├── application_student_item.dart
-    │   ├── employer_item.dart
-    │   ├── filter_drawer.dart
-    │   ├── form.dart
-    │   └── student_item.dart
-    ├── about_icon.dart
-    ├── app_icon.dart
-    ├── application_status_dialog.dart
-    ├── leave_review_sheet.dart
-    ├── logout_button.dart
-    ├── profile_button.dart
-    ├── profile_edit_form.dart
-    ├── search_filter.dart
-    ├── status_pill.dart
-    ├── user_item.dart
-    └── user_rating_badge.dart
+vagoflax/
+├── .github                  # CI/CD workflows
+├── .env.example             # Template for local .env
+├── Makefile                 # Shortcuts for flutter commands
+├── NN_model                 # Python project: salary prediction model (training, results, visualisation)
+├── README.md                # Technical guide
+├── analysis_options.yaml    # Dart/Flutter linter rules
+├── android                  # Android support
+├── assets                   # Icon, ML models
+├── firestore.rules          # Firestore security rules
+├── ios                      # IOS support
+├── lib/
+│   ├── main.dart
+│   ├── models
+│   │   ├── connection.dart
+│   │   ├── enum
+│   │   │   ├── diplomas.dart
+│   │   │   ├── favorite_choice.dart
+│   │   │   ├── industry.dart
+│   │   │   ├── languages.dart
+│   │   │   ├── perks.dart
+│   │   │   ├── role.dart
+│   │   │   ├── status.dart
+│   │   │   └── user_role.dart
+│   │   ├── face_entry.dart
+│   │   ├── history.dart
+│   │   ├── job.dart
+│   │   ├── job_application.dart
+│   │   ├── job_filters.dart
+│   │   ├── review.dart
+│   │   ├── salary_prediction_model.dart
+│   │   ├── section.dart
+│   │   ├── translation.dart
+│   │   └── user.dart
+│   ├── providers
+│   │   ├── application.dart
+│   │   ├── auth.dart
+│   │   ├── job.dart
+│   │   └── user.dart
+│   ├── repositories         # DB Interfaces
+│   │   ├── application.dart
+│   │   ├── firestore_application.dart
+│   │   ├── firestore_job.dart
+│   │   ├── firestore_user.dart
+│   │   ├── job.dart
+│   │   └── user.dart
+│   ├── services             # Third-party APIs, computation
+│   │   ├── address.dart
+│   │   ├── cloudinary.dart
+│   │   ├── face.dart
+│   │   ├── ollama.dart
+│   │   ├── salary_prediction.dart
+│   │   ├── salary_preprocessor.dart
+│   │   └── transport.dart
+│   ├── utils                # Constants, themes, routes, utilities
+│   │   ├── date.dart
+│   │   ├── firebase_options.dart
+│   │   ├── router.dart
+│   │   └── theme.dart
+│   ├── views                # Screens
+│   │   ├── about_us.dart
+│   │   ├── admin.dart
+│   │   ├── auth
+│   │   │   ├── auth_gate.dart
+│   │   │   ├── login
+│   │   │   │   └── login.dart
+│   │   │   ├── signup
+│   │   │   │   ├── emailpw.dart
+│   │   │   │   ├── employer.dart
+│   │   │   │   ├── face_recognition.dart
+│   │   │   │   ├── student.dart
+│   │   │   │   └── type.dart
+│   │   │   └── welcome.dart
+│   │   ├── employer
+│   │   │   ├── add_job.dart
+│   │   │   ├── job_applications.dart
+│   │   │   └── job_offer.dart
+│   │   ├── job
+│   │   │   └── details.dart
+│   │   ├── loading.dart
+│   │   ├── profile.dart
+│   │   └── student
+│   │       ├── applications.dart
+│   │       ├── gate.dart
+│   │       └── search.dart
+│   └── widgets              # Reusable UI components
+│       ├── about_icon.dart
+│       ├── app_icon.dart
+│       ├── application_status_dialog.dart
+│       ├── job
+│       │   ├── application_student_item.dart
+│       │   ├── employer_item.dart
+│       │   ├── filter_drawer.dart
+│       │   ├── form.dart
+│       │   └── student_item.dart
+│       ├── leave_review_sheet.dart
+│       ├── logout_button.dart
+│       ├── profile_button.dart
+│       ├── profile_edit_form.dart
+│       ├── search_filter.dart
+│       ├── status_pill.dart
+│       ├── user_item.dart
+│       └── user_rating_badge.dart
+├── linux                    # Linux desktop support
+├── macos                    # macOS desktop support
+├── mock_data                # Node project : script to clean and fille Firestore with mockdata
+├── pubspec.yaml             # Dependencies
+├── test                     # Unit & widget tests
+├── web                      # Web support
+└── windows                  # Windows desktop support
 ```
 
 ---
@@ -472,3 +514,24 @@ feat (HomePage): Add login button
 - `test:` - new test
 - `docs:` - documentation
 - `refactor:` - refactoring the code
+
+## Face Recognition
+
+### When it's used
+
+- **Sign up**: the user takes a photo, its face signature is stored with their account.
+- **Log in**: an optional "Find my account with my face" button takes a photo, matches it against known signatures, and pre-fills the email field. The password is still required.
+
+### Setup
+
+1. Add the model to `assets/model/mobile_face_net.tflite`.
+2. Dependencies: `google_mlkit_face_detection`, `flutter_litert`, `image`.
+3. Camera and gallery permissions must be granted (handled via `image_picker`).
+
+### Pipeline
+
+1. **Detect** the face in the photo with ML Kit (fails if 0 or 2+ faces).
+2. **Preprocess**: crop around the face, fix rotation using the roll angle, resize to 112×112.
+3. **Embed**: run the crop through MobileFaceNet (TFLite) → 192-value vector.
+4. **Normalize**: L2-normalize the vector so distances are comparable.
+5. **Compare** (login only): compute the Euclidean distance to every known signature; the closest one under a threshold (`0.95`) is considered a match.
