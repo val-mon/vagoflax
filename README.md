@@ -25,10 +25,10 @@ Made for the Mobile Development Summer School (208.1).
 
 ## App images
 <p align="center">
-  <img src="assets/readme/welcome.png" alt="Welcome page" width="250">
+  <img src="assets/readme/app_overview.png" alt="Welcome page" width="1000">
+  <br>
+  For more see <a href="assets/readme/usermanual.pdf">user manual</a>.
 </p>
-
-For more see [user manual](assets/readme/usermanual.pdf).
 
 ---
 
