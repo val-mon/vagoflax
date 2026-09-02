@@ -141,9 +141,9 @@ class SalaryPredictionInput {
   };
 
   static String _companySizeLabel(int companySize) {
-    if (companySize < 50) return 'Startup (<50)';
-    if (companySize < 200) return 'Small (50-200)';
-    if (companySize < 1000) return 'Medium (200-1000)';
-    return 'Large (1000+)';
+    if (companySize < 50) return 'Startup';
+    if (companySize < 200) return 'Small';
+    if (companySize < 1000) return 'Medium';
+    return 'Large';
   }
 }

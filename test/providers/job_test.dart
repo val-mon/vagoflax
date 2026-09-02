@@ -14,7 +14,7 @@ Job _job(String id) => Job(
   userUuid: 'owner',
   title: 'T$id',
   description: '',
-  diploma:  Diplomas.bachelor,
+  diploma: Diplomas.bachelor,
   role: Role.intern,
   industry: Industry.informationTechnology,
   perks: const [],

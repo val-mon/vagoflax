@@ -244,7 +244,7 @@ class _JobFormState extends State<JobForm> {
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),
-              validator: (v) => _intLength(v, 0, 1000000, false),
+              validator: (v) => _doubleLength(v, 0, 1000000, false),
             ),
             const SizedBox(height: 16),
             SwitchListTile(
@@ -309,13 +309,27 @@ class _JobFormState extends State<JobForm> {
     return null;
   }
 
+  String? _doubleLength(String? value, double min, double max, bool required) {
+    if (required && (value == null || value.trim().isEmpty)) {
+      return 'This field is required';
+    }
+    if (value != null) {
+      final parsed = double.tryParse(value);
+      if (parsed == null) return null;
+      if (parsed < min || parsed > max) {
+        return 'Enter a value between $min and $max';
+      }
+    }
+    return null;
+  }
+
   String? _intLength(String? value, int min, int max, bool required) {
     if (required && (value == null || value.trim().isEmpty)) {
       return 'This field is required';
     }
     if (value != null) {
       final parsed = int.tryParse(value);
-      if (parsed == null) return 'Enter a whole number';
+      if (parsed == null) return null;
       if (parsed < min || parsed > max) {
         return 'Enter a value between $min and $max';
       }

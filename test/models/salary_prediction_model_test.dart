@@ -12,7 +12,7 @@ import 'package:vagoflax/models/user.dart';
 void main() {
   final job = Job(
     title: 'Developer',
-    diplomas: const [Diplomas.bachelor, Diplomas.master],
+    diploma: Diplomas.bachelor,
     minYearsExperience: 2,
     maxYearsExperience: 5,
     contractTime: 0,
@@ -43,13 +43,15 @@ void main() {
     );
 
     expect(input.minYearsExperience, 2.0);
-    expect(input.contractMonths, 0.0);
+    expect(input.contract, 0.0);
     expect(input.isPermanent, isTrue);
-    expect(input.diplomas, ['Bachelor', 'Master']);
+    expect(input.holidays, 25.0);
+    expect(input.workloadPercent, 80.0);
+    expect(input.diploma, 'Bachelor');
     expect(input.role, 'Mid-level');
     expect(input.industry, 'IT');
     expect(input.canton, 'VD');
-    expect(input.companySize, 'Medium (200-1000)');
+    expect(input.companySize, 'Medium');
     expect(input.perks, ['Housing support']);
     expect(input.languages, ['English', 'French']);
   });
@@ -60,9 +62,9 @@ void main() {
       employer: employerWithSize(size),
     ).companySize;
 
-    expect(category(49), 'Startup (<50)');
-    expect(category(50), 'Small (50-200)');
-    expect(category(200), 'Medium (200-1000)');
-    expect(category(1000), 'Large (1000+)');
+    expect(category(49), 'Startup');
+    expect(category(50), 'Small');
+    expect(category(200), 'Medium');
+    expect(category(1000), 'Large');
   });
 }

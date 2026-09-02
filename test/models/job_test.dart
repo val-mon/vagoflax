@@ -6,6 +6,7 @@ import 'package:vagoflax/models/enum/role.dart';
 import 'package:vagoflax/models/enum/industry.dart';
 import 'package:vagoflax/models/enum/languages.dart';
 import 'package:vagoflax/models/enum/diplomas.dart';
+
 void main() {
   final createdAt = DateTime(2026, 8, 30, 14, 24, 30);
 
@@ -14,7 +15,7 @@ void main() {
     userUuid: '1',
     title: 'title',
     description: 'description',
-    diploma:  Diplomas.bachelor,
+    diploma: Diplomas.bachelor,
     minYearsExperience: 2,
     maxYearsExperience: 5,
     contractTime: 13,
