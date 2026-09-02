@@ -128,19 +128,19 @@ class _JobApplicationsScreenState extends State<JobApplicationsScreen> {
                     itemBuilder: (context, index) {
                       final application = filteredApps[index];
 
-                final student = users.firstWhere(
-                  (u) => u.id == application.studentUuid,
-                  orElse: () => User(
-                    id: "-1",
-                    email: '',
-                    role: UserRole.student,
-                    createdAt: DateTime.now(),
-                    canton: "",
-                    address: "",
-                    description: "",
-                    profilePictureUrl: null,
-                  ),
-                );
+                      final student = users.firstWhere(
+                        (u) => u.id == application.studentUuid,
+                        orElse: () => User(
+                          id: "-1",
+                          email: '',
+                          role: UserRole.student,
+                          createdAt: DateTime.now(),
+                          canton: "",
+                          address: "",
+                          description: "",
+                          profilePictureUrl: null,
+                        ),
+                      );
 
                       final hasProfilePicture =
                           student.profilePictureUrl != null &&
