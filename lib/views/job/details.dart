@@ -667,6 +667,7 @@ class _JobDetailsState extends State<JobDetails> {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: ExpansionTile(
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
                         leading: const Icon(Icons.train_outlined),
                         title: Text('${_hm(c.departure)} → ${_hm(c.arrival)}'),
                         subtitle: Text(
@@ -804,6 +805,8 @@ class _JobDetailsState extends State<JobDetails> {
     if (s.isWalk) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
+        child: SingleChildScrollView( 
+        scrollDirection: Axis.horizontal,
         child: Row(
           children: [
             const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
@@ -826,6 +829,7 @@ class _JobDetailsState extends State<JobDetails> {
               ],
             ),
           ],
+        ),
         ),
       );
     }
