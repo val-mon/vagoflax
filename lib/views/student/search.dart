@@ -79,7 +79,9 @@ class _JobListScreenState extends State<JobListScreen> {
       //
       final matchesLanguages =
           filters.languages.isEmpty ||
-          job.languages.any((language) => filters.languages.contains(language));
+          job.languages.every(
+            (language) => filters.languages.contains(language),
+          );
 
       return matchesSearch &&
           matchesMinSalary &&
