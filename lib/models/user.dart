@@ -62,7 +62,7 @@ class User {
       createdAt: data['createdAt'] != null
           ? (data['createdAt'] as Timestamp).toDate()
           : null,
-      savedSearches: List<String>.from(data['savedSearches'] ?? ["erreur"]),
+      savedSearches: List<String>.from(data['savedSearches'] ?? []),
       reviews:
           (data['reviews'] as List<dynamic>?)
               ?.map(

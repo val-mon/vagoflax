@@ -7,12 +7,14 @@ class SearchFilter extends StatefulWidget {
   final ValueChanged<String> onSearch;
   final int activeFilterCount;
   final VoidCallback onFilterTap;
+  final bool bookmarks;
 
   const SearchFilter({
     super.key,
     required this.onSearch,
     required this.onFilterTap,
     this.activeFilterCount = 0,
+    this.bookmarks = false,
   });
 
   @override
@@ -185,18 +187,26 @@ class _SearchFilterState extends State<SearchFilter> {
           Expanded(
             child: TextField(
               controller: _controller,
-              decoration: InputDecoration(
-                hintText: 'Search jobs',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: Icon(_getBookmarkIcon(user), size: 20),
-                  tooltip: 'Save / View saved searches',
-                  onPressed: _handleSavedSearches,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+              decoration: widget.bookmarks
+                  ? InputDecoration(
+                      hintText: 'Search jobs',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        icon: Icon(_getBookmarkIcon(user), size: 20),
+                        tooltip: 'Save / View saved searches',
+                        onPressed: _handleSavedSearches,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    )
+                  : InputDecoration(
+                      hintText: 'Search jobs',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
               onChanged: widget.onSearch,
             ),
           ),

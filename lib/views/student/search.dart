@@ -111,6 +111,7 @@ class _JobListScreenState extends State<JobListScreen> {
           : Column(
               children: [
                 SearchFilter(
+                  bookmarks: true,
                   activeFilterCount: filters.activeFilterCount,
                   onSearch: (value) {
                     setState(() {
