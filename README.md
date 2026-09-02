@@ -19,6 +19,7 @@ Made for the Mobile Development Summer School (208.1).
 9.  [Getting Started](#getting-started)
 10. [Run tests](#run-tests)
 11. [Repo policy](#repo-policy)
+12. [Face recognition](#face-recognition)
 
 ---
 
