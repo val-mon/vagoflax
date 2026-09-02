@@ -8,6 +8,8 @@ class SearchFilter extends StatefulWidget {
   final int activeFilterCount;
   final VoidCallback onFilterTap;
   final bool bookmarks;
+  final bool filters;
+  final String text;
 
   const SearchFilter({
     super.key,
@@ -15,6 +17,8 @@ class SearchFilter extends StatefulWidget {
     required this.onFilterTap,
     this.activeFilterCount = 0,
     this.bookmarks = false,
+    this.filters = true,
+    this.text = "Search jobs",
   });
 
   @override
@@ -187,43 +191,39 @@ class _SearchFilterState extends State<SearchFilter> {
           Expanded(
             child: TextField(
               controller: _controller,
-              decoration: widget.bookmarks
-                  ? InputDecoration(
-                      hintText: 'Search jobs',
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: IconButton(
+              decoration: InputDecoration(
+                hintText: widget.text,
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: widget.bookmarks
+                    ? IconButton(
                         icon: Icon(_getBookmarkIcon(user), size: 20),
                         tooltip: 'Save / View saved searches',
                         onPressed: _handleSavedSearches,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    )
-                  : InputDecoration(
-                      hintText: 'Search jobs',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                      )
+                    : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               onChanged: widget.onSearch,
             ),
           ),
-          const SizedBox(width: 8),
-          Badge(
-            isLabelVisible: widget.activeFilterCount > 0,
-            label: Text('${widget.activeFilterCount}'),
-            child: IconButton.filledTonal(
-              tooltip: 'Filters',
-              icon: const Icon(Icons.tune),
-              onPressed: widget.onFilterTap,
-              style: IconButton.styleFrom(
-                backgroundColor: Colors.grey[200],
-                foregroundColor: Colors.black87,
+          if (widget.filters) ...[
+            const SizedBox(width: 8),
+            Badge(
+              isLabelVisible: widget.activeFilterCount > 0,
+              label: Text('${widget.activeFilterCount}'),
+              child: IconButton.filledTonal(
+                tooltip: 'Filters',
+                icon: const Icon(Icons.tune),
+                onPressed: widget.onFilterTap,
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.grey[200],
+                  foregroundColor: Colors.black87,
+                ),
               ),
             ),
-          ),
+          ],
         ],
       ),
     );
