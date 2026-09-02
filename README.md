@@ -24,8 +24,11 @@ Made for the Mobile Development Summer School (208.1).
 ---
 
 ## App images
+<p align="center">
+  <img src="assets/readme/welcome.png" alt="Welcome page" width="250">
+</p>
 
-[tbd]
+For more see [user manual](assets/readme/usermanual.pdf).
 
 ---
 
@@ -100,7 +103,7 @@ vagoflax/
 ├── README.md                # Technical guide
 ├── analysis_options.yaml    # Dart/Flutter linter rules
 ├── android                  # Android support
-├── assets                   # Icon, ML models
+├── assets                   # Icon, ML models, README resources
 ├── firestore.rules          # Firestore security rules
 ├── ios                      # IOS support
 ├── lib/
