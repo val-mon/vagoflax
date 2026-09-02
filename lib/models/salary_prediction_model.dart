@@ -8,7 +8,7 @@ import 'package:vagoflax/models/user.dart';
 
 class SalaryPredictionInput {
   final double minYearsExperience;
-  final double contractMonths;
+  final double contract;
   final bool isPermanent;
   final double holidays;
   final double workloadPercent;
@@ -18,13 +18,12 @@ class SalaryPredictionInput {
   final String industry;
   final String canton;
   final String companySize;
-
   final List<String> perks;
   final List<String> languages;
 
   const SalaryPredictionInput({
     required this.minYearsExperience,
-    required this.contractMonths,
+    required this.contract,
     required this.isPermanent,
     required this.holidays,
     required this.workloadPercent,
@@ -42,7 +41,7 @@ class SalaryPredictionInput {
     required User employer,
   }) {
     final minExperience = job.minYearsExperience;
-    final contractMonths = job.contractTime;
+    final contract = job.contractTime;
     final holidays = job.holidays;
     final workloadPercent = job.workloadPercent;
     final companySize = employer.companySize;
@@ -53,10 +52,10 @@ class SalaryPredictionInput {
     if (minExperience < 0) {
       throw ArgumentError('The job experience minimum is invalid.');
     }
-    if (contractMonths == null) {
+    if (contract == null) {
       throw ArgumentError('The contract duration is required.');
     }
-    if (contractMonths < 0) {
+    if (contract < 0) {
       throw ArgumentError('The contract duration cannot be negative.');
     }
     if (holidays == null) {
@@ -80,8 +79,8 @@ class SalaryPredictionInput {
 
     return SalaryPredictionInput(
       minYearsExperience: minExperience.toDouble(),
-      contractMonths: contractMonths.toDouble(),
-      isPermanent: contractMonths == 0,
+      contract: contract.toDouble(),
+      isPermanent: contract == 0,
       holidays: holidays.toDouble(),
       workloadPercent: workloadPercent.toDouble(),
       diploma: _diplomaLabel(job.diploma),
