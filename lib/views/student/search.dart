@@ -79,7 +79,9 @@ class _JobListScreenState extends State<JobListScreen> {
       //
       final matchesLanguages =
           filters.languages.isEmpty ||
-          job.languages.any((language) => filters.languages.contains(language));
+          job.languages.every(
+            (language) => filters.languages.contains(language),
+          );
 
       return matchesSearch &&
           matchesMinSalary &&
@@ -90,6 +92,13 @@ class _JobListScreenState extends State<JobListScreen> {
           matchesLanguages &&
           job.visible;
     }).toList();
+
+    if (filteredJobs.isNotEmpty) {
+      filteredJobs.sort(
+        (a, b) =>
+            b.createdAt == null ? -1 : b.createdAt!.compareTo(a.createdAt!),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -104,6 +113,7 @@ class _JobListScreenState extends State<JobListScreen> {
           : Column(
               children: [
                 SearchFilter(
+                  bookmarks: true,
                   activeFilterCount: filters.activeFilterCount,
                   onSearch: (value) {
                     setState(() {

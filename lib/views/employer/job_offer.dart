@@ -81,7 +81,9 @@ class _JobProviderOfferScreenState extends State<JobProviderOfferScreen> {
       //
       final matchesLanguages =
           filters.languages.isEmpty ||
-          job.languages.any((language) => filters.languages.contains(language));
+          job.languages.every(
+            (language) => filters.languages.contains(language),
+          );
 
       return matchesSearch &&
           matchesMinSalary &&
@@ -91,6 +93,13 @@ class _JobProviderOfferScreenState extends State<JobProviderOfferScreen> {
           matchesIndustries &&
           matchesLanguages;
     }).toList();
+
+    if (filteredJobs.isNotEmpty) {
+      filteredJobs.sort(
+        (a, b) =>
+            b.createdAt == null ? -1 : b.createdAt!.compareTo(a.createdAt!),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(

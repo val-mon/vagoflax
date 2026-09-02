@@ -40,12 +40,6 @@ class _FaceRegistrationScreenState extends State<FaceRegistrationScreen> {
       );
       if (!mounted) return;
 
-      if (signature == null) {
-        throw Exception('No face detected in the photo. Please try again.');
-      }
-
-      if (!mounted) return;
-
       context.read<ApplicationState>().signUpStep2(signature);
 
       setState(() => _isLoading = false);

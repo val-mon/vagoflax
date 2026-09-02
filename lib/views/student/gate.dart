@@ -27,63 +27,104 @@ class _StudentGateState extends State<StudentGate> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final isTablet = constraints.maxWidth >= 600;
-            final barWidth = isTablet
-                ? 320.0
-                : constraints.maxWidth -
-                      32; // marge 16 de chaque côté sur phone
+
+            final barWidth = isTablet ? 320.0 : constraints.maxWidth - 32;
 
             return Align(
               alignment: Alignment.bottomCenter,
               heightFactor: 1,
+
               child: SizedBox(
                 width: barWidth,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(28),
-                  child: NavigationBarTheme(
-                    data: NavigationBarThemeData(
-                      labelTextStyle: WidgetStateProperty.resolveWith((states) {
-                        final selected = states.contains(WidgetState.selected);
-                        return TextStyle(
-                          fontSize: 12,
-                          fontWeight: selected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                          color: selected
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.grey,
-                        );
-                      }),
-                      iconTheme: WidgetStateProperty.resolveWith((states) {
-                        final selected = states.contains(WidgetState.selected);
-                        return IconThemeData(
-                          color: selected
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.grey,
-                        );
-                      }),
-                    ),
-                    child: NavigationBar(
-                      height: 56,
-                      backgroundColor: Colors.white,
-                      elevation: 4,
-                      indicatorColor: Colors.transparent,
-                      labelBehavior:
-                          NavigationDestinationLabelBehavior.alwaysShow,
-                      selectedIndex: _selectedIndex,
-                      onDestinationSelected: (index) =>
-                          setState(() => _selectedIndex = index),
-                      destinations: const [
-                        NavigationDestination(
-                          icon: Icon(Icons.work_outline),
-                          selectedIcon: Icon(Icons.work),
-                          label: 'Jobs',
-                        ),
-                        NavigationDestination(
-                          icon: Icon(Icons.assignment_outlined),
-                          selectedIcon: Icon(Icons.assignment),
-                          label: 'Applications',
-                        ),
-                      ],
+
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+
+                    borderRadius: BorderRadius.circular(28),
+
+                    border: Border.all(color: Colors.grey.shade300, width: 1),
+
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.12),
+                        blurRadius: 18,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(28),
+
+                    child: NavigationBarTheme(
+                      data: NavigationBarThemeData(
+                        labelTextStyle: WidgetStateProperty.resolveWith((
+                          states,
+                        ) {
+                          final selected = states.contains(
+                            WidgetState.selected,
+                          );
+
+                          return TextStyle(
+                            fontSize: 12,
+                            fontWeight: selected
+                                ? FontWeight.w600
+                                : FontWeight.w400,
+                            color: selected
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.grey.shade600,
+                          );
+                        }),
+
+                        iconTheme: WidgetStateProperty.resolveWith((states) {
+                          final selected = states.contains(
+                            WidgetState.selected,
+                          );
+
+                          return IconThemeData(
+                            color: selected
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.grey.shade600,
+                          );
+                        }),
+                      ),
+
+                      child: NavigationBar(
+                        height: 56,
+
+                        backgroundColor: Colors.white,
+
+                        elevation: 0,
+
+                        indicatorColor: Colors.transparent,
+
+                        labelBehavior:
+                            NavigationDestinationLabelBehavior.alwaysShow,
+
+                        selectedIndex: _selectedIndex,
+
+                        onDestinationSelected: (index) {
+                          setState(() {
+                            _selectedIndex = index;
+                          });
+                        },
+
+                        destinations: const [
+                          NavigationDestination(
+                            icon: Icon(Icons.work_outline),
+                            selectedIcon: Icon(Icons.work),
+                            label: 'Jobs',
+                          ),
+
+                          NavigationDestination(
+                            icon: Icon(Icons.assignment_outlined),
+                            selectedIcon: Icon(Icons.assignment),
+                            label: 'Applications',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

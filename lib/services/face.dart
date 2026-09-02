@@ -32,23 +32,27 @@ class FaceRecognitionService {
   }
 
   /// Detects the (biggest) face in [imageFile] and returns its signature
-  Future<List<double>?> getFaceSignature(File imageFile) async {
+  Future<List<double>> getFaceSignature(File imageFile) async {
     await _ensureModelLoaded();
 
     final inputImage = InputImage.fromFile(imageFile);
     final faces = await _faceDetector.processImage(inputImage);
-    if (faces.isEmpty) return null;
 
-    // if several faces appear, keep the biggest (closest to the camera)
-    faces.sort(
-      (a, b) => (b.boundingBox.width * b.boundingBox.height).compareTo(
-        a.boundingBox.width * a.boundingBox.height,
-      ),
-    );
+    if (faces.isEmpty) {
+      throw Exception('No face detected. Please try again.');
+    }
+
+    if (faces.length > 1) {
+      throw Exception('Too many faces. Please try again.');
+    }
+
     final face = faces.first;
 
     var decoded = img.decodeImage(await imageFile.readAsBytes());
-    if (decoded == null) return null;
+    if (decoded == null) {
+      throw Exception('Please try again.');
+    }
+
     // ML Kit already accounts for the EXIF orientation, the image package does
     // not: bake it in so the bounding box lines up with the pixels we crop.
     decoded = img.bakeOrientation(decoded);
