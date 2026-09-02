@@ -152,6 +152,9 @@ class UserProvider with ChangeNotifier {
         : currentUser!.copyWith(
             companyName: companyName ?? currentUser!.companyName,
             companySize: companySize ?? currentUser!.companySize,
+            address: address ?? currentUser!.address,
+            canton: canton ?? currentUser!.canton,
+            description: description ?? currentUser!.description,
             profilePictureUrl: profilePictureUrl,
           );
 

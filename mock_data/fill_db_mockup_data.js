@@ -65,10 +65,10 @@ async function fillDatabase() {
     {
       firstName: 'Gonçalo',
       lastName: 'Arieira Esteves',
-      email: "Rue de l'Envol 8, 1950 Sion",
+      email: "gon@vagoflax.ch",
       description: 'Business Information Technology student at HES-SO Valais-Wallis.',
       canton: 'VS',
-      address: 'Sion',
+      address: 'Rue de l\'Envol 8, 1950 Sion',
       skills: ['Flutter', 'Dart', 'Python', 'Firebase', 'Git'],
       history: [
         {
@@ -230,7 +230,7 @@ async function fillDatabase() {
       email: 'jobs@hopitalvs.ch',
       description: 'Leading hospital center providing acute and specialized medical care in Valais.',
       canton: 'VS',
-      address: 'Av. du Grand-Champsec 80, 1951 Sion',
+      address: 'Avenue du Grand-Champsec 80 1950 Sion',
       profilePictureUrl: 'https://agenda.science-valais.ch/uploads/thumbs_logo/bf/bfeb34bf7c464e36f0767d9d472f87d8.png',
       companySize: 5500,
       jobs: [
@@ -484,7 +484,7 @@ async function fillDatabase() {
     {
       studentIndex: 0,
       jobIndex: 0,
-      status: 'evaluating',
+      status: 'reviewing',
     },
     {
       studentIndex: 0,

@@ -152,17 +152,30 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                   _cantonController.text = address.canton;
                   _addressSelected = true;
                 },
-                fieldViewBuilder: (context, controller, focusNode, onSubmit) {
-                  return TextField(
-                    controller: controller,
-                    focusNode: focusNode,
-                    decoration: const InputDecoration(
-                      labelText: 'Address',
-                      prefixIcon: Icon(Icons.location_on_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                  );
-                },
+                fieldViewBuilder:
+                    (context, textEditingController, focusNode, onSubmit) {
+                      return TextFormField(
+                        controller: textEditingController,
+                        focusNode: focusNode,
+                        decoration: const InputDecoration(
+                          labelText: 'Address',
+                          prefixIcon: Icon(Icons.location_on_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (text) {
+                          _addressController.text = text;
+                          if (_addressSelected) {
+                            setState(() => _addressSelected = false);
+                          }
+                        },
+                        validator: (val) {
+                          if (val == null || val.trim().isEmpty) {
+                            return 'Address is required';
+                          }
+                          return null;
+                        },
+                      );
+                    },
               ),
 
               const SizedBox(height: 16),
