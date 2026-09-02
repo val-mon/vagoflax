@@ -570,19 +570,11 @@ class _JobDetailsState extends State<JobDetails> {
 
             const SizedBox(height: 14),
 
-            if (currentJob.diplomas.isEmpty)
-              const Text('No diploma specified', style: TextStyle(fontSize: 16))
-            else
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: currentJob.diplomas.map((diploma) {
-                  return _InfoChip(
-                    icon: Icons.school_outlined,
-                    label: _enumName(diploma.name),
-                  );
-                }).toList(),
-              ),
+            _InfoRow(
+              icon: Icons.school_outlined,
+              title: 'Diploma',
+              value: _enumName(currentJob.diploma.name),
+            ),
 
             const SizedBox(height: 35),
 

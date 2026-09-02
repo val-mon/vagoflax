@@ -5,6 +5,7 @@ import 'package:vagoflax/models/enum/role.dart';
 import 'package:vagoflax/models/enum/industry.dart';
 import 'package:vagoflax/models/enum/languages.dart';
 import 'package:vagoflax/providers/job.dart';
+import 'package:vagoflax/models/enum/diplomas.dart';
 
 import '../fakes/job.dart';
 
@@ -13,7 +14,7 @@ Job _job(String id) => Job(
   userUuid: 'owner',
   title: 'T$id',
   description: '',
-  diplomas: const [],
+  diploma:  Diplomas.bachelor,
   role: Role.intern,
   industry: Industry.informationTechnology,
   perks: const [],

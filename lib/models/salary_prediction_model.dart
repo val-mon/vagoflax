@@ -13,7 +13,7 @@ class SalaryPredictionInput {
   final double holidays;
   final double workloadPercent;
 
-  final List<String> diplomas;
+  final String diploma;
   final String role;
   final String industry;
   final String canton;
@@ -28,7 +28,7 @@ class SalaryPredictionInput {
     required this.isPermanent,
     required this.holidays,
     required this.workloadPercent,
-    required this.diplomas,
+    required this.diploma,
     required this.role,
     required this.industry,
     required this.canton,
@@ -84,7 +84,7 @@ class SalaryPredictionInput {
       isPermanent: contractMonths == 0,
       holidays: holidays.toDouble(),
       workloadPercent: workloadPercent.toDouble(),
-      diplomas: job.diplomas.map(_diplomaLabel).toList(growable: false),
+      diploma: _diplomaLabel(job.diploma),
       role: _roleLabel(job.role),
       industry: _industryLabel(job.industry),
       canton: employer.canton.trim().toUpperCase(),
