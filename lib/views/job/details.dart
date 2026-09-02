@@ -797,31 +797,31 @@ class _JobDetailsState extends State<JobDetails> {
     if (s.isWalk) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
-        child: SingleChildScrollView( 
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
-            const SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Walk',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  '${_hm(s.departure)} ${s.departureName}',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                ),
-                Text(
-                  '${_hm(s.arrival)} ${s.arrivalName}',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-                ),
-              ],
-            ),
-          ],
-        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              const Icon(Icons.directions_walk, size: 18, color: Colors.grey),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Walk',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    '${_hm(s.departure)} ${s.departureName}',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                  Text(
+                    '${_hm(s.arrival)} ${s.arrivalName}',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }
