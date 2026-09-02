@@ -319,7 +319,7 @@ Applications can only be submitted by a student and reviewed by the employer own
 ```
 jobId               string
 studentUuid         string
-status              string        // e.g. 'submitted', 'inEvaluation', 'accepted', 'rejected'
+status              string        // e.g. 'submitted', 'reviewing', 'accepted', 'rejected'
 lastUpdated         timestamp
 createdAt           timestamp
 ```
