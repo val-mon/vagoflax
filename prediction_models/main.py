@@ -30,7 +30,7 @@ VALIDATION_RATIO = 0.15
 TEST_RATIO = 0.15
 EPOCHS = 500
 PATIENCE = 50
-MIN_DELTA = 1e-4 
+MIN_DELTA = 1e-4
 
 RANDOM_SEED = 42
 
@@ -42,16 +42,28 @@ def main():
     # preprocess dataset (e.g., handle missing values, encode categorical variables, etc.)
     df, Y = preprocess(df)
 
+    workload = df["WorkloadPercent"].copy()
+
     # encode dataset
     df, one_hot_categories, multi_hot_categories = encode_data(df)
 
     # split dataset into train, validation, and test sets
-    X_train, X_temp, Y_train, Y_temp = train_test_split(
-        df, Y, test_size=(1 - TRAIN_RATIO), random_state=RANDOM_SEED
+    X_train, X_temp, Y_train, Y_temp, workload_train, workload_temp = train_test_split(
+        df,
+        Y,
+        workload,
+        test_size=(1 - TRAIN_RATIO),
+        random_state=RANDOM_SEED,
     )
     validation_size = VALIDATION_RATIO / (VALIDATION_RATIO + TEST_RATIO)
-    X_validation, X_test, Y_validation, Y_test = train_test_split(
-        X_temp, Y_temp, test_size=(1 - validation_size), random_state=RANDOM_SEED
+    X_validation, X_test, Y_validation, Y_test, workload_validation, workload_test = (
+        train_test_split(
+            X_temp,
+            Y_temp,
+            workload_temp,
+            test_size=(1 - validation_size),
+            random_state=RANDOM_SEED,
+        )
     )
 
     # shapes
@@ -97,6 +109,9 @@ def main():
         Y_train,
         Y_validation,
         Y_test,
+        workload_train,
+        workload_validation,
+        workload_test,
         base_dir=BASE_DIR,
         scaler_y=scaler_y,
         random_state=RANDOM_SEED,
@@ -110,14 +125,12 @@ def main():
     columns_to_scale = [
         "MinYearsExperience",
         "Holidays",
-        "WorkloadPercent",
         "Contract",
     ]
 
     binary_columns = [
         "IsPermanent",
     ]
-
 
     save_preprocessing_metadata(
         X_train=X_train,
@@ -137,8 +150,6 @@ def main():
         X_train_full=X_train_full,
         output_dir=EXPORT_DIR,
     )
-
-
 
 
 def compare_results():
@@ -217,7 +228,9 @@ def compare_results():
 
     plt.tight_layout()
 
-    plt.savefig(COMPARISON_DIR.joinpath("model_comparison.png"), dpi=300, bbox_inches="tight")
+    plt.savefig(
+        COMPARISON_DIR.joinpath("model_comparison.png"), dpi=300, bbox_inches="tight"
+    )
     plt.close()
 
 
@@ -233,7 +246,6 @@ def normalize_salary(X_train, X_validation, X_test, Y_train, Y_validation, Y_tes
     columns_to_scale = [
         "MinYearsExperience",
         "Holidays",
-        "WorkloadPercent",
         "Contract",
     ]
 

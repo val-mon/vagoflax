@@ -2,7 +2,6 @@
     "feature_names": [
         "MinYearsExperience",
         "Holidays",
-        "WorkloadPercent",
         "Contract",
         "IsPermanent",
         "Diploma_Apprenticeship",
@@ -73,7 +72,6 @@
     "scaled_numeric_columns": [
         "MinYearsExperience",
         "Holidays",
-        "WorkloadPercent",
         "Contract"
     ],
     "binary_columns": [
@@ -164,17 +162,15 @@
     "numeric_means": {
         "MinYearsExperience": 2.134670487106017,
         "Holidays": 25.15186246418338,
-        "WorkloadPercent": 84.46991404011462,
         "Contract": 7.461318051575931
     },
     "numeric_stds": {
         "MinYearsExperience": 2.134899316594185,
         "Holidays": 2.639218913603147,
-        "WorkloadPercent": 13.775412473600412,
         "Contract": 10.004401294137699
     },
     "scale_numeric": true,
     "add_unknown_category": true,
-    "target_mean": 94836.96275071634,
-    "target_std": 68080.73820514399
+    "target_mean": 109507.30431618684,
+    "target_std": 70346.45110346503
 }

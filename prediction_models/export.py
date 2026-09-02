@@ -34,7 +34,7 @@ def save_preprocessing_metadata(
         "target_std": float(scaler_y.scale_[0]),
     }
 
-    output_path = output_dir.joinpath("preprocessing_metadata.json")
+    output_path = output_dir.joinpath("preprocessing.json")
 
     with open(output_path, "w") as f:
         json.dump(metadata, f, indent=4)

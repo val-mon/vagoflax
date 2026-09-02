@@ -5,8 +5,11 @@ def preprocess(df):
     df = clean_company_size(df)
     df = replace_missing_values(df)
     df = clean_contract_length(df)
-    Y = df["SalaryCHF"].copy()
+    df["SalaryFullTimeCHF"] = df["SalaryCHF"] / (df["WorkloadPercent"] / 100)
+    Y = df["SalaryFullTimeCHF"].copy()
+    old_Y = df["SalaryCHF"].copy()
     df = df.drop(columns=["SalaryCHF"])
+    df = df.drop(columns=["SalaryFullTimeCHF"])
 
     return df, Y
 

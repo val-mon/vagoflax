@@ -36,6 +36,9 @@ def train(
     Y_train,
     Y_validation,
     Y_test,
+    workload_train,
+    workload_validation,
+    workload_test,
     base_dir,
     scaler_y,
     random_state,
@@ -173,7 +176,11 @@ def train(
     )
 
     Y_train_full = np.concatenate(
-        [Y_train, Y_validation],
+            [Y_train, Y_validation],
+            axis=0,
+        )
+    workload_train_full = np.concatenate(
+        [workload_train, workload_validation],
         axis=0,
     )
 
@@ -220,13 +227,20 @@ def train(
 
         Y_pred_test = model(X_test_tensor).numpy().flatten()
 
-    # Convert predictions back to CHF
-    Y_pred_train = scaler_y.inverse_transform(Y_pred_train.reshape(-1, 1)).flatten()
-    Y_pred_test = scaler_y.inverse_transform(Y_pred_test.reshape(-1, 1)).flatten()
+    # Convert full-workload predictions back to CHF
+    Y_pred_train_full_chf = scaler_y.inverse_transform(Y_pred_train.reshape(-1, 1)).flatten()
+    Y_pred_test_full_chf = scaler_y.inverse_transform(Y_pred_test.reshape(-1, 1)).flatten()
 
-    # Convert actual values back to CHF
-    Y_train_full_chf = scaler_y.inverse_transform(Y_train_full.reshape(-1, 1)).flatten()
-    Y_test_chf = scaler_y.inverse_transform(Y_test.reshape(-1, 1)).flatten()
+    # Convert actual full-workload values back to CHF
+    Y_train_full_full_chf = scaler_y.inverse_transform(Y_train_full.reshape(-1, 1)).flatten()
+    Y_test_full_chf = scaler_y.inverse_transform(Y_test.reshape(-1, 1)).flatten()
+
+    # Convert full-workload salaries to salaries at the actual workload
+    Y_pred_train = Y_pred_train_full_chf * (workload_train_full / 100)
+    Y_pred_test = Y_pred_test_full_chf * (workload_test / 100)
+
+    Y_train_full_chf = Y_train_full_full_chf * (workload_train_full / 100)
+    Y_test_chf = Y_test_full_chf * (workload_test / 100)
 
     # Metrics
     mae_train = mean_absolute_error(

@@ -1,14 +1,14 @@
 Gradient Boosting Regression Parameters:
 n_estimators: 500
-learning_rate: 0.3
+learning_rate: 0.4
 max_depth: 2
-Validation RMSE during hyperparameter search: 21864.64327587746
+Validation RMSE during hyperparameter search: 20141.77059257383
 Dataset split:
 Training set size: 424
 Test set size: 76
 Train-Test split percentage: 84.80% - 15.20%
 
 Gradient Boosting Regression Results: 
-MAE - Train: 2401.234252473141, Test: 8836.592990134097
-RMSE - Train: 3341.141088230263, Test: 14951.544220049984
-R² - Train: 0.9977051393815772, Test: 0.9659490228713901
+MAE - Train: 2010.9034665013128, Test: 11115.182925437675
+RMSE - Train: 2768.681328022372, Test: 16547.559969165017
+R² - Train: 0.9985297781873215, Test: 0.9608971260910881

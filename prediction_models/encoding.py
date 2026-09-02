@@ -10,7 +10,6 @@ from sklearn.preprocessing import OneHotEncoder, MultiLabelBinarizer
 numerical_columns = [
     "MinYearsExperience",
     "Holidays",
-    "WorkloadPercent",
     "Contract",
     "IsPermanent",
 ]

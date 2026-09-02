@@ -47,7 +47,12 @@ class SalaryPredictionService {
     interpreter.run(modelInput, modelOutput);
 
     final normalizedSalary = modelOutput[0][0];
-    final predictedSalary = _preprocessor.denormalizeTarget(normalizedSalary);
+
+    final fullWorkloadSalary = _preprocessor.denormalizeTarget(
+      normalizedSalary,
+    );
+
+    final predictedSalary = fullWorkloadSalary * (input.workloadPercent / 100);
 
     if (!predictedSalary.isFinite) {
       throw StateError('The model returned an invalid salary prediction.');
