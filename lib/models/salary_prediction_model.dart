@@ -109,7 +109,6 @@ class SalaryPredictionInput {
     Role.lead => 'Lead',
     Role.director => 'Director',
     Role.intern => 'Intern',
-    Role.unknown => '__UNKNOWN__',
   };
 
   static String _industryLabel(Industry industry) => switch (industry) {

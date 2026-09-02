@@ -118,19 +118,19 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                 TextFormField(
                   controller: _firstNameController,
                   decoration: const InputDecoration(labelText: 'First name'),
-                  validator: _required,
+                  validator: (v) => _stringLength(v, 50, true),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _lastNameController,
                   decoration: const InputDecoration(labelText: 'Last name'),
-                  validator: _required,
+                  validator: (v) => _stringLength(v, 50, true),
                 ),
               ] else if (state?.role == UserRole.employer) ...[
                 TextFormField(
                   controller: _companyNameController,
                   decoration: const InputDecoration(labelText: 'Company name'),
-                  validator: _required,
+                  validator: (v) => _stringLength(v, 50, true),
                 ),
               ],
               const SizedBox(height: 16),
@@ -169,7 +169,8 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
               TextFormField(
                 controller: _descriptionController,
                 decoration: const InputDecoration(labelText: 'Description'),
-                maxLines: 4,
+                validator: (v) => _stringLength(v, 500, false),
+                maxLines: 5,
               ),
               const SizedBox(height: 24),
 
@@ -289,6 +290,7 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                   controller: _companySizeController,
                   decoration: const InputDecoration(labelText: 'Company size'),
                   keyboardType: TextInputType.number,
+                  validator: (v) => _intLength(v, 1, 100000, true),
                 ),
               ],
               const SizedBox(height: 24),
@@ -309,6 +311,14 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   void _addSkill() {
     final text = _skillController.text.trim();
     if (text.isEmpty || _skills.contains(text)) return;
+    if (text.length > 25) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Skill cannot be longer than 25 characters'),
+        ),
+      );
+      return;
+    }
     setState(() {
       _skills.add(text);
       _skillController.clear();
@@ -323,6 +333,24 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
         company.isEmpty ||
         _historyStartedAt == null ||
         _historyEndedAt == null) {
+      return;
+    }
+
+    if (title.length > 50 || company.length > 50) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Title and company cannot be longer than 50 characters',
+          ),
+        ),
+      );
+      return;
+    }
+
+    if (_historyStartedAt!.isAfter(_historyEndedAt!)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Start date cannot be after end date')),
+      );
       return;
     }
 
@@ -348,8 +376,26 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       '${date.month.toString().padLeft(2, '0')}/'
       '${date.year}';
 
-  String? _required(String? v) =>
-      (v == null || v.trim().isEmpty) ? 'This field is required' : null;
+  String? _stringLength(String? v, int max, bool required) =>
+      (v == null || v.trim().isEmpty)
+      ? (required ? 'This field is required' : null)
+      : (v.trim().length > max
+            ? 'This field cannot be longer than $max characters'
+            : null);
+
+  String? _intLength(String? v, int min, int max, bool required) {
+    if (v == null || v.trim().isEmpty) {
+      return required ? 'This field is required' : null;
+    }
+    final value = int.tryParse(v.trim());
+    if (value == null) {
+      return 'This field must be a number';
+    }
+    if (value < min || value > max) {
+      return 'This field must be between $min and $max';
+    }
+    return null;
+  }
 
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;

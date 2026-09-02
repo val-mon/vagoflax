@@ -275,6 +275,48 @@ class _SignUpEmployerScreenState extends State<SignUpEmployerScreen> {
                     return;
                   }
 
+                  if (name.length > 50) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Company name is too long. (Max 50 characters)',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  if (desc.length > 500) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Description is too long. (Max 500 characters)',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
+                  if (companySize < 1 || companySize > 100000) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Company size must be between 1 and 100000.',
+                        ),
+                      ),
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+
                   // launch app_state signUpStep4Employer and then navigate to next screen
                   try {
                     await context.read<ApplicationState>().signUpStep4Employer(
