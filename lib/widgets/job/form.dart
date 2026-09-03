@@ -352,7 +352,6 @@ class _JobFormState extends State<JobForm> {
     final validationError = _requiredNonNegativeIntValidator(value);
     if (validationError != null) return validationError;
 
-
     final minimum = int.tryParse(_minYearsExperienceController.text) ?? 0;
 
     final maximum = int.tryParse(value ?? '0') ?? 0;
