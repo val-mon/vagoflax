@@ -371,7 +371,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 : '${reviewer.firstName ?? 'Unknown'} ${reviewer.lastName ?? 'User'}';
                             final userLocation = reviewer == null
                                 ? ""
-                                : ' • ${reviewer.address} ${reviewer.canton}';
+                                : ' • ${reviewer.canton}';
                             return [
                               ListTile(
                                 title: Text(userName + userLocation),
