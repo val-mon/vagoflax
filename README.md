@@ -18,12 +18,15 @@ Made for the Mobile Development Summer School (208.1).
 8.  [Data models & Firestore structure](#data-models--firestore-structure)
 9.  [Getting Started](#getting-started)
 10. [Run tests](#run-tests)
-11. [Repo policy](#repo-policy)
-12. [Face recognition](#face-recognition)
+11. [Database mock data](#database-mock-data)
+12. [Repo policy](#repo-policy)
+13. [Face recognition](#face-recognition)
+14. [Salary prediction](#salary-prediction)
 
 ---
 
 ## App images
+
 <p align="center">
   <img src="assets/readme/app_overview.png" alt="Welcome page" width="1000">
   <br>
@@ -33,27 +36,32 @@ Made for the Mobile Development Summer School (208.1).
 ---
 
 ## What the app does
-- **Authentication**: register and log in with email + password using **Firebase Auth**. Also link you face with your account in order to skip writing your email on login
-- **Jobs**: employers create job listings with specific info
-- **Applications**: students apply to those jobs, employers change the status (submitted, evaluated, accepted, rejected)
+
+- **Authentication**: register and log in with email + password using **Firebase Auth**. Users can also link their face with their account to skip writing their email on login.
+- **Jobs**: employers create job listings with specific information.
+- **Applications**: students apply to jobs, and employers change the application status (submitted, evaluated, accepted, rejected).
 - **AI translation**: students can translate job offers using AI.
-- **User reviews and ratings**: rating and review system from the users of the app
+- **User reviews and ratings**: rating and review system for users of the app.
+- **Salary prediction**: a locally embedded machine learning model estimates the salary of a job offer from its characteristics.
 
 ---
 
 ## Tech stack
-| Concern              | Technology                          |
-| -------------------- | ----------------------------------- |
-| UI framework         | Flutter (Material)                  |
-| State management     | `provider` (`ChangeNotifier`)       |
-| Authentication       | `firebase_auth`                     |
-| Database             | `cloud_firestore` (real-time)       |
-| Image hosting        | Cloudinary (via `http` upload)      |
-| Image picking        | `image_picker`                      |
-| Transport info       | [Transport API](https://transport.opendata.ch/)|
-| Translation AI       | [Ollama Gemma4](https://docs.ollama.com/api/introduction)      |
-| Configuration        | `flutter_dotenv` (`.env` file)      |
-| Tests                | `flutter_test` + hand-written fakes |
+
+| Concern | Technology |
+| --- | --- |
+| UI framework | Flutter (Material) |
+| State management | `provider` (`ChangeNotifier`) |
+| Authentication | `firebase_auth` |
+| Database | `cloud_firestore` (real-time) |
+| Image hosting | Cloudinary (via `http` upload) |
+| Image picking | `image_picker` |
+| Transport info | [Transport API](https://transport.opendata.ch/) |
+| Translation AI | [Ollama Gemma4](https://docs.ollama.com/api/introduction) |
+| Salary prediction | PyTorch + LiteRT / TFLite |
+| On-device ML inference | `flutter_litert` |
+| Configuration | `flutter_dotenv` (`.env` file) |
+| Tests | `flutter_test` + hand-written fakes |
 
 ---
 
@@ -63,7 +71,7 @@ The app uses a **layered architecture**. Each layer has a single
 responsibility and only talks to the layer directly below it. The UI never
 talks to Firebase or Cloudinary directly.
 
-```
+```text
 ┌───────────────────────────────────────┐
 │  Views & Widgets (UI)                 │  what the user sees
 │  login, applications, profile, etc.   │
@@ -73,37 +81,50 @@ talks to Firebase or Cloudinary directly.
 │  Providers (state management)                 │  app logic + UI state
 │  AppState, JobProvider, UserProvider, ...     │
 └───────────────┬───────────────────────────────┘
-                │ depends on interfaces (not Firebase!)
+                │ depends on interfaces / services
 ┌───────────────▼────────────────────────────────┐
-│  Repositories & Services (abstractions)        │  data access contracts
+│  Repositories & Services (abstractions)        │  data access / computation
 │  UserRepository, JobRepository,                │
-│  ApplicationRepository                         │
+│  ApplicationRepository, SalaryPrediction       │
 └───────────────┬────────────────────────────────┘
                 │ implemented by
 ┌───────────────▼────────────────────────────────┐
 │  Concrete implementations                      │  the real integrations
 │  FirestoreJobRepository, FirebaseAuthService,  │
-│  FirestoreApplicationRepository                │
+│  FirestoreApplicationRepository, LiteRT        │
 └───────────────┬────────────────────────────────┘
                 │
-┌───────────────▼───────────────────────────────────────┐
-│  External services: Firebase, Cloudinary, Ollama LLM  │
-└───────────────────────────────────────────────────────┘
+┌───────────────▼────────────────────────────────────────────┐
+│ External/local services: Firebase, Cloudinary, Ollama, ML │
+└────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## Project structure
-```
+
+```text
 vagoflax/
 ├── .github                  # CI/CD workflows
 ├── .env.example             # Template for local .env
 ├── Makefile                 # Shortcuts for flutter commands
-├── NN_model                 # Python project: salary prediction model (training, results, visualisation)
+├── prediction_models        # Python project: salary prediction training and export
+│   ├── comparison           # Comparison between trained models
+│   ├── data                 # Salary dataset
+│   ├── gradient_boosting_model
+│   ├── NN_model             # Neural network training
+│   ├── regression_model
+│   ├── encoding.py          # Categorical and multi-label encoding
+│   ├── preprocessing.py     # Dataset preprocessing
+│   ├── export.py            # LiteRT/TFLite and preprocessing export
+│   └── main.py              # Training pipeline
 ├── README.md                # Technical guide
 ├── analysis_options.yaml    # Dart/Flutter linter rules
 ├── android                  # Android support
 ├── assets                   # Icon, ML models, README resources
+│   └── ml
+│       ├── model.tflite
+│       └── preprocessing.json
 ├── firestore.rules          # Firestore security rules
 ├── ios                      # IOS support
 ├── lib/
@@ -200,7 +221,7 @@ vagoflax/
 │       └── user_rating_badge.dart
 ├── linux                    # Linux desktop support
 ├── macos                    # macOS desktop support
-├── mock_data                # Node project : script to clean and fille Firestore with mockdata
+├── mock_data                # Node project: scripts for Firestore mock data
 ├── pubspec.yaml             # Dependencies
 ├── test                     # Unit & widget tests
 ├── web                      # Web support
@@ -221,9 +242,21 @@ A concrete example: **browsing and applying to job offers in real time.**
 6. The UI rebuilds automatically to display the updated listings.
 
 When an AI translation is requested or an application is submitted:
+
 - The UI triggers `OllamaService.translate()` or `ApplicationProvider.applyToJob()`.
 - The repository persists the new translation or application status in Firestore.
 - Changes flow back through the providers, ensuring real-time consistency across all screens without manual state synchronization.
+
+For salary prediction, the flow is local:
+
+1. Job and employer data are converted to a `SalaryPredictionInput`.
+2. `SalaryPreprocessor` reproduces the preprocessing used during Python training.
+3. `SalaryPredictionService` sends the resulting feature vector to the embedded LiteRT/TFLite neural network.
+4. The normalized output is converted back to CHF.
+5. The predicted full-time salary is multiplied by the job workload percentage.
+6. The resulting salary can be stored in `Job.predictedSalary`.
+
+No network request is required for salary inference.
 
 ---
 
@@ -236,26 +269,27 @@ This project uses the **`provider`** package. The two key objects are
 MultiProvider(
   providers: [
     ChangeNotifierProvider(
-        create: (_) => UserProvider(FirestoreUserRepository()),
+      create: (_) => UserProvider(FirestoreUserRepository()),
     ),
     ChangeNotifierProxyProvider<UserProvider, ApplicationState>(
-        create: (context) =>
-            ApplicationState(userProvider: context.read<UserProvider>()),
-        update: (_, userProvider, previousState) =>
-            (previousState ?? ApplicationState(userProvider: userProvider))
+      create: (context) =>
+          ApplicationState(userProvider: context.read<UserProvider>()),
+      update: (_, userProvider, previousState) =>
+          (previousState ?? ApplicationState(userProvider: userProvider))
             ..updateUserProvider(userProvider),
     ),
     ChangeNotifierProvider(
-        create: (_) => ApplicationProvider(FirestoreApplicationRepository()),
+      create: (_) =>
+          ApplicationProvider(FirestoreApplicationRepository()),
     ),
     ChangeNotifierProvider(
-        create: (_) => JobProvider(
+      create: (_) => JobProvider(
         FirestoreJobRepository(
-            applicationRepository: FirestoreApplicationRepository(),
+          applicationRepository: FirestoreApplicationRepository(),
         ),
-        ),
+      ),
     ),
-    ],
+  ],
   ...
 )
 ```
@@ -272,26 +306,29 @@ MultiProvider(
 In widgets you typically:
 
 ```dart
-final jobs = context.watch<JobProvider>().jobs;   // rebuild on change
-context.read<JobProvider>().deleteJob(jobId);     // call once, no rebuild
+final jobs = context.watch<JobProvider>().jobs;
+context.read<JobProvider>().deleteJob(jobId);
 ```
+
 ---
 
 ## Data models & Firestore structure
 
-You can see all data models in the lib/models/ folder.
+You can see all data models in the `lib/models/` folder.
 
 In Firestore we have three distinct collections:
 
 ### users
-When signing up, row for user data is creating in `Authentication`. The row's ID is saved and is reused for the user collection in `Firestore`.
+
+When signing up, a row for user data is created in `Authentication`. The row's ID is saved and reused for the user collection in `Firestore`.
 
 `users/$id`
 
-Also, users can be either students, employers or `admin`. The Firestore fields change slightly depending on the role :
+Users can be either students, employers or `admin`. The Firestore fields change slightly depending on the role.
 
 Role: `student`
-```
+
+```text
 firstName           string
 lastName            string
 email               string
@@ -309,7 +346,8 @@ createdAt           timestamp
 ```
 
 Role: `employer`
-```
+
+```text
 companyName         string
 email               string
 role                UserRole        // enum
@@ -323,22 +361,24 @@ createdAt           timestamp
 ```
 
 Role: `admin`
-```
+
+```text
 email       string
 role        UserRole  // enum
 createdAt   timestamp
 ```
 
 ### jobs
+
 Jobs can only be posted by an employer.
 
 `jobs/$jobId`
 
-```
+```text
 userUuid            string
 title               string
 description         string?
-diplomas            Diplomas[]        // enum
+diploma             Diplomas         // enum
 contractTime        int?
 minYearsExperience  int?
 maxYearsExperience  int?
@@ -358,11 +398,12 @@ createdAt           timestamp
 ```
 
 ### applications
+
 Applications can only be submitted by a student and reviewed by the employer owning the related job.
 
 `applications/$jobId_$studentId`
 
-```
+```text
 jobId               string
 studentUuid         string
 status              string        // e.g. 'submitted', 'reviewing', 'accepted', 'rejected'
@@ -373,9 +414,12 @@ createdAt           timestamp
 Access is restricted by `firestore.rules`.
 
 ### Models
+
 #### Review
+
 Used in `users/$id` -> `reviews[]`
-```
+
+```text
 authorId            string
 rating              double
 comment             string
@@ -383,16 +427,21 @@ createdAt           timestamp
 ```
 
 #### HistoryEntry
+
 Used in `users/$id` -> `history[]`
-```
+
+```text
 title               string
 organization        string
 startDate           string
 endDate             string?
 ```
+
 #### JobTranslation
+
 Used in `jobs/$id` -> `translations[]`
-```
+
+```text
 title               string
 description         string
 language            Languages         // enum
@@ -424,19 +473,23 @@ cd vagoflax
 flutter pub get
 ```
 
-
 ### Firebase configuration
 
-- Install [Firebase CLI](https://firebase.google.com/docs/cli) on your computer
+- Install [Firebase CLI](https://firebase.google.com/docs/cli) on your computer.
 - Log in to your Google account via the terminal:
+
 ```bash
 firebase login
 ```
-- Install the Flutterfire CLI
+
+- Install the FlutterFire CLI:
+
 ```bash
 dart pub global activate flutterfire_cli
 ```
-- Generate the needed files for **android, ios, windows and macos** :
+
+- Generate the needed files for **Android, iOS, Windows and macOS**:
+
 ```bash
 flutterfire configure
 ```
@@ -447,15 +500,15 @@ Then, in the Firebase console:
 - create a **Cloud Firestore** database
 - deploy the security rules:
 
-  ```bash
-  firebase deploy --only firestore:rules
-  ```
+```bash
+firebase deploy --only firestore:rules
+```
 
 ### Environment variables configuration
 
 Create a `.env` file at the root of your project following the structure of `.env.example`.
 
-```
+```text
 CLOUDINARY_APIKEY=your_cloudinary_api_key
 CLOUDINARY_APISECRET=your_cloudinary_api_secret
 CLOUDINARY_CLOUDNAME=cloudinary_cloud_name
@@ -489,12 +542,14 @@ You can setup your Firebase with mock data by using the `make mock_data` script.
 ## Repo policy
 
 ### Branches
-` main ` : The main branch containing the releases\
-` dev (default) ` : The development branch that will be merge into main when a release is created \
 
+`main`: The main branch containing the releases.  
+`dev (default)`: The development branch that will be merged into main when a release is created.
 
 #### Working branches
-One branch per task that will be merge into dev when the task is over
+
+One branch per task that will be merged into `dev` when the task is over.
+
 - `feat/...` - new feature
 - `fix/...` - fix a bug
 - `chore/...` - config, setup, ...
@@ -503,8 +558,10 @@ One branch per task that will be merge into dev when the task is over
 - `refactor/...` - refactoring the code
 
 ### Commits
-Commit format: 
-``` md
+
+Commit format:
+
+```text
 TYPE (SCOPE): Description
 
 example:
@@ -512,12 +569,15 @@ feat (HomePage): Add login button
 ```
 
 #### Types
+
 - `feat:` - new feature
 - `fix:` - fix a bug
 - `chore:` - config, setup, ...
 - `test:` - new test
 - `docs:` - documentation
 - `refactor:` - refactoring the code
+
+---
 
 ## Face Recognition
 
@@ -539,3 +599,324 @@ feat (HomePage): Add login button
 3. **Embed**: run the crop through MobileFaceNet (TFLite) → 192-value vector.
 4. **Normalize**: L2-normalize the vector so distances are comparable.
 5. **Compare** (login only): compute the Euclidean distance to every known signature; the closest one under a threshold (`0.95`) is considered a match.
+
+---
+
+## Salary prediction
+
+### Purpose
+
+The application includes an on-device machine learning model that estimates the salary associated with a job offer.
+
+The model is trained separately in Python and exported to LiteRT/TFLite. Flutter does not retrain the model: it only reproduces the preprocessing pipeline and performs inference locally.
+
+The salary model predicts a **full-time equivalent salary (100% workload)**. The workload percentage is deliberately excluded from the neural network inputs. Once the full-time salary has been predicted, the application converts it to the salary corresponding to the job's actual workload.
+
+For example:
+
+```text
+Predicted full-time salary: 100,000 CHF
+Job workload:                60 %
+
+Final predicted salary:
+100,000 × 0.60 = 60,000 CHF
+```
+
+### Training pipeline
+
+The salary prediction project is located in:
+
+```text
+prediction_models/
+```
+
+The dataset is first preprocessed and encoded before being split into:
+
+```text
+70 % training
+15 % validation
+15 % testing
+```
+
+The validation set is used for model selection and training decisions. The test set remains separate until the final evaluation.
+
+Three regression approaches are compared:
+
+1. **Linear Regression**
+2. **Gradient Boosting**
+3. **Neural Network**
+
+Their performance is evaluated using:
+
+- **MAE** — Mean Absolute Error
+- **RMSE** — Root Mean Squared Error
+- **R²** — coefficient of determination
+
+The final embedded model is the neural network.
+
+### Salary target
+
+The original dataset contains the salary associated with the workload of each job offer.
+
+Before training, this salary is converted to a full-time equivalent:
+
+```text
+FullTimeSalaryCHF = SalaryCHF / (WorkloadPercent / 100)
+```
+
+The model therefore learns to estimate the salary value of the position independently of the percentage of employment.
+
+`WorkloadPercent` is retained separately so it can be used for evaluation and by the Flutter application, but it is not provided as an input feature to the neural network.
+
+### Model inputs
+
+The model uses information describing the job and employer, including:
+
+```text
+MinYearsExperience
+Contract
+Holidays
+IsPermanent
+Diploma
+Role
+Industry
+Canton
+CompanySize
+Perks
+Languages
+```
+
+The categorical features are encoded before training.
+
+Single-value nominal features such as diploma, role, industry, canton and company size are represented using one-hot encoding.
+
+Multi-value features such as perks and languages are represented using multi-hot encoding.
+
+Continuous numerical values are standardized using statistics learned from the training set.
+
+### Neural network
+
+The final salary model is implemented in PyTorch.
+
+Its architecture is:
+
+```text
+Input
+  │
+  ▼
+Linear(input_size → 64)
+  │
+ReLU
+  │
+Linear(64 → 32)
+  │
+ReLU
+  │
+Linear(32 → 1)
+  │
+  ▼
+Normalized full-time salary
+```
+
+The model is trained using the Adam optimizer and mean squared error loss.
+
+Early stopping on the validation set is used to determine an appropriate number of training epochs.
+
+Once the epoch is selected, a fresh model is trained using the combined training and validation data before final evaluation on the untouched test set.
+
+### Preprocessing export
+
+The neural network alone is not sufficient for inference. Flutter must reproduce exactly the same transformation that was applied to the training data.
+
+The Python export therefore generates two files:
+
+```text
+assets/ml/model.tflite
+assets/ml/preprocessing.json
+```
+
+`model.tflite` contains the neural network.
+
+`preprocessing.json` contains the metadata required to reconstruct its inputs, including:
+
+```text
+feature_names
+scaled_numeric_columns
+binary_columns
+one_hot_categories
+multi_hot_categories
+numeric_means
+numeric_stds
+target_mean
+target_std
+```
+
+`feature_names` is particularly important because the input vector in Flutter must use exactly the same feature order as the model used during training.
+
+### Flutter architecture
+
+Salary prediction is split between three Dart components:
+
+```text
+SalaryPredictionInput
+        │
+        ▼
+SalaryPreprocessor
+        │
+        ▼
+SalaryPredictionService
+        │
+        ▼
+LiteRT / TFLite model
+```
+
+#### `SalaryPredictionInput`
+
+Located in:
+
+```text
+lib/models/salary_prediction_model.dart
+```
+
+This class converts `Job` and employer information into the vocabulary expected by the machine learning preprocessing pipeline.
+
+It also retains `workloadPercent`.
+
+The workload is intentionally stored here rather than encoded as a model feature because it is applied only after inference.
+
+#### `SalaryPreprocessor`
+
+Located in:
+
+```text
+lib/services/salary_preprocessor.dart
+```
+
+The preprocessor loads:
+
+```text
+assets/ml/preprocessing.json
+```
+
+It then:
+
+1. standardizes numerical inputs using the exported training mean and standard deviation;
+2. one-hot encodes nominal categorical values;
+3. multi-hot encodes list-valued features;
+4. handles supported unknown categorical values;
+5. constructs the final feature vector in the exact order defined by `feature_names`.
+
+The resulting vector has exactly the input dimension expected by the TFLite model.
+
+`WorkloadPercent` is not included in this vector.
+
+### Salary inference
+
+`SalaryPredictionService` is located in:
+
+```text
+lib/services/salary_prediction.dart
+```
+
+The service loads the embedded model:
+
+```text
+assets/ml/model.tflite
+```
+
+Inference follows this pipeline:
+
+```text
+Job + Employer
+      │
+      ▼
+SalaryPredictionInput
+      │
+      ├──────────── workloadPercent
+      │
+      ▼
+SalaryPreprocessor
+      │
+      ▼
+Encoded and normalized features
+      │
+      ▼
+TFLite neural network
+      │
+      ▼
+Normalized full-time salary
+      │
+      ▼
+Inverse target normalization
+      │
+      ▼
+Full-time salary in CHF
+      │
+      ├── × workloadPercent / 100
+      │
+      ▼
+Final predicted salary in CHF
+```
+
+The normalized network output is first converted back to CHF using the target statistics exported during training:
+
+```text
+fullTimeSalary =
+    normalizedPrediction × targetStd + targetMean
+```
+
+The actual workload is then applied:
+
+```text
+predictedSalary =
+    fullTimeSalary × (workloadPercent / 100)
+```
+
+For this reason, `WorkloadPercent` must not be standardized or sent to the neural network.
+
+### On-device inference
+
+Salary prediction runs entirely on the user's device using LiteRT/TFLite.
+
+This has several advantages:
+
+- no salary prediction API is required;
+- inference does not depend on network availability;
+- no job information needs to be sent to an external prediction service;
+- prediction latency is low;
+- the model and its preprocessing configuration are versioned with the application.
+
+### Updating the model
+
+When the salary model is retrained, both exported files must be updated together:
+
+```text
+model.tflite
+preprocessing.json
+```
+
+The preprocessing metadata must always correspond to the exact model being deployed.
+
+Using a new `model.tflite` with an old `preprocessing.json`, or the opposite, can change the feature order, scaling statistics or category encoding and therefore produce invalid predictions.
+
+### Tests
+
+The salary prediction implementation includes tests for the three main parts of the inference pipeline:
+
+```text
+salary_prediction_model_test.dart
+salary_preprocessor_test.dart
+salary_prediction_test.dart
+```
+
+They verify respectively:
+
+- conversion from application models to the ML input vocabulary;
+- construction and ordering of the model feature vector;
+- execution of the embedded LiteRT/TFLite model and production of a valid salary prediction.
+
+The complete Flutter test suite can be executed with:
+
+```bash
+flutter test
+```
