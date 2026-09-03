@@ -68,3 +68,5 @@ play-store-credentials.json
 **/GeneratedPluginRegistrant.swift
 **/GeneratedPluginRegistrant.h
 **/GeneratedPluginRegistrant.m
+
+api_keys.json # its a joke
